@@ -58,3 +58,10 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+URPTest/.idea/
+URPTest/Library/
+URPTest/Temp/
+URPTest/Assets/BuiltinDemo/ExampleAssets/Textures/Props/Paint/Paintbrush_Normal.tif.meta
+URPTest/Assets/BuiltinDemo/
+URPTest/Assets/BuiltinDemo.meta
+URPTest/obj/
