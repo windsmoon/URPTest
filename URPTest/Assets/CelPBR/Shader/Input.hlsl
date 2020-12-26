@@ -1,5 +1,5 @@
-﻿#ifndef CEL_PBR_INPUT
-#define CEL_PBR_INPUT
+﻿#ifndef INPUT_CEL_PBR
+#define INPUT_CEL_PBR
 
 TEXTURE2D(_BaseMap);
 SAMPLER(sampler_BaseMap);
