@@ -7,8 +7,10 @@ half3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPB
     float nDotL = saturate(dot(surface.normal, lightData.direction));
     float3 halfVector = normalize(surface.viewDirection + lightData.direction);
     float nDotH = saturate(dot(surface.normal, halfVector));
-    float posNDotH = pow(nDotH, _Shinness);
-    return lightData.color * lightData.attenuation * (nDotL + posNDotH);
+    float powNDotH = pow(nDotH, 256);
+    half3 diffuseColor = lightData.color * nDotL * lightData.distanceAttenuation * brdf.diffuse;
+    half3 specularColor = lightData.color * powNDotH * lightData.distanceAttenuation * brdf.specular; 
+    return (diffuseColor + specularColor) * lightData.shadowAttenuation;
 }
 
 #endif

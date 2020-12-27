@@ -1,11 +1,17 @@
 ﻿#ifndef CEL_PRB_PASS
-#define CEL_PBR_PASSS
+#define CEL_PBR_PASS
+
+// #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl"
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl" 
 
 struct Attributes
 {
     float3 positionOS : POSITION;
     float3 normalOS : NORMAL;
+    float4 tangentOS : TANGENT;
     float2 baseUV : TEXCOORD0;
+    UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 struct Varyings
@@ -13,13 +19,12 @@ struct Varyings
     float4 positionHCS : SV_POSITION;
     float3 positionWS : VAR_POSITION;
     float3 normalWS : VAR_NORMAL;
+    float3 tangentWS : VAR_TANGENT;
+    float3 bitangentWS : VAR_BITANGENT;
     float2 baseUV : VAR_BASE_UV;
+    UNITY_VERTEX_INPUT_INSTANCE_ID
 };
-
-float _Shinness;
-
-#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"     
+    
 #include "Input.hlsl"
 #include "Surface.hlsl"
 #include "Light.hlsl"
@@ -29,45 +34,37 @@ float _Shinness;
 Varyings CelPBRVert(Attributes input)
 {
     Varyings output;
+    UNITY_SETUP_INSTANCE_ID(input);
+    UNITY_TRANSFER_INSTANCE_ID(input, output);
+    
     output.positionWS = TransformObjectToWorld(input.positionOS);
     output.positionHCS = TransformWorldToHClip(output.positionWS);
     output.normalWS = TransformObjectToWorldNormal(input.normalOS);
+    output.tangentWS = TransformObjectToWorldDir(input.tangentOS.xyz);
+    output.bitangentWS = cross(output.normalWS, output.tangentWS) * input.tangentOS.w * unity_WorldTransformParams.w;
     output.baseUV = TRANSFORM_TEX(input.baseUV, _BaseMap);
+    output.baseUV = input.baseUV;
     return output;
-}
-
-Surface_CelPBR GetSurface(Varyings input)
-{
-    Surface_CelPBR surface;
-    surface.color = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.baseUV);
-    surface.pos = input.positionWS;
-    surface.normal = input.normalWS;
-    surface.viewDirection = normalize(_WorldSpaceCameraPos - input.positionWS);
-    return surface;
-}
-
-LightData_CelPBR GetMainLightData()
-{
-    // DirectionalLight_CelPBR directionalLight;
-    // directionalLight.color = _MainLightColor.xyz;
-    // directionalLight.direction = _MainLightPosition.xyz;
-    // directionalLigh
-    LightData_CelPBR lightData;
-    lightData.color = _MainLightColor.xyz;
-    lightData.direction = _MainLightPosition.xyz;
-    lightData.attenuation = 1;
-    return lightData;
 }
 
 float4 CelPBRFrag(Varyings input) : SV_TARGET
 {
+    UNITY_SETUP_INSTANCE_ID(input);
+    
     Surface_CelPBR surface = GetSurface(input);
-    LightData_CelPBR mainLightData = GetMainLightData();
+    LightData_CelPBR mainLightData = GetMainLightData(input);
+    BRDF_CelPBR brdf = GetBRDF(surface);
     half3 color = GetLighting(mainLightData, surface, GetBRDF(surface));
+
+    int otherLightCount = GetOtherLightCount();
+
+    for (int i = 0; i < otherLightCount; ++i)
+    {
+        LightData_CelPBR lightData = GetOtherLightData(input, i);    
+        color += GetLighting(lightData, surface, brdf);
+    }
+
     return half4(color, 1);
 }
-
-
-
 
 #endif
