@@ -62,6 +62,7 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
         LightData_CelPBR lightData = GetOtherLightData(input, i);    
         color += GetLighting(lightData, surface, brdf);
     }
+    // UniversalFragmentPBR
 
     return half4(color, 1);
 }

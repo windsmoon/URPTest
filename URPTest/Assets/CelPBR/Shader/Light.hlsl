@@ -42,7 +42,8 @@ LightData_CelPBR GetOtherLightData(Varyings input, int index)
     lightData.color = light.color;
     lightData.direction = light.direction;
     lightData.distanceAttenuation = light.distanceAttenuation;
-    lightData.shadowAttenuation = light.shadowAttenuation;
+    lightData.shadowAttenuation = light.shadowAttenuation; // urp 10.x do not support additional shadow ?
+    lightData.shadowAttenuation = AdditionalLightRealtimeShadow(index, input.positionWS);
     return lightData;
 }
 
