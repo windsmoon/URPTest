@@ -43,7 +43,6 @@ Varyings CelPBRVert(Attributes input)
     output.tangentWS = TransformObjectToWorldDir(input.tangentOS.xyz);
     output.bitangentWS = cross(output.normalWS, output.tangentWS) * input.tangentOS.w * unity_WorldTransformParams.w;
     output.baseUV = TRANSFORM_TEX(input.baseUV, _BaseMap);
-    output.baseUV = input.baseUV;
     return output;
 }
 
