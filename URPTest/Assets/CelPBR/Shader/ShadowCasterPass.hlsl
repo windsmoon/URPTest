@@ -20,15 +20,14 @@ struct Varyings
     float4 positionCS   : SV_POSITION;
 };
 
-// #include "Input.hlsl"
+float3 _LightDirection; // ?? why this can be supported in spr batcher
 
 float4 GetShadowPositionHClip(Attributes input)
 {
     float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
     float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
 
-    float3 viewDirWS = normalize(_MainLightPosition.xyz);
-    float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, viewDirWS));
+    float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, _LightDirection));
 
     #if UNITY_REVERSED_Z
         positionCS.z = min(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
