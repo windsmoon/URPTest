@@ -61,31 +61,29 @@ Shader "CelPBR/CelPBR"
             ENDHLSL
         }
         
-//        Pass
-//        {
-//            Name "ShadowCaster"
-//            Tags{"LightMode" = "ShadowCaster"}
-//
-//            ColorMask 0
-//
-//            HLSLPROGRAM
-//
-//            // -------------------------------------
-//            // Material Keywords
-//            // #pragma shader_feature_local_fragment _ALPHATEST_ON
-//            // #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-//
-//            //--------------------------------------
-//            // GPU Instancing
-//            #pragma multi_compile_instancing
-//            // #pragma multi_compile _ DOTS_INSTANCING_ON
-//
-//            #pragma vertex ShadowPassVertex
-//            #pragma fragment ShadowPassFragment
-//
-//            #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
-//            #include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
-//            ENDHLSL
-//        }
+        Pass
+        {
+            Tags{"LightMode" = "ShadowCaster"}
+
+            ColorMask 0
+
+            HLSLPROGRAM
+
+            // -------------------------------------
+            // Material Keywords
+            // #pragma shader_feature_local_fragment _ALPHATEST_ON
+            // #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+
+            //--------------------------------------
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            // #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #pragma vertex ShadowPassVertex
+            #pragma fragment ShadowPassFragment
+
+            #include "ShadowCasterPass.hlsl"
+            ENDHLSL
+        }
     }
 }
