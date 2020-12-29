@@ -26,8 +26,8 @@ struct Varyings
 };
     
 #include "Input.hlsl"
-#include "Surface.hlsl"
 #include "Light.hlsl"
+#include "Surface.hlsl"
 #include "BRDF.hlsl"
 #include "Lighting.hlsl"
 
