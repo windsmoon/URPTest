@@ -42,7 +42,7 @@ half GetMetallic(Varyings input)
 half GetSmoothness(Varyings input)
 {
     half smoothness = SAMPLE_TEXTURE2D(_MaskMap, sampler_BaseMap, input.baseUV).a;
-    smoothness *= _SmoothnessScale;
+    smoothness *= INPUT_PROP(_SmoothnessScale);
     return smoothness;
 }
 
