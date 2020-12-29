@@ -25,6 +25,8 @@ half4 GetBaseColor(Varyings input)
 
 float3 GetWorldNormal(Varyings input)
 {
+    // TransformTangentToWorld(normalTS, half3x3(input.tangentWS.xyz, bitangent.xyz, input.normalWS.xyz))
+
     float3x3 tbnMatrix = {input.tangentWS, input.bitangentWS, input.normalWS};
     float4 normalMap = SAMPLE_TEXTURE2D(_NormalMap, sampler_BaseMap, input.baseUV);
     float3 normal = UnpackNormalScale(normalMap, INPUT_PROP(_NormalScale));
@@ -37,6 +39,12 @@ half GetMetallic(Varyings input)
     half metallic = SAMPLE_TEXTURE2D(_MaskMap, sampler_BaseMap, input.baseUV).r;
     metallic *= INPUT_PROP(_MetallicScale);
     return metallic;
+}
+
+half GetOcclusion(Varyings input)
+{
+    half occlusion = SAMPLE_TEXTURE2D(_MaskMap, sampler_BaseMap, input.baseUV).g;
+    return occlusion;
 }
 
 half GetSmoothness(Varyings input)

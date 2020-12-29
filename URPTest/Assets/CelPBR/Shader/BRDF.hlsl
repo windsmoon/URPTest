@@ -5,6 +5,7 @@ struct BRDF_CelPBR
 {
     half3 diffuse;
     half3 specular;
+    half3 debug;
 };
 
 
@@ -22,34 +23,63 @@ struct BRDF_CelPBR
 // }
 
 
+
+
 // D = Normal Distribution Function
 // use Trowbridge-Reitz GGX
-half CaculateNormalDistributionFunction(Surface_CelPBR surface)
+// F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+half CaculateNormalDistributionFunction(Surface_CelPBR surface, LightData_CelPBR lightData)
 {
     half roughness2 = surface.roughness * surface.roughness;
-    // vector halfDirection = normalize(surface)
-    // half nDotH = saturate(dot(surface.normal, surface))
-    return 1;
+    float3 halfDirection = GetHalfDirection(surface.normal, lightData.direction);
+    float nDotH = saturate(dot(surface.normal, halfDirection));
+    float nDotH2 = nDotH * nDotH;
+    float denom = nDotH2 * (roughness2 - 1) + 1.00001; // todo
+    denom *= denom;
+    denom *= PI;
+    return roughness2 / denom;
 }
 
-half CaculateFresnelEquation(Surface_CelPBR surface)
+// F = Fresnel Equation
+// use Fresnel-Schlick
+half3 CaculateFresnelEquation(Surface_CelPBR surface, LightData_CelPBR lightData)
 {
-    return 1;
+    half3 f0 = lerp(0.04, surface.color, surface.metallic); // 0.04 is the average base refelction rate of dielectric
+    return f0 + (1 - f0) * pow(1 - saturate(dot(surface.normal, surface.viewDirection)), 5); // no need to saturate
 }
 
-half CaculateGeometryFunction(Surface_CelPBR surface)
+half CaculateGeometrySchlickGGX(half nDot, float k)
 {
-    return 1;
+    half denom = nDot * (1 - k) + k;
+    return nDot / denom;
+}
+
+// G = Geometry Function
+// use SchlickGGX
+half CaculateGeometryFunction(Surface_CelPBR surface, LightData_CelPBR lightData)
+{
+    half k = pow(surface.roughness + 1, 2) / 8;
+    half nDotV = saturate(dot(surface.normal, surface.viewDirection));
+    half nDotL = saturate(dot(surface.normal, lightData.direction));
+    half gSubView = CaculateGeometrySchlickGGX(nDotV, k);
+    half gSubLight = CaculateGeometrySchlickGGX(nDotL, k);
+    return gSubView * gSubLight;
 }
 
 // brdf = kd * lambertian + ks * cook-torrance
 // labertian = albedo / (4pi)
 // cook-torrance = DFG/(4 * (wo * n) * (wi * n))
-BRDF_CelPBR GetBRDF(Surface_CelPBR surface)
+BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData)
 {
     BRDF_CelPBR brdf;
-    brdf.diffuse = surface.color;
-    brdf.specular = surface.color;
+    half d = CaculateNormalDistributionFunction(surface, lightData);
+    half3 f = CaculateFresnelEquation(surface, lightData);
+    half g = CaculateGeometryFunction(surface, lightData);
+    half denom = 4 * saturate(dot(surface.normal, surface.viewDirection)) * saturate(dot(surface.normal, lightData.direction));
+    brdf.specular = (d * f * g) / max(denom, 0.0001);
+    half3 diffuse = (1 - f) * (1 - surface.metallic);
+    brdf.diffuse = diffuse * surface.color / PI;
+    // brdf.debug = d * f * g;
     return brdf;
 }
 

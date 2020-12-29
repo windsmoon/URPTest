@@ -24,7 +24,8 @@ struct Varyings
     float2 baseUV : VAR_BASE_UV;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
-    
+
+#include "Common.hlsl"
 #include "Input.hlsl"
 #include "Light.hlsl"
 #include "Surface.hlsl"
@@ -41,7 +42,7 @@ Varyings CelPBRVert(Attributes input)
     output.positionHCS = TransformWorldToHClip(output.positionWS);
     output.normalWS = TransformObjectToWorldNormal(input.normalOS);
     output.tangentWS = TransformObjectToWorldDir(input.tangentOS.xyz);
-    output.bitangentWS = cross(output.normalWS, output.tangentWS) * input.tangentOS.w * unity_WorldTransformParams.w;
+    output.bitangentWS = cross(output.normalWS, output.tangentWS) * input.tangentOS.w * GetOddNegativeScale();
     output.baseUV = TRANSFORM_TEX(input.baseUV, _BaseMap);
     return output;
 }
@@ -52,8 +53,8 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
     
     Surface_CelPBR surface = GetSurface(input);
     LightData_CelPBR mainLightData = GetMainLightData(input);
-    BRDF_CelPBR brdf = GetBRDF(surface);
-    half3 color = GetLighting(mainLightData, surface, GetBRDF(surface));
+    BRDF_CelPBR brdf = GetBRDF(surface, mainLightData);
+    half3 color = GetLighting(mainLightData, surface, brdf);
 
     int otherLightCount = GetOtherLightCount();
 
@@ -63,8 +64,13 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
         color += GetLighting(lightData, surface, brdf);
     }
     // UniversalFragmentPBR
+    // float3 worldNormal
 
-    return half4(color, 1);
+    // color.rgb = surface.normal;
+    // color.a = surface.color.a;
+    // color.r = surface.color.a;
+    // return float4(surface.normal, surface.color.r * 100);
+    return float4(color, surface.color.r);
 }
 
 #endif
