@@ -6,12 +6,11 @@ struct Surface_CelPBR
     half3 color;
     float3 pos;
     float3 normal;
-    half metallic;
-    half smoothness;
-    half roughness;
-    half occlusion;
+    float metallic;
+    float smoothness;
+    float roughness;
+    float occlusion;
     float3 viewDirection;
-    float3 halfDirection;
 };
 
 Surface_CelPBR GetSurface(Varyings input)

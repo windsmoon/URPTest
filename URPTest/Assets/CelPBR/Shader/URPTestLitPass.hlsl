@@ -173,8 +173,8 @@ half4 LitPassFragment(Varyings input) : SV_Target
     half4 color = UniversalFragmentPBR(inputData, surfaceData);
     // color.rgb = -inputData.normalWS.rrr < 0.2 ? 0 : 1;
     // color.rgb = MixFog(color.rgb, inputData.fogCoord);
-    color.rgb = inputData.normalWS * float3(-1, 1, 1);
-
+    // color.rgb = inputData.normalWS * float3(-1, 1, 1);
+    // color.rgb = surfaceData.specular;
     color.a = OutputAlpha(color.a, _Surface);
     return color;
 }

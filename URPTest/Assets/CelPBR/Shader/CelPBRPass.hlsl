@@ -81,17 +81,6 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
         TempData_CelPBR tempData = GetTempData(input, surface, lightData);
         color += GetLighting(lightData, surface, brdf, tempData);
     }
-    // 
-    // UniversalFragmentPBR
-    // float3 worldNormal
-
-    // color.rgb = surface.normal;
-    // color.a = surface.color.a;
-    // color.r = surface.color.a;
-    // color.rgb = surface.normal.rrr < 0.2 ? 0 : 1;
-    return float4(surface.normal, surface.color.r * 100);
-
-    return float4(color.rgb, surface.color.r * 100);
 
     return float4(color, 1);
 }
