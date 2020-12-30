@@ -5,11 +5,9 @@ TEXTURE2D(_BaseMap);
 TEXTURE2D(_NormalMap);
 TEXTURE2D(_MaskMap);
 SAMPLER(sampler_BaseMap);
-SAMPLER(sampler_NormalMap);
 
 UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(float4, _BaseMap_ST)
-    UNITY_DEFINE_INSTANCED_PROP(float4, _NormalMap_ST)
     UNITY_DEFINE_INSTANCED_PROP(half4, _BaseColor)
     UNITY_DEFINE_INSTANCED_PROP(float, _NormalScale)
     UNITY_DEFINE_INSTANCED_PROP(half, _MetallicScale)
@@ -36,15 +34,15 @@ float3 GetWorldNormal(Varyings input)
     // return input.normalWS;
     // float4 normalMap = SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, input.baseUV);
 
-    float3 normalTS = SampleNormal(input.normalUV, TEXTURE2D_ARGS(_NormalMap, sampler_NormalMap), INPUT_PROP(_NormalScale));
-
-    // float3 normalTS = UnpackNormalScale(normalUV, INPUT_PROP(_NormalScale));
+    // float3 normalTS = SampleNormal(input.normalUV, TEXTURE2D_ARGS(_NormalMap, sampler_NormalMap), INPUT_PROP(_NormalScale));
+    float4 normalTS = SAMPLE_TEXTURE2D(_NormalMap, sampler_BaseMap, input.baseUV);
+    normalTS.xyz = UnpackNormalScale(normalTS, INPUT_PROP(_NormalScale));
 
     float3 normalWS = SafeNormalize(input.normalWS.xyz);
     float3 tangentWS = SafeNormalize(input.tangentWS.xyz);
     float3 bitangentWS = SafeNormalize(input.bitangentWS.xyz);
-    // float3 bitangentWS = cross(normalWS, tangentWS) * input.tangentWS.w;
-    float3 normal = TransformTangentToWorld(normalTS, half3x3(tangentWS, bitangentWS, normalWS));
+    // float3 normal = TransformTangentToWorld(normalTS, half3x3(tangentWS, bitangentWS, normalWS));
+    float3 normal = mul(normalTS.xyz, float3x3(tangentWS, bitangentWS, normalWS));
     normal = normalize(normal);
     return normal;
 }

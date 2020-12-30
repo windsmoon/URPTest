@@ -4,7 +4,7 @@ Shader "CelPBR/CelPBR"
     {
         _BaseMap("Base Map", 2D) = "white" {}
         _BaseColor ("Base Color", Color) = (1, 1, 1, 1)
-        _NormalMap("Normap Map", 2D) = "bump" {}
+        [NoScaleOffset]_NormalMap("Normap Map", 2D) = "bump" {}
         _NormalScale("Normal Scale", Float) = 1
         [NoScaleOffset]_MaskMap("Mask Map (R:Metallic, G:Occlusion, A:Smoothness)", 2D) = "white" {}
         _MetallicScale("Metallic Scale", Range(0, 1)) = 1

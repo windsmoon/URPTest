@@ -3,11 +3,7 @@
 
 half3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPBR brdf, TempData_CelPBR tempData)
 {
-    // return brdf.debug;
-    // return  brdf.specular;
-    // return 
     return (brdf.diffuse + brdf.specular) * lightData.color * lightData.distanceAttenuation * lightData.shadowAttenuation * tempData.nDotL;
-    // InitializeInputData
 
     float nDotL = saturate(dot(surface.normal, lightData.direction));
     float3 halfVector = normalize(surface.viewDirection + lightData.direction);

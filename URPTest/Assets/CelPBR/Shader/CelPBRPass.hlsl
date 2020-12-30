@@ -22,7 +22,6 @@ struct Varyings
     float3 tangentWS : VAR_TANGENT;
     float3 bitangentWS : VAR_BITANGENT;
     float2 baseUV : VAR_BASE_UV;
-    float2 normalUV : VAR_NORMAL_UV;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
@@ -59,7 +58,6 @@ Varyings CelPBRVert(Attributes input)
     output.tangentWS.xyz = TransformObjectToWorldDir(input.tangentOS.xyz);
     output.bitangentWS = cross(output.normalWS.xyz, output.tangentWS.xyz) * input.tangentOS.w * GetOddNegativeScale();
     output.baseUV = TRANSFORM_TEX(input.baseUV, _BaseMap);
-    output.normalUV = TRANSFORM_TEX(input.baseUV, _NormalMap);
     return output;
 }
 
