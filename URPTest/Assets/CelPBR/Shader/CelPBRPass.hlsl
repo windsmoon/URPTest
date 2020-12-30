@@ -80,6 +80,7 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
         color += GetLighting(lightData, surface, brdf, tempData);
     }
 
+    color += GetEmission(input);
     return float4(color, 1);
 }
 

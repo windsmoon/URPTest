@@ -4,6 +4,8 @@
 TEXTURE2D(_BaseMap);
 TEXTURE2D(_NormalMap);
 TEXTURE2D(_MaskMap);
+TEXTURE2D(_OcclusionMap);
+TEXTURE2D(_EmissionMap);
 SAMPLER(sampler_BaseMap);
 
 UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
@@ -54,17 +56,24 @@ half GetMetallic(Varyings input)
     return metallic;
 }
 
-half GetOcclusion(Varyings input)
-{
-    half occlusion = SAMPLE_TEXTURE2D(_MaskMap, sampler_BaseMap, input.baseUV).g;
-    return occlusion;
-}
-
 half GetSmoothness(Varyings input)
 {
     half smoothness = SAMPLE_TEXTURE2D(_MaskMap, sampler_BaseMap, input.baseUV).a;
     smoothness *= INPUT_PROP(_SmoothnessScale);
     return smoothness;
 }
+
+half GetOcclusion(Varyings input)
+{
+    half occlusion = SAMPLE_TEXTURE2D(_OcclusionMap, sampler_BaseMap, input.baseUV).r;
+    return occlusion;
+}
+
+half3 GetEmission(Varyings input)
+{
+    half3 emission = SAMPLE_TEXTURE2D(_EmissionMap, sampler_BaseMap, input.baseUV).rgb;
+    return emission;
+}
+
 
 #endif

@@ -9,7 +9,10 @@ Shader "CelPBR/CelPBR"
         [NoScaleOffset]_MaskMap("Mask Map (R:Metallic, G:Occlusion, A:Smoothness)", 2D) = "white" {}
         _MetallicScale("Metallic Scale", Range(0, 1)) = 1
         _SmoothnessScale("Smoothness Scale", Range(0, 1)) = 1
-//        _Shinness("Shinness", Range(32, 512)) = 128
+        _OcclusionMap("Occlusion", 2D) = "white" {}
+        _OcclusionStrength("Strength", Range(0.0, 1.0)) = 1.0
+        _EmissionMap("Emission Map", 2D) = "black" {}
+        [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
     }
     
     SubShader
