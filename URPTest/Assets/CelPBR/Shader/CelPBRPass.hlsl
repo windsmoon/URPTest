@@ -19,7 +19,7 @@ struct Varyings
     float4 positionHCS : SV_POSITION;
     float3 positionWS : VAR_POSITION;
     float3 normalWS : VAR_NORMAL;
-    float3 tangentWS : VAR_TANGENT;
+    float4 tangentWS : VAR_TANGENT;
     float3 bitangentWS : VAR_BITANGENT;
     float2 baseUV : VAR_BASE_UV;
     UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -29,8 +29,22 @@ struct Varyings
 #include "Input.hlsl"
 #include "Light.hlsl"
 #include "Surface.hlsl"
+#include "TempData.hlsl"
 #include "BRDF.hlsl"
 #include "Lighting.hlsl"
+
+
+// VertexNormalInputs GetVertexNormalInputs(float3 normalOS, float4 tangentOS)
+// {
+//     VertexNormalInputs tbn;
+//
+//     // mikkts space compliant. only normalize when extracting normal at frag.
+//     real sign = tangentOS.w * GetOddNegativeScale();
+//     tbn.normalWS = TransformObjectToWorldNormal(normalOS);
+//     tbn.tangentWS = TransformObjectToWorldDir(tangentOS.xyz);
+//     tbn.bitangentWS = cross(tbn.normalWS, tbn.tangentWS) * sign;
+//     return tbn;
+// }
 
 Varyings CelPBRVert(Attributes input)
 {
@@ -41,7 +55,8 @@ Varyings CelPBRVert(Attributes input)
     output.positionWS = TransformObjectToWorld(input.positionOS);
     output.positionHCS = TransformWorldToHClip(output.positionWS);
     output.normalWS = TransformObjectToWorldNormal(input.normalOS);
-    output.tangentWS = TransformObjectToWorldDir(input.tangentOS.xyz);
+    output.tangentWS.xyz = TransformObjectToWorldDir(input.tangentOS.xyz);
+    output.tangentWS.w = input.tangentOS.w;
     output.bitangentWS = cross(output.normalWS, output.tangentWS) * input.tangentOS.w * GetOddNegativeScale();
     output.baseUV = TRANSFORM_TEX(input.baseUV, _BaseMap);
     return output;
@@ -53,24 +68,28 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
     
     Surface_CelPBR surface = GetSurface(input);
     LightData_CelPBR mainLightData = GetMainLightData(input);
-    BRDF_CelPBR brdf = GetBRDF(surface, mainLightData);
-    half3 color = GetLighting(mainLightData, surface, brdf);
+    TempData_CelPBR mainTempData = GetTempData(input, surface, mainLightData);
+    BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData);
+    half3 color = GetLighting(mainLightData, surface, brdf, mainTempData);
 
     int otherLightCount = GetOtherLightCount();
-
+    
     for (int i = 0; i < otherLightCount; ++i)
     {
-        LightData_CelPBR lightData = GetOtherLightData(input, i);    
-        color += GetLighting(lightData, surface, brdf);
+        LightData_CelPBR lightData = GetOtherLightData(input, i);
+        TempData_CelPBR tempData = GetTempData(input, surface, lightData);
+        color += GetLighting(lightData, surface, brdf, mainTempData);
     }
+    // 
     // UniversalFragmentPBR
     // float3 worldNormal
 
     // color.rgb = surface.normal;
     // color.a = surface.color.a;
     // color.r = surface.color.a;
-    // return float4(surface.normal, surface.color.r * 100);
-    return float4(color, surface.color.r);
+    // return float4(surface.normal * 0.5 + 0.5, surface.color.r * 100);
+
+    return float4(color, 1);
 }
 
 #endif

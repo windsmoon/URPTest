@@ -25,12 +25,12 @@ half4 GetBaseColor(Varyings input)
 
 float3 GetWorldNormal(Varyings input)
 {
-    // TransformTangentToWorld(normalTS, half3x3(input.tangentWS.xyz, bitangent.xyz, input.normalWS.xyz))
-
-    float3x3 tbnMatrix = {input.tangentWS, input.bitangentWS, input.normalWS};
     float4 normalMap = SAMPLE_TEXTURE2D(_NormalMap, sampler_BaseMap, input.baseUV);
-    float3 normal = UnpackNormalScale(normalMap, INPUT_PROP(_NormalScale));
-    normal = mul(normal, tbnMatrix);
+    float3 normalTS = UnpackNormalScale(normalMap, INPUT_PROP(_NormalScale));
+    float3 normalWS = SafeNormalize(input.normalWS.xyz);
+    float3 tangentWS = SafeNormalize(input.tangentWS.xyz);
+    float3 bitangentWS = cross(normalWS, tangentWS) * input.tangentWS.w;
+    float3 normal = TransformTangentToWorld(normalTS, half3x3(tangentWS, bitangentWS, normalWS));
     return normal;
 }
 

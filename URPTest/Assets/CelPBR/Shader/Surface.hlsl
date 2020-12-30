@@ -24,8 +24,9 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.smoothness = GetSmoothness(input);
     float roughness = PerceptualSmoothnessToPerceptualRoughness(surface.smoothness); // ?? this is come from disney, i do not know why
     surface.roughness = PerceptualRoughnessToRoughness(roughness);
+    // surface.roughness = 1 - surface.smoothness;
     surface.occlusion = GetOcclusion(input);
-    surface.viewDirection = normalize(_WorldSpaceCameraPos - input.positionWS);
+    surface.viewDirection = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
     return surface;
 }
 

@@ -23,8 +23,8 @@ LightData_CelPBR GetMainLightData(Varyings input)
     // directionalLigh
     Light light = GetMainLight(TransformWorldToShadowCoord(input.positionWS));
     LightData_CelPBR lightData;
-    lightData.color = _MainLightColor.xyz;
-    lightData.direction = _MainLightPosition.xyz;
+    lightData.color = light.color;
+    lightData.direction = light.direction;
     lightData.distanceAttenuation = 1;
     lightData.shadowAttenuation = light.shadowAttenuation;
     return lightData;
