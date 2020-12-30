@@ -22,8 +22,9 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.metallic = GetMetallic(input);
     surface.smoothness = GetSmoothness(input);
     float roughness = PerceptualSmoothnessToPerceptualRoughness(surface.smoothness); // ?? this is come from disney, i do not know why
-    surface.roughness = PerceptualRoughnessToRoughness(roughness);
+    surface.roughness = max(PerceptualRoughnessToRoughness(roughness), HALF_MIN_SQRT);
     // surface.roughness = 1 - surface.smoothness;
+    // max(PerceptualRoughnessToRoughness(outBRDFData.perceptualRoughness), HALF_MIN_SQRT);
     surface.occlusion = GetOcclusion(input);
     surface.viewDirection = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
     return surface;
