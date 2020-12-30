@@ -19,9 +19,10 @@ struct Varyings
     float4 positionHCS : SV_POSITION;
     float3 positionWS : VAR_POSITION;
     float3 normalWS : VAR_NORMAL;
-    float4 tangentWS : VAR_TANGENT;
+    float3 tangentWS : VAR_TANGENT;
     float3 bitangentWS : VAR_BITANGENT;
     float2 baseUV : VAR_BASE_UV;
+    float2 normalUV : VAR_NORMAL_UV;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
@@ -56,9 +57,9 @@ Varyings CelPBRVert(Attributes input)
     output.positionHCS = TransformWorldToHClip(output.positionWS);
     output.normalWS = TransformObjectToWorldNormal(input.normalOS);
     output.tangentWS.xyz = TransformObjectToWorldDir(input.tangentOS.xyz);
-    output.tangentWS.w = input.tangentOS.w;
-    output.bitangentWS = cross(output.normalWS, output.tangentWS) * input.tangentOS.w * GetOddNegativeScale();
+    output.bitangentWS = cross(output.normalWS.xyz, output.tangentWS.xyz) * input.tangentOS.w * GetOddNegativeScale();
     output.baseUV = TRANSFORM_TEX(input.baseUV, _BaseMap);
+    output.normalUV = TRANSFORM_TEX(input.baseUV, _NormalMap);
     return output;
 }
 
@@ -78,7 +79,7 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
     {
         LightData_CelPBR lightData = GetOtherLightData(input, i);
         TempData_CelPBR tempData = GetTempData(input, surface, lightData);
-        color += GetLighting(lightData, surface, brdf, mainTempData);
+        color += GetLighting(lightData, surface, brdf, tempData);
     }
     // 
     // UniversalFragmentPBR
@@ -87,7 +88,10 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
     // color.rgb = surface.normal;
     // color.a = surface.color.a;
     // color.r = surface.color.a;
-    // return float4(surface.normal * 0.5 + 0.5, surface.color.r * 100);
+    // color.rgb = surface.normal.rrr < 0.2 ? 0 : 1;
+    return float4(surface.normal, surface.color.r * 100);
+
+    return float4(color.rgb, surface.color.r * 100);
 
     return float4(color, 1);
 }
