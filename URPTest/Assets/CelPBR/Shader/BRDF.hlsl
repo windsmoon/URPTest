@@ -62,40 +62,6 @@ float CaculateGeometryFunction(Surface_CelPBR surface, LightData_CelPBR lightDat
     return gSubView * gSubLight;
 }
 
-
-// half UnityDirectBRDFSpecular(BRDFData brdfData, half3 normalWS, half3 lightDirectionWS, half3 viewDirectionWS)
-// {
-//     float3 halfDir = SafeNormalize(float3(lightDirectionWS) + float3(viewDirectionWS));
-//
-//     float NoH = saturate(dot(normalWS, halfDir));
-//     half LoH = saturate(dot(lightDirectionWS, halfDir));
-//
-//     // GGX Distribution multiplied by combined approximation of Visibility and Fresnel
-//     // BRDFspec = (D * V * F) / 4.0
-//     // D = roughness^2 / ( NoH^2 * (roughness^2 - 1) + 1 )^2
-//     // V * F = 1.0 / ( LoH^2 * (roughness + 0.5) )
-//     // See "Optimizing PBR for Mobile" from Siggraph 2015 moving mobile graphics course
-//     // https://community.arm.com/events/1155
-//
-//     // Final BRDFspec = roughness^2 / ( NoH^2 * (roughness^2 - 1) + 1 )^2 * (LoH^2 * (roughness + 0.5) * 4.0)
-//     // We further optimize a few light invariant terms
-//     // brdfData.normalizationTerm = (roughness + 0.5) * 4.0 rewritten as roughness * 4.0 + 2.0 to a fit a MAD.
-//     float d = NoH * NoH * brdfData.roughness2MinusOne + 1.00001f;
-//
-//     half LoH2 = LoH * LoH;
-//     half specularTerm = brdfData.roughness2 / ((d * d) * max(0.1h, LoH2) * brdfData.normalizationTerm);
-//
-//     // On platforms where half actually means something, the denominator has a risk of overflow
-//     // clamp below was added specifically to "fix" that, but dx compiler (we convert bytecode to metal/gles)
-//     // sees that specularTerm have only non-negative terms, so it skips max(0,..) in clamp (leaving only min(100,...))
-//     #if defined (SHADER_API_MOBILE) || defined (SHADER_API_SWITCH)
-//     specularTerm = specularTerm - HALF_MIN;
-//     specularTerm = clamp(specularTerm, 0.0, 100.0); // Prevent FP16 overflow on mobiles
-//     #endif
-//
-//     return specularTerm;
-// }
-
 float UnityDirectBRDFSpecular(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
 {
     float specularTerm = 0;
