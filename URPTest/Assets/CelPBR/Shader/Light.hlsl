@@ -17,10 +17,6 @@ struct LightData_CelPBR
 
 LightData_CelPBR GetMainLightData(Varyings input)
 {
-    // DirectionalLight_CelPBR directionalLight;
-    // directionalLight.color = _MainLightColor.xyz;
-    // directionalLight.direction = _MainLightPosition.xyz;
-    // directionalLigh
     Light light = GetMainLight(TransformWorldToShadowCoord(input.positionWS));
     LightData_CelPBR lightData;
     lightData.color = light.color;
