@@ -8,23 +8,6 @@ struct BRDF_CelPBR
     half3 debug;
 };
 
-
-// float DistributionGGX(vec3 N, vec3 H, float a)
-// {
-//     float a2     = a*a;
-//     float NdotH  = max(dot(N, H), 0.0);
-//     float NdotH2 = NdotH*NdotH;
-// 	
-//     float nom    = a2;
-//     float denom  = (NdotH2 * (a2 - 1.0) + 1.0);
-//     denom        = PI * denom * denom;
-// 	
-//     return nom / denom;
-// }
-
-
-
-
 // D = Normal Distribution Function
 // use Trowbridge-Reitz GGX
 float CaculateNormalDistributionFunction(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
@@ -83,7 +66,8 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     brdf.diffuse = surface.color * kd;
     float3 ks = lerp(kDieletricSpec.rgb, surface.color, surface.metallic);
     brdf.specular = ks * UnityDirectBRDFSpecular(surface, lightData, tempData);
-
+    
+    
     // float d = CaculateNormalDistributionFunction(surface, lightData, tempData);
     // float3 f = CaculateFresnelEquation(surface, lightData, tempData);
     // float g = CaculateGeometryFunction(surface, lightData, tempData);
