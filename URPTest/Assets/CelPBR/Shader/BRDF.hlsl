@@ -3,9 +3,18 @@
 
 struct BRDF_CelPBR
 {
-    half3 diffuse;
-    half3 specular;
-    half3 debug;
+    real3 diffuse;
+    real3 specular;
+    real reflectivity;
+    real perceptualRoughness;
+    real roughness;
+    real roughness2;
+    real grazingTerm;
+
+    // We save some light invariant BRDF terms so we don't have to recompute
+    // them in the light loop. Take a look at DirectBRDF function for detailed explaination.
+    real normalizationTerm;     // roughness * 4.0 + 2.0
+    real roughness2MinusOne;    // roughness^2 - 1.0
 };
 
 // D = Normal Distribution Function
@@ -26,7 +35,7 @@ float CaculateNormalDistributionFunction(Surface_CelPBR surface, LightData_CelPB
 float3 CaculateFresnelEquation(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
 {
     float3 f0 = lerp(0.04, surface.color, surface.metallic); // 0.04 is the average base refelction rate of dielectric
-    return f0 + (1 - f0) * pow(1 - tempData.nDotV, 5);
+    return f0 + (1 - f0) * pow(1 - surface.nDotV, 5);
 }
 
 float CaculateGeometrySchlickGGX(half nDot, float k)
@@ -40,7 +49,7 @@ float CaculateGeometrySchlickGGX(half nDot, float k)
 float CaculateGeometryFunction(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
 {
     float k = pow(surface.roughness + 1, 2) / 8;
-    float gSubView = CaculateGeometrySchlickGGX(tempData.nDotV, k);
+    float gSubView = CaculateGeometrySchlickGGX(surface.nDotV, k);
     float gSubLight = CaculateGeometrySchlickGGX(tempData.nDotL, k);
     return gSubView * gSubLight;
 }

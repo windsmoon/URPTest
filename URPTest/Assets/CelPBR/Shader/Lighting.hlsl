@@ -1,7 +1,7 @@
 #ifndef CEL_PBR_LIGHTING
 #define CEL_PBR_LIGHTING
 
-half3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPBR brdf, TempData_CelPBR tempData)
+real3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPBR brdf, TempData_CelPBR tempData)
 {
     return (brdf.diffuse + brdf.specular) * lightData.color * lightData.distanceAttenuation * lightData.shadowAttenuation * tempData.nDotL;
 

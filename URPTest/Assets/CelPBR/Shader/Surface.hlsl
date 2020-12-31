@@ -3,15 +3,16 @@
 
 struct Surface_CelPBR
 {
-    half3 color;
-    float3 pos;
-    float3 normal;
-    float metallic;
-    float smoothness;
-    float roughness;
-    float perceptualRoughness;
-    float occlusion;
-    float3 viewDirection;
+    real3 color;
+    real3 pos;
+    real3 normal;
+    real metallic;
+    real smoothness;
+    real roughness;
+    real perceptualRoughness;
+    real occlusion;
+    real3 viewDirection;
+    real nDotV;
 };
 
 Surface_CelPBR GetSurface(Varyings input)
@@ -26,6 +27,7 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.roughness = max(PerceptualRoughnessToRoughness(surface.perceptualRoughness), HALF_MIN_SQRT);
     surface.occlusion = GetOcclusion(input);
     surface.viewDirection = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
+    surface.nDotV = max(dot(surface.normal, surface.viewDirection), 0.0);
     return surface;
 }
 

@@ -3,13 +3,12 @@
 
 struct TempData_CelPBR
 {
-    float3 halfDirection;
-    float nDotH;
-    float nDotL;
-    float nDotV;
-    float lDotH;
-    float lightReflectionDirection;
-    float viewReflectionDirection;
+    real3 halfDirection;
+    real nDotH;
+    real nDotL;
+    real lDotH;
+    float3 lightReflectionDirection;
+    float3 viewReflectionDirection;
 };
 
 TempData_CelPBR GetTempData(Varyings input, Surface_CelPBR surface, LightData_CelPBR lightData)
@@ -18,7 +17,6 @@ TempData_CelPBR GetTempData(Varyings input, Surface_CelPBR surface, LightData_Ce
     tempData.halfDirection = SafeNormalize(surface.viewDirection + lightData.direction);
     tempData.nDotH = max(dot(surface.normal, tempData.halfDirection), 0.0);
     tempData.nDotL = max(dot(surface.normal, lightData.direction), 0.0);
-    tempData.nDotV = max(dot(surface.normal, surface.viewDirection), 0.0);
     tempData.lDotH = max(dot(lightData.direction, tempData.halfDirection), 0.0);
     tempData.lightReflectionDirection = reflect(-lightData.direction, surface.normal);
     tempData.viewReflectionDirection = reflect(-surface.viewDirection, surface.normal);

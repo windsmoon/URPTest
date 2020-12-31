@@ -35,7 +35,7 @@ GI_CelPBR GetGI(Surface_CelPBR surface, BRDF_CelPBR brdf, TempData_CelPBR tempDa
     
     GI_CelPBR gi;
     float diffuse = surface.occlusion; // todo multiply the baked gi
-    float fresnelTerm = Pow4(1.0 - tempData.nDotV);
+    float fresnelTerm = Pow4(1.0 - surface.nDotV);
     float specular = GlossyEnvironmentReflection(tempData.viewReflectionDirection, surface.perceptualRoughness, surface.occlusion);
 
     // from EnvironmentBRDF(...)
