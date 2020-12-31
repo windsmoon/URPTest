@@ -31,8 +31,8 @@ struct Varyings
 #include "Surface.hlsl"
 #include "TempData.hlsl"
 #include "BRDF.hlsl"
+#include "GI.hlsl"
 #include "Lighting.hlsl"
-
 
 // VertexNormalInputs GetVertexNormalInputs(float3 normalOS, float4 tangentOS)
 // {
@@ -69,7 +69,8 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
     LightData_CelPBR mainLightData = GetMainLightData(input);
     TempData_CelPBR mainTempData = GetTempData(input, surface, mainLightData);
     BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData);
-    half3 color = GetLighting(mainLightData, surface, brdf, mainTempData);
+    GI_CelPBR gi = GetGI(surface, brdf, mainTempData);
+    half3 color = GetLighting(mainLightData, surface, brdf, gi, mainTempData);
 
     int otherLightCount = GetOtherLightCount();
     

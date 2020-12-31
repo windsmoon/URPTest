@@ -9,6 +9,7 @@ struct Surface_CelPBR
     float metallic;
     float smoothness;
     float roughness;
+    float perceptualRoughness;
     float occlusion;
     float3 viewDirection;
 };
@@ -21,8 +22,8 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.normal = GetWorldNormal(input);
     surface.metallic = GetMetallic(input);
     surface.smoothness = GetSmoothness(input);
-    float roughness = PerceptualSmoothnessToPerceptualRoughness(surface.smoothness); // ?? this is come from disney, i do not know why
-    surface.roughness = max(PerceptualRoughnessToRoughness(roughness), HALF_MIN_SQRT);
+    surface.perceptualRoughness = PerceptualSmoothnessToPerceptualRoughness(surface.smoothness); // ?? this is come from disney, i do not know why
+    surface.roughness = max(PerceptualRoughnessToRoughness(surface.perceptualRoughness), HALF_MIN_SQRT);
     surface.occlusion = GetOcclusion(input);
     surface.viewDirection = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
     return surface;
