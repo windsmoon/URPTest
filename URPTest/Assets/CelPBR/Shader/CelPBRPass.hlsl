@@ -70,7 +70,7 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
     TempData_CelPBR mainTempData = GetTempData(input, surface, mainLightData);
     BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData);
     GI_CelPBR gi = GetGI(surface, brdf, mainTempData);
-    half3 color = GetLighting(mainLightData, surface, brdf, gi, mainTempData);
+    half3 color = GetLighting(mainLightData, surface, brdf, mainTempData);
 
     int otherLightCount = GetOtherLightCount();
     
@@ -82,6 +82,8 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
     }
 
     color += GetEmission(input);
+    // color += gi.diffuseColor + gi.specularColor;
+    // color = gi.specularColor;
     return float4(color, 1);
 }
 

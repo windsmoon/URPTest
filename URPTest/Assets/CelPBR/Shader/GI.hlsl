@@ -19,6 +19,20 @@ GI_CelPBR GetGI(Surface_CelPBR surface, BRDF_CelPBR brdf, TempData_CelPBR tempDa
     // half3 color = EnvironmentBRDF(brdfData, indirectDiffuse, indirectSpecular, fresnelTerm);
     //
 
+    // half3 EnvironmentBRDF(BRDFData brdfData, half3 indirectDiffuse, half3 indirectSpecular, half fresnelTerm)
+    // {
+    //     half3 c = indirectDiffuse * brdfData.diffuse;
+    //     c += indirectSpecular * EnvironmentBRDFSpecular(brdfData, fresnelTerm);
+    //     return c;
+    // }
+
+    // // Computes the specular term for EnvironmentBRDF
+    // half3 EnvironmentBRDFSpecular(BRDFData brdfData, half fresnelTerm)
+    // {
+    //     float surfaceReduction = 1.0 / (brdfData.roughness2 + 1.0);
+    //     return surfaceReduction * lerp(brdfData.specular, brdfData.grazingTerm, fresnelTerm);
+    // }
+    
     GI_CelPBR gi;
     float diffuse = surface.occlusion; // todo multiply the baked gi
     float fresnelTerm = Pow4(1.0 - tempData.nDotV);
