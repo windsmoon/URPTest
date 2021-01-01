@@ -1,9 +1,11 @@
 ﻿#ifndef CEL_PRB_PASS
 #define CEL_PBR_PASS
 
+#define _NORMALMAP
+
 // #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl"
 // #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl" 
+// #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl" 
 
 #include "URPTestLighting.hlsl" 
 
@@ -13,6 +15,7 @@ struct Attributes
     float3 normalOS : NORMAL;
     float4 tangentOS : TANGENT;
     float2 baseUV : TEXCOORD0;
+    float2 lightmapUV : TEXCOORD1;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
@@ -24,6 +27,7 @@ struct Varyings
     float3 tangentWS : VAR_TANGENT;
     float3 bitangentWS : VAR_BITANGENT;
     float2 baseUV : VAR_BASE_UV;
+    DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 1);
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
@@ -48,6 +52,7 @@ Varyings CelPBRVert(Attributes input)
     output.tangentWS.xyz = TransformObjectToWorldDir(input.tangentOS.xyz);
     output.bitangentWS = cross(output.normalWS.xyz, output.tangentWS.xyz) * input.tangentOS.w * GetOddNegativeScale();
     output.baseUV = TRANSFORM_TEX(input.baseUV, _BaseMap);
+    OUTPUT_LIGHTMAP_UV(input.lightmapUV, unity_LightmapST, output.lightmapUV)
     return output;
 }
 
@@ -59,8 +64,9 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     LightData_CelPBR mainLightData = GetMainLightData(input);
     TempData_CelPBR mainTempData = GetTempData(input, surface, mainLightData);
     BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData);
-    GI_CelPBR gi = GetGI(brdf, surface, mainTempData);
-    real3 color = GetLighting(mainLightData, surface, brdf, mainTempData);
+    GI_CelPBR gi = GetGI(input, brdf, surface, mainTempData);
+    real3 color = gi.color;
+    color += GetLighting(mainLightData, surface, brdf, mainTempData);
 
     int otherLightCount = GetOtherLightCount();
     
@@ -72,6 +78,8 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     }
 
     color += GetEmission(input);
+    // color = gi.color;
+    // color.rgb = color.rgb < 0.8 ? 0 : 1;
     return real4(color, 1);
 }
 

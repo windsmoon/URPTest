@@ -3,11 +3,10 @@
 
 struct GI_CelPBR
 {
-    half3 diffuseColor;
-    half3 specularColor;
+    real3 color;
 };
 
-GI_CelPBR GetGI(BRDF_CelPBR brdf, Surface_CelPBR surface, TempData_CelPBR tempData)
+GI_CelPBR GetGI(Varyings input, BRDF_CelPBR brdf, Surface_CelPBR surface, TempData_CelPBR tempData)
 {
     // GI_CelPBR gi;
     // float diffuse = surface.occlusion; // todo multiply the baked gi
@@ -24,9 +23,14 @@ GI_CelPBR GetGI(BRDF_CelPBR brdf, Surface_CelPBR surface, TempData_CelPBR tempDa
     // gi.specularColor = specular * surfaceReduction * lerp(brdf.specular, saturate(surface.smoothness + reflectivity), fresnelTerm);
     // return gi;
 
+    real3 bakedGI = SAMPLE_GI(input.lightmapUV, input.vertexSH, surface.normal);
     GI_CelPBR gi;
-    gi.diffuseColor = 0;
-    gi.specularColor = 0;
+    real3 indirectDiffuse = surface.occlusion * bakedGI;
+    real3 indirectSpecular = GlossyEnvironmentReflection(tempData.viewReflectionDirection, brdf.perceptualRoughness, surface.occlusion);
+    real fresnelTerm = Pow4(1.0 - tempData.nDotV);
+    BRDFData brdfData = ConvertToBRDFData(brdf);
+    real3 giColor = EnvironmentBRDF(brdfData, indirectDiffuse, indirectSpecular, fresnelTerm);
+    gi.color = giColor;
     return gi;
 }
 
