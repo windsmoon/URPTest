@@ -10,7 +10,7 @@ Shader "CelPBR/CelPBR"
         _MetallicScale("Metallic Scale", Range(0, 1)) = 1
         _SmoothnessScale("Smoothness Scale", Range(0, 1)) = 1
         _OcclusionMap("Occlusion", 2D) = "white" {}
-        _OcclusionStrength("Strength", Range(0.0, 1.0)) = 1.0
+        _OcclusionScale("Strength", Range(0.0, 1.0)) = 1.0
         _EmissionMap("Emission Map", 2D) = "black" {}
         [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
     }
