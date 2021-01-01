@@ -1,19 +1,38 @@
 #ifndef Light_Cel_PBR
 #define Light_Cel_PBR
 
-struct DirectionalLight_CelPBR
-{
-    half3 color;
-    float3 direction;
-};
+// struct DirectionalLight_CelPBR
+// {
+//     half3 color;
+//     float3 direction;
+// };
 
 struct LightData_CelPBR
 {
-    half3 color;
-    float3 direction;
-    float distanceAttenuation;
-    float shadowAttenuation;
+    real3 color;
+    real3 direction;
+    real distanceAttenuation;
+    real shadowAttenuation;
 };
+
+// struct Light
+// {
+//     half3   direction;
+//     half3   color;
+//     half    distanceAttenuation;
+//     half    shadowAttenuation;
+// };
+
+
+Light ConvertToUnityLight(LightData_CelPBR lightData)
+{
+    Light unityLight;
+    unityLight.color = lightData.color;
+    unityLight.direction = lightData.direction;
+    unityLight.distanceAttenuation = lightData.distanceAttenuation;
+    unityLight.shadowAttenuation = lightData.shadowAttenuation;
+    return unityLight;
+}
 
 LightData_CelPBR GetMainLightData(Varyings input)
 {

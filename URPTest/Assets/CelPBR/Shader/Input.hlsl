@@ -65,7 +65,7 @@ half GetSmoothness(Varyings input)
 
 half GetOcclusion(Varyings input)
 {
-    half occlusion = SAMPLE_TEXTURE2D(_OcclusionMap, sampler_BaseMap, input.baseUV).r;
+    half occlusion = SAMPLE_TEXTURE2D(_OcclusionMap, sampler_BaseMap, input.baseUV).g;
     return occlusion;
 }
 

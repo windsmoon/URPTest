@@ -1,7 +1,7 @@
 ﻿#ifndef UNIVERSAL_FORWARD_LIT_PASS_INCLUDED
 #define UNIVERSAL_FORWARD_LIT_PASS_INCLUDED
 
-#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+#include "URPTestLighting.hlsl"
 
 // GLES2 has limited amount of interpolators
 #if defined(_PARALLAXMAP) && !defined(SHADER_API_GLES)
@@ -175,6 +175,9 @@ half4 LitPassFragment(Varyings input) : SV_Target
     // color.rgb = MixFog(color.rgb, inputData.fogCoord);
     // color.rgb = inputData.normalWS * float3(-1, 1, 1);
     // color.rgb = surfaceData.specular;
+    // color = color < 0.5 ? 0 : 1;
+    // color.rgb = color.rrr;
+    // color.rgb = surfaceData.albedo;
     color.a = OutputAlpha(color.a, _Surface);
     return color;
 }

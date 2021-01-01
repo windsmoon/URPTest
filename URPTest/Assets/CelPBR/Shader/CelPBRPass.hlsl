@@ -2,8 +2,10 @@
 #define CEL_PBR_PASS
 
 // #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl"
-#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+// #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl" 
+
+#include "URPTestLighting.hlsl" 
 
 struct Attributes
 {
@@ -34,18 +36,6 @@ struct Varyings
 #include "GI.hlsl"
 #include "Lighting.hlsl"
 
-// VertexNormalInputs GetVertexNormalInputs(float3 normalOS, float4 tangentOS)
-// {
-//     VertexNormalInputs tbn;
-//
-//     // mikkts space compliant. only normalize when extracting normal at frag.
-//     real sign = tangentOS.w * GetOddNegativeScale();
-//     tbn.normalWS = TransformObjectToWorldNormal(normalOS);
-//     tbn.tangentWS = TransformObjectToWorldDir(tangentOS.xyz);
-//     tbn.bitangentWS = cross(tbn.normalWS, tbn.tangentWS) * sign;
-//     return tbn;
-// }
-
 Varyings CelPBRVert(Attributes input)
 {
     Varyings output;
@@ -61,7 +51,7 @@ Varyings CelPBRVert(Attributes input)
     return output;
 }
 
-float4 CelPBRFrag(Varyings input) : SV_TARGET
+real4 CelPBRFrag(Varyings input) : SV_TARGET
 {
     UNITY_SETUP_INSTANCE_ID(input);
     
@@ -69,8 +59,8 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
     LightData_CelPBR mainLightData = GetMainLightData(input);
     TempData_CelPBR mainTempData = GetTempData(input, surface, mainLightData);
     BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData);
-    GI_CelPBR gi = GetGI(surface, brdf, mainTempData);
-    half3 color = GetLighting(mainLightData, surface, brdf, mainTempData);
+    GI_CelPBR gi = GetGI(brdf, surface, mainTempData);
+    real3 color = GetLighting(mainLightData, surface, brdf, mainTempData);
 
     int otherLightCount = GetOtherLightCount();
     
@@ -82,9 +72,7 @@ float4 CelPBRFrag(Varyings input) : SV_TARGET
     }
 
     color += GetEmission(input);
-    // color += gi.diffuseColor + gi.specularColor;
-    // color = gi.specularColor;
-    return float4(color, 1);
+    return real4(color, 1);
 }
 
 #endif

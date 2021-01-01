@@ -5,62 +5,91 @@ struct BRDF_CelPBR
 {
     real3 diffuse;
     real3 specular;
-    real reflectivity;
+
     real perceptualRoughness;
     real roughness;
     real roughness2;
+    real oneMinusReflectivity;
+    real reflectivity;
     real grazingTerm;
-
     // We save some light invariant BRDF terms so we don't have to recompute
     // them in the light loop. Take a look at DirectBRDF function for detailed explaination.
     real normalizationTerm;     // roughness * 4.0 + 2.0
     real roughness2MinusOne;    // roughness^2 - 1.0
 };
 
-// D = Normal Distribution Function
-// use Trowbridge-Reitz GGX
-float CaculateNormalDistributionFunction(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
+BRDFData ConvertToBRDFData(BRDF_CelPBR brdf)
 {
-    float roughness2 = surface.roughness * surface.roughness;
-    float nDotH2 = tempData.nDotH * tempData.nDotH;
-    float denom = nDotH2 * (roughness2 - 1) + 1; // todo
-    denom *= denom;
-    denom *= PI;
-    return roughness2 / max(denom, FLT_MIN);
+    BRDFData brdfData;
+    brdfData.diffuse = brdf.diffuse;
+    brdfData.specular = brdf.specular;
+    brdfData.reflectivity = brdf.reflectivity;
+    brdfData.perceptualRoughness = brdf.perceptualRoughness;
+    brdfData.roughness = brdf.roughness;
+    brdfData.roughness2 = brdf.roughness2;
+    brdfData.grazingTerm = brdf.grazingTerm;
+    brdfData.normalizationTerm = brdf.normalizationTerm;
+    brdfData.roughness2MinusOne = brdf.roughness2MinusOne;
+    return brdfData;
 }
 
-// F = Fresnel Equation
-// use Fresnel-Schlick
-// F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
-float3 CaculateFresnelEquation(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
-{
-    float3 f0 = lerp(0.04, surface.color, surface.metallic); // 0.04 is the average base refelction rate of dielectric
-    return f0 + (1 - f0) * pow(1 - surface.nDotV, 5);
-}
 
-float CaculateGeometrySchlickGGX(half nDot, float k)
-{
-    half denom = nDot * (1 - k) + k;
-    return nDot / denom;
-}
+// // D = Normal Distribution Function
+// // use Trowbridge-Reitz GGX
+// float CaculateNormalDistributionFunction(BRDF_CelPBR brdf, Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
+// {
+//     float roughness2 = brdf.roughness * brdf.roughness;
+//     float nDotH2 = tempData.nDotH * tempData.nDotH;
+//     float denom = nDotH2 * (roughness2 - 1) + 1; // todo
+//     denom *= denom;
+//     denom *= PI;
+//     return roughness2 / max(denom, FLT_MIN);
+// }
+//
+// // F = Fresnel Equation
+// // use Fresnel-Schlick
+// // F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+// float3 CaculateFresnelEquation(BRDF_CelPBR brdf, Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
+// {
+//     float3 f0 = lerp(0.04, surface.color, surface.metallic); // 0.04 is the average base refelction rate of dielectric
+//     return f0 + (1 - f0) * pow(1 - tempData.nDotV, 5);
+// }
+//
+// float CaculateGeometrySchlickGGX(half nDot, float k)
+// {
+//     half denom = nDot * (1 - k) + k;
+//     return nDot / denom;
+// }
+//
+// // G = Geometry Function
+// // use SchlickGGX
+// float CaculateGeometryFunction(BRDF_CelPBR brdf, Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
+// {
+//     float k = pow(brdf.roughness + 1, 2) / 8;
+//     float gSubView = CaculateGeometrySchlickGGX(tempData.nDotV, k);
+//     float gSubLight = CaculateGeometrySchlickGGX(tempData.nDotL, k);
+//     return gSubView * gSubLight;
+// }
+//
 
-// G = Geometry Function
-// use SchlickGGX
-float CaculateGeometryFunction(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
+// reference to DirectBRDFSpecular
+float UnityDirectBRDFSpecular(BRDF_CelPBR brdf, Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
 {
-    float k = pow(surface.roughness + 1, 2) / 8;
-    float gSubView = CaculateGeometrySchlickGGX(surface.nDotV, k);
-    float gSubLight = CaculateGeometrySchlickGGX(tempData.nDotL, k);
-    return gSubView * gSubLight;
-}
+    real3 halfDirection = tempData.halfDirection;
+    real nDotH = tempData.nDotH;
+    real lDotH = tempData.lDotH;
+    real d = nDotH * nDotH * brdf.roughness2MinusOne + 1.00001h;
+    real lDotH2 = lDotH * lDotH;
+    real specularTerm = brdf.roughness2 / ((d * d) * max(0.1h, lDotH2) * brdf.normalizationTerm);
 
-float UnityDirectBRDFSpecular(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
-{
-    float specularTerm = 0;
-    float roughness2 = pow(surface.roughness, 2);
-    float d = pow(tempData.nDotH, 2) * (roughness2 - 1) + 1.00001f;
-    float lDotH2 = pow(tempData.lDotH, 2);
-    specularTerm = roughness2 / ((d * d) * max(0.1, lDotH2) * (surface.roughness * 4 + 2));
+    // On platforms where half actually means something, the denominator has a risk of overflow
+    // clamp below was added specifically to "fix" that, but dx compiler (we convert bytecode to metal/gles)
+    // sees that specularTerm have only non-negative terms, so it skips max(0,..) in clamp (leaving only min(100,...))
+    #if defined (SHADER_API_MOBILE) || defined (SHADER_API_SWITCH)
+        specularTerm = specularTerm - HALF_MIN;
+        specularTerm = clamp(specularTerm, 0.0, 100.0); // Prevent FP16 overflow on mobiles
+    #endif
+
     return specularTerm;
 }
 
@@ -69,12 +98,22 @@ float UnityDirectBRDFSpecular(Surface_CelPBR surface, LightData_CelPBR lightData
 // cook-torrance = DFG/(4 * (wo * n) * (wi * n))
 BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
 {
+    // half oneMinusReflectivity = OneMinusReflectivityMetallic(metallic);
+    // half reflectivity = 1.0 - oneMinusReflectivity;
     BRDF_CelPBR brdf;
-
-    float kd = OneMinusReflectivityMetallic(surface.metallic);
+    brdf.perceptualRoughness = PerceptualSmoothnessToPerceptualRoughness(surface.smoothness); // ?? this is come from disney, i do not know why
+    brdf.roughness = max(PerceptualRoughnessToRoughness(brdf.perceptualRoughness), HALF_MIN_SQRT);
+    brdf.roughness2 = max(brdf.roughness * brdf.roughness, HALF_MIN);
+    float oneMinusReflectivity = OneMinusReflectivityMetallic(surface.metallic);
+    brdf.reflectivity = 1.0h - oneMinusReflectivity;
+    brdf.grazingTerm = saturate(surface.smoothness + brdf.reflectivity);
+    brdf.normalizationTerm = brdf.roughness * 4.0h + 2.0h;
+    brdf.roughness2MinusOne = brdf.roughness2 - 1.0h;
+    
+    float kd = oneMinusReflectivity;
     brdf.diffuse = surface.color * kd;
     float3 ks = lerp(kDieletricSpec.rgb, surface.color, surface.metallic);
-    brdf.specular = ks * UnityDirectBRDFSpecular(surface, lightData, tempData);
+    brdf.specular = ks * UnityDirectBRDFSpecular(brdf, surface, lightData, tempData);
     
     
     // float d = CaculateNormalDistributionFunction(surface, lightData, tempData);
