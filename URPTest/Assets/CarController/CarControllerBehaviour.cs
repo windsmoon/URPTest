@@ -42,7 +42,7 @@ namespace CarController
         private void LateUpdate()
         {
             Vector3 backward = -transform.forward;
-            cameraTargetPos = transform.position + new Vector3(0, 4, 5 * backward.z);
+            cameraTargetPos = transform.position + new Vector3(0, 2, 2 * backward.z);
             Vector3 posOffset = cameraTargetPos - camera.transform.position;
             Vector3 currentCameraSpeed = posOffset / cameraMoveTime;
             camera.transform.position = camera.transform.position + currentCameraSpeed * Time.deltaTime; 
