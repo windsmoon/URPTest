@@ -59,9 +59,9 @@ Shader "CelPBR/CelPBR"
 
             // -------------------------------------
             // Unity defined keywords
-            // #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            // #pragma multi_compile _ LIGHTMAP_ON
-            // #pragma multi_compile_fog
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
 
             //--------------------------------------
             // GPU Instancing
@@ -71,6 +71,8 @@ Shader "CelPBR/CelPBR"
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag
             #define _NORMALMAP
+            #define _METALLICSPECGLOSSMAP
+            #define _OCCLUSIONMAP
 
             #include "CelPBRPass.hlsl"
             ENDHLSL
