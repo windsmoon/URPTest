@@ -10,6 +10,7 @@ struct Surface_CelPBR
     real metallic;
     real smoothness;
     real occlusion;
+    real3 emission;
     // real perceptualRoughness;
     // real roughness;
     // real roughness2;
@@ -36,6 +37,7 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.metallic = GetMetallic(input);
     surface.smoothness = GetSmoothness(input);
     surface.occlusion = GetOcclusion(input);
+    surface.emission = GetEmission(input);
     return surface;
 }
 

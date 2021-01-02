@@ -1,8 +1,6 @@
 ﻿#ifndef CEL_PRB_PASS
 #define CEL_PBR_PASS
 
-#define _NORMALMAP
-
 // #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl"
 // #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl" 
@@ -69,7 +67,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     // gi.color = gi.color.bbb;
     // return float4(gi.color, surface.color.r);
     real3 color = gi.color;
-    color += GetEmission(input);
+    color += surface.emission;
     color += GetLighting(mainLightData, surface, brdf, mainTempData);
 
     int otherLightCount = GetOtherLightCount();

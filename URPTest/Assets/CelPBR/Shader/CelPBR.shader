@@ -13,17 +13,19 @@ Shader "CelPBR/CelPBR"
         _OcclusionScale("Strength", Range(0.0, 1.0)) = 1.0
         _EmissionMap("Emission Map", 2D) = "black" {}
         [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
+        [HideInInspector] _SrcBlend("_SrcBlend", Float) = 1.0
+        [HideInInspector] _DstBlend("_DstBlend", Float) = 0.0
     }
     
     SubShader
     {
-        Tags { "RenderType"="Opaque" "RenderPipeline" = "UniversalPipeline"}
+        Tags { "RenderPipeline" = "UniversalPipeline"}
         
         Pass
         {
             Tags{"LightMode" = "UniversalForward"}
 //
-//            Blend[_SrcBlend][_DstBlend]
+            Blend[_SrcBlend][_DstBlend]
 //            ZWrite[_ZWrite]
 //            Cull[_Cull]
 
@@ -68,6 +70,7 @@ Shader "CelPBR/CelPBR"
             
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag
+            #define _NORMALMAP
 
             #include "CelPBRPass.hlsl"
             ENDHLSL
@@ -97,5 +100,33 @@ Shader "CelPBR/CelPBR"
             #include "ShadowCasterPass.hlsl"
             ENDHLSL
         }
+        
+        Pass
+        {
+            Name "Meta"
+            Tags{"LightMode" = "Meta"}
+
+            Cull Off
+
+            HLSLPROGRAM
+            #pragma vertex UniversalVertexMeta
+            #pragma fragment UniversalFragmentMeta
+
+            #pragma shader_feature_local_fragment _SPECULAR_SETUP
+            #pragma shader_feature_local_fragment _EMISSION
+            #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
+            #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
+
+            #pragma shader_feature_local_fragment _SPECGLOSSMAP
+
+            // #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
+            #include "MetaPass.hlsl"
+
+            ENDHLSL
+        }
     }
+    
+    CustomEditor "CelPBR.Editor.CelPBRShaderGUI"
 }
