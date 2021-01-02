@@ -4,6 +4,7 @@
 struct Surface_CelPBR
 {
     real3 color;
+    real alpha;
     real3 pos;
     real3 normal;
     real metallic;
@@ -29,6 +30,7 @@ Surface_CelPBR GetSurface(Varyings input)
 {
     Surface_CelPBR surface;
     surface.color = GetBaseColor(input).rgb;
+    surface.alpha = GetBaseColor(input).a;
     surface.pos = input.positionWS;
     surface.normal = GetWorldNormal(input);
     surface.metallic = GetMetallic(input);

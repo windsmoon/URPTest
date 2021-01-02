@@ -21,7 +21,13 @@ Shader "CelPBR/CelPBR"
         
         Pass
         {
-            HLSLPROGRAM
+            Tags{"LightMode" = "UniversalForward"}
+//
+//            Blend[_SrcBlend][_DstBlend]
+//            ZWrite[_ZWrite]
+//            Cull[_Cull]
+
+                        HLSLPROGRAM
             // -------------------------------------
             // Material Keywords
             // #pragma shader_feature_local _NORMALMAP

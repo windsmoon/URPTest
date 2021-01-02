@@ -14,8 +14,8 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(float, _NormalScale)
     UNITY_DEFINE_INSTANCED_PROP(half, _MetallicScale)
     UNITY_DEFINE_INSTANCED_PROP(half, _SmoothnessScale)
-    UNITY_DEFINE_INSTANCED_PROP(real, _OcclusionScale);
-    UNITY_DEFINE_INSTANCED_PROP(real4, _EmissionColor);
+    UNITY_DEFINE_INSTANCED_PROP(real, _OcclusionScale)
+    UNITY_DEFINE_INSTANCED_PROP(real4, _EmissionColor)
 UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 #define INPUT_PROP(name) UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, name)
@@ -68,8 +68,8 @@ half GetSmoothness(Varyings input)
 half GetOcclusion(Varyings input)
 {
     half occlusion = SAMPLE_TEXTURE2D(_OcclusionMap, sampler_BaseMap, input.baseUV).g;
-    occlusion *= INPUT_PROP(_OcclusionScale);
-    return occlusion;
+    // occlusion *= INPUT_PROP(_OcclusionScale);
+    return LerpWhiteTo(occlusion, INPUT_PROP(_OcclusionScale));
 }
 
 half3 GetEmission(Varyings input)

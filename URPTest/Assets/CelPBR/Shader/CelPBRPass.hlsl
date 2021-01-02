@@ -5,9 +5,9 @@
 
 // #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl"
 // #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-// #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl" 
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl" 
 
-#include "URPTestLighting.hlsl" 
+// #include "URPTestLighting.hlsl" 
 
 struct Attributes
 {
@@ -40,6 +40,7 @@ struct Varyings
 #include "GI.hlsl"
 #include "Lighting.hlsl"
 
+
 Varyings CelPBRVert(Attributes input)
 {
     Varyings output;
@@ -65,7 +66,10 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     TempData_CelPBR mainTempData = GetTempData(input, surface, mainLightData);
     BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData);
     GI_CelPBR gi = GetGI(input, brdf, surface, mainTempData);
+    // gi.color = gi.color.bbb;
+    // return float4(gi.color, surface.color.r);
     real3 color = gi.color;
+    color += GetEmission(input);
     color += GetLighting(mainLightData, surface, brdf, mainTempData);
 
     int otherLightCount = GetOtherLightCount();
@@ -77,9 +81,6 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
         color += GetLighting(lightData, surface, brdf, tempData);
     }
 
-    color += GetEmission(input);
-    // color = gi.color;
-    // color.rgb = color.rgb < 0.8 ? 0 : 1;
     return real4(color, 1);
 }
 
