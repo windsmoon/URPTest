@@ -103,31 +103,33 @@ Shader "CelPBR/CelPBR"
             ENDHLSL
         }
         
-        Pass
-        {
-            Name "Meta"
-            Tags{"LightMode" = "Meta"}
+        UsePass "Universal Render Pipeline/Lit/Meta"
 
-            Cull Off
-
-            HLSLPROGRAM
-            #pragma vertex UniversalVertexMeta
-            #pragma fragment UniversalFragmentMeta
-
-            #pragma shader_feature_local_fragment _SPECULAR_SETUP
-            #pragma shader_feature_local_fragment _EMISSION
-            #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
-            #pragma shader_feature_local_fragment _ALPHATEST_ON
-            #pragma shader_feature_local_fragment _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
-
-            #pragma shader_feature_local_fragment _SPECGLOSSMAP
-
-            // #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
-            #include "MetaPass.hlsl"
-
-            ENDHLSL
-        }
+//        Pass
+//        {
+//            Name "Meta"
+//            Tags{"LightMode" = "Meta"}
+//
+//            Cull Off
+//
+//            HLSLPROGRAM
+//            #pragma vertex UniversalVertexMeta
+//            #pragma fragment UniversalFragmentMeta
+//
+//            #pragma shader_feature_local_fragment _SPECULAR_SETUP
+//            #pragma shader_feature_local_fragment _EMISSION
+//            #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
+//            #pragma shader_feature_local_fragment _ALPHATEST_ON
+//            #pragma shader_feature_local_fragment _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+//            #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
+//
+//            #pragma shader_feature_local_fragment _SPECGLOSSMAP
+//
+//            // #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
+//            #include "MetaPass.hlsl"
+//
+//            ENDHLSL
+//        }
     }
     
     CustomEditor "CelPBR.Editor.CelPBRShaderGUI"
