@@ -29,7 +29,7 @@ namespace CelPBR.Editor
             RenderModeData transparentModeData = new RenderModeData()
             {
                 RenderQueue = (int) RenderQueue.Transparent, SrcBlend = BlendMode.SrcAlpha,
-                DstBlend = BlendMode.DstColor
+                DstBlend = BlendMode.OneMinusSrcAlpha
             };
             
             renderModeDataDict[RenderMode.Opaque] = opaqueRenderModeData;
