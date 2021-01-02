@@ -3,6 +3,8 @@
 
 struct BRDF_CelPBR
 {
+    real3 kd;
+    real3 ks;
     real3 diffuse;
     real3 specular;
 
@@ -22,7 +24,7 @@ BRDFData ConvertToBRDFData(BRDF_CelPBR brdf)
 {
     BRDFData brdfData;
     brdfData.diffuse = brdf.diffuse;
-    brdfData.specular = brdf.specular;
+    brdfData.specular = brdf.ks;
     brdfData.reflectivity = brdf.reflectivity;
     brdfData.perceptualRoughness = brdf.perceptualRoughness;
     brdfData.roughness = brdf.roughness;
@@ -110,10 +112,10 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     brdf.normalizationTerm = brdf.roughness * 4.0h + 2.0h;
     brdf.roughness2MinusOne = brdf.roughness2 - 1.0h;
     
-    float kd = oneMinusReflectivity;
-    brdf.diffuse = surface.color * kd;
-    float3 ks = lerp(kDieletricSpec.rgb, surface.color, surface.metallic);
-    brdf.specular = ks * UnityDirectBRDFSpecular(brdf, surface, lightData, tempData);
+    brdf.kd = oneMinusReflectivity;
+    brdf.diffuse = surface.color * brdf.kd;
+    brdf.ks = lerp(kDieletricSpec.rgb, surface.color, surface.metallic);
+    brdf.specular = brdf.ks * UnityDirectBRDFSpecular(brdf, surface, lightData, tempData);
     
     
     // float d = CaculateNormalDistributionFunction(surface, lightData, tempData);

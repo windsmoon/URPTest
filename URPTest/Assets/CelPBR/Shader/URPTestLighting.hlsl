@@ -840,8 +840,6 @@ half4 UniversalFragmentPBR(InputData inputData, SurfaceData surfaceData)
                                      inputData.bakedGI, surfaceData.occlusion,
                                      inputData.normalWS, inputData.viewDirectionWS);
 
-    // return half4(inputData.bakedGI, surfaceData.alpha);
-    
     color += LightingPhysicallyBased(brdfData,    brdfDataClearCoat,
                                      mainLight,
                                      inputData.normalWS, inputData.viewDirectionWS,
