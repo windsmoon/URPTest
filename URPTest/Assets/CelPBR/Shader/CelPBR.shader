@@ -24,8 +24,8 @@ Shader "CelPBR/CelPBR"
         Pass
         {
             Tags{"LightMode" = "UniversalForward"}
-//
-            Blend[_SrcBlend][_DstBlend]
+
+                        Blend[_SrcBlend][_DstBlend]
 //            ZWrite[_ZWrite]
 //            Cull[_Cull]
 
