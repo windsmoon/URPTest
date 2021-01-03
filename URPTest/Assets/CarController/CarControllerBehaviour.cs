@@ -26,7 +26,8 @@ namespace CarController
         private float cameraMoveTime = 1;
         private Vector3 cameraTargetPos;
         [SerializeField]
-        private Vector3 currentSpeed;
+        public float currentSpeed;
+        // private Vector3 currentSpeed;
         [SerializeField]
         private float maxSpeed;
         [SerializeField]
@@ -47,55 +48,83 @@ namespace CarController
 
         private void Update()
         {
-            Vector3 accelerate;
+            float accelerate;
+
+            float currentFrictionScale = Input.GetKey(KeyCode.Space) ? 3 : 1;
             
             if (Input.GetKey(KeyCode.W))
             {
-                accelerate = force * transform.forward;
+                accelerate = (force - frictionForce * currentFrictionScale) / mass;
             }
-
+            
             else
             {
-                accelerate = Vector3.zero;
+                accelerate = - frictionForce * currentFrictionScale / mass;
             }
-
-            Vector3 speedDirection = Vector3.Magnitude(currentSpeed) != 0 ? currentSpeed.normalized : Vector3.zero;
-            accelerate = (accelerate - frictionForce * speedDirection) / mass;
+            
             currentSpeed += accelerate * Time.deltaTime;
 
-            if (Vector3.Magnitude(currentSpeed) > maxSpeed)
+            if (currentSpeed > maxSpeed)
             {
-                currentSpeed = currentSpeed.normalized * maxSpeed;
+                currentSpeed = maxSpeed;
             }
 
-            if (currentSpeed.x < 0)
+            else if (currentSpeed < 0)
             {
-                currentSpeed.x = 0;
+                currentSpeed = 0;
             }
             
-            if (currentSpeed.y < 0)
-            {
-                currentSpeed.y = 0;
-            }
-            
-            if (currentSpeed.z < 0)
-            {
-                currentSpeed.z = 0;
-            }
-            
-            // if (currentSpeed > maxSpeed)
+            transform.Translate(0, 0, currentSpeed * Time.deltaTime, Space.Self);
+
+            // Vector3 accelerate;
+            //
+            // if (Input.GetKey(KeyCode.W))
             // {
-            //     currentSpeed = maxSpeed;
+            //     accelerate = force * transform.forward;
             // }
             //
-            // else if (currentSpeed < 0)
+            // else
             // {
-            //     currentSpeed = 0;
+            //     accelerate = Vector3.zero;
             // }
-
-            transform.position = transform.position + currentSpeed * Time.deltaTime;
-            // transform.Translate(currentSpeed * Time.deltaTime, Space.World);
-
+            //
+            // Vector3 speedDirection = Vector3.Magnitude(currentSpeed) != 0 ? currentSpeed.normalized : Vector3.zero;
+            // accelerate = (accelerate - frictionForce * speedDirection) / mass;
+            // currentSpeed += accelerate * Time.deltaTime;
+            //
+            // if (Vector3.Magnitude(currentSpeed) > maxSpeed)
+            // {
+            //     currentSpeed = currentSpeed.normalized * maxSpeed;
+            // }
+            //
+            // if (currentSpeed.x < 0)
+            // {
+            //     currentSpeed.x = 0;
+            // }
+            //
+            // if (currentSpeed.y < 0)
+            // {
+            //     currentSpeed.y = 0;
+            // }
+            //
+            // if (currentSpeed.z < 0)
+            // {
+            //     currentSpeed.z = 0;
+            // }
+            //
+            // // if (currentSpeed > maxSpeed)
+            // // {
+            // //     currentSpeed = maxSpeed;
+            // // }
+            // //
+            // // else if (currentSpeed < 0)
+            // // {
+            // //     currentSpeed = 0;
+            // // }
+            //
+            // transform.position = transform.position + currentSpeed * Time.deltaTime;
+            // // transform.Translate(currentSpeed * Time.deltaTime, Space.World);
+            //
             if (Input.GetKey(KeyCode.A))
             {
                 transform.Rotate(Vector3.up, -rotateSpeed * Time.deltaTime, Space.Self);

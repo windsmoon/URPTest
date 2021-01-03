@@ -143,10 +143,12 @@ MonoBehaviour:
   mass: 400
   force: 5000
   frictionCoefficient: 0.6
+  maxSpeedKM_H: 120
   camera: {fileID: 1216918877}
   rotateSpeed: 45
   cameraMoveTime: 0.5
   currentSpeed: 0
+  maxSpeed: 0
   pressureForce: 0
   frictionForce: 0
 --- !u!1 &526894225
@@ -235,13 +237,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526894225}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.9413585, y: -0.058001507, z: 0.25223622, w: 0.21646461}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 154.1, y: -30, z: 0}
 --- !u!1001 &532694966
 PrefabInstance:
   m_ObjectHideFlags: 0

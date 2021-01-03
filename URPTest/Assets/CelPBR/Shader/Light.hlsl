@@ -36,12 +36,15 @@ Light ConvertToUnityLight(LightData_CelPBR lightData)
 
 LightData_CelPBR GetMainLightData(Varyings input)
 {
-    Light light = GetMainLight(TransformWorldToShadowCoord(input.positionWS));
+    real4 shadowMask = SAMPLE_SHADOWMASK(input.lightmapUV);
+    // GetMainLight(inputData.shadowCoord, inputData.positionWS, shadowMask);
+    Light light = GetMainLight(TransformWorldToShadowCoord(input.positionWS), input.positionWS, shadowMask);
     LightData_CelPBR lightData;
     lightData.color = light.color;
     lightData.direction = light.direction;
     lightData.distanceAttenuation = 1;
     lightData.shadowAttenuation = light.shadowAttenuation;
+
     return lightData;
 }
 
@@ -52,13 +55,15 @@ int GetOtherLightCount()
 
 LightData_CelPBR GetOtherLightData(Varyings input, int index)
 {
-    Light light = GetAdditionalLight(index, input.positionWS);
+    real4 shadowMask = SAMPLE_SHADOWMASK(input.lightmapUV);
+    // GetAdditionalLight(index, input.positionWS, shadowMask);
+    // Light light = GetAdditionalLight(index, input.positionWS);
+    Light light = GetAdditionalLight(index, input.positionWS, shadowMask);
     LightData_CelPBR lightData;
     lightData.color = light.color;
     lightData.direction = light.direction;
     lightData.distanceAttenuation = light.distanceAttenuation;
     lightData.shadowAttenuation = light.shadowAttenuation; // urp 10.x do not support additional shadow ?
-    lightData.shadowAttenuation = AdditionalLightRealtimeShadow(index, input.positionWS);
     return lightData;
 }
 

@@ -1,3 +1,2 @@
-// sample environment indirect light // clear
-// mix realtime shadow and bake shadow
+// clear : sample environment indirect light
 // solve the wrong shadow over shadow distance
