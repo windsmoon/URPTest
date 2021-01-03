@@ -140,10 +140,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd00e02a8eff39488e40d708751420b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mass: 400
+  force: 5000
+  frictionCoefficient: 0.6
   camera: {fileID: 1216918877}
-  speed: 15
   rotateSpeed: 45
   cameraMoveTime: 0.5
+  currentSpeed: 0
+  pressureForce: 0
+  frictionForce: 0
 --- !u!1 &526894225
 GameObject:
   m_ObjectHideFlags: 0

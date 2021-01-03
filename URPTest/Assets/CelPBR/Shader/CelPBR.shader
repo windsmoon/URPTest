@@ -34,7 +34,7 @@ Shader "CelPBR/CelPBR"
             // Material Keywords
             // #pragma shader_feature_local _NORMALMAP
             // #pragma shader_feature_local_fragment _ALPHATEST_ON
-            // #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local_fragment _ _ALPHAPREMULTIPLY_ON
             // #pragma shader_feature_local_fragment _EMISSION
             // #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
             // #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
@@ -46,6 +46,9 @@ Shader "CelPBR/CelPBR"
             // #pragma shader_feature_local_fragment _SPECULAR_SETUP
             // #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
 
+            #define _NORMALMAP
+            #define _METALLICSPECGLOSSMAP
+            #define _OCCLUSIONMAP
             // -------------------------------------
             // Universal Pipeline keywords
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
@@ -70,9 +73,6 @@ Shader "CelPBR/CelPBR"
             
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag
-            #define _NORMALMAP
-            #define _METALLICSPECGLOSSMAP
-            #define _OCCLUSIONMAP
 
             #include "CelPBRPass.hlsl"
             ENDHLSL
@@ -103,33 +103,33 @@ Shader "CelPBR/CelPBR"
             ENDHLSL
         }
         
-        UsePass "Universal Render Pipeline/Lit/Meta"
+//        UsePass "Universal Render Pipeline/Lit/Meta"
 
-//        Pass
-//        {
-//            Name "Meta"
-//            Tags{"LightMode" = "Meta"}
-//
-//            Cull Off
-//
-//            HLSLPROGRAM
-//            #pragma vertex UniversalVertexMeta
-//            #pragma fragment UniversalFragmentMeta
-//
-//            #pragma shader_feature_local_fragment _SPECULAR_SETUP
-//            #pragma shader_feature_local_fragment _EMISSION
-//            #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
-//            #pragma shader_feature_local_fragment _ALPHATEST_ON
-//            #pragma shader_feature_local_fragment _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-//            #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
-//
-//            #pragma shader_feature_local_fragment _SPECGLOSSMAP
-//
-//            // #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
-//            #include "MetaPass.hlsl"
-//
-//            ENDHLSL
-//        }
+        Pass
+        {
+            Name "Meta"
+            Tags{"LightMode" = "Meta"}
+
+            Cull Off
+
+            HLSLPROGRAM
+            #pragma vertex MetaVertexMeta
+            #pragma fragment MetaFragmentMeta
+
+            // #pragma shader_feature_local_fragment _SPECULAR_SETUP
+            // #pragma shader_feature_local_fragment _EMISSION
+            // #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
+            // #pragma shader_feature_local_fragment _ALPHATEST_ON
+            // #pragma shader_feature_local_fragment _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            // #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
+            //
+            // #pragma shader_feature_local_fragment _SPECGLOSSMAP
+
+            // #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
+            #include "MetaPass.hlsl"
+
+            ENDHLSL
+        }
     }
     
     CustomEditor "CelPBR.Editor.CelPBRShaderGUI"

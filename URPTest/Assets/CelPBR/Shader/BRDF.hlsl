@@ -114,6 +114,12 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     
     brdf.kd = oneMinusReflectivity;
     brdf.diffuse = surface.color * brdf.kd;
+
+    #if defined(_ALPHAPREMULTIPLY_ON)
+        brdf.diffuse *= surface.alpha;
+        // lpha = alpha * oneMinusReflectivity + reflectivity; // ?? NOTE: alpha modified and propagated up.
+    #endif
+    
     brdf.ks = lerp(kDieletricSpec.rgb, surface.color, surface.metallic);
     brdf.specular = brdf.ks * UnityDirectBRDFSpecular(brdf, surface, lightData, tempData);
     

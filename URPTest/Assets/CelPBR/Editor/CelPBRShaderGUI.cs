@@ -48,11 +48,13 @@ namespace CelPBR.Editor
             if (GUILayout.Button("Opaque"))
             {
                 SetRenderMode(RenderMode.Opaque);
+                SetKeyword("_ALPHAPREMULTIPLY_ON", false);
             }
             
             else if (GUILayout.Button("Transparent"))
             {
                 SetRenderMode(RenderMode.Transparent);
+                SetKeyword("_ALPHAPREMULTIPLY_ON", true);
             }
         }
 
@@ -67,6 +69,34 @@ namespace CelPBR.Editor
                 material.SetFloat("_ScrBlend", (int)renderModeData.SrcBlend);
                 material.SetFloat("_DstBlend", (int)renderModeData.DstBlend);
             }
+        }
+
+        private void SetKeyword(string keyword, bool isEnable)
+        {
+            foreach (Object materialObject in materialObjects)
+            {
+                material = materialObject as Material;
+
+                if (isEnable)
+                {
+                    EnableKeyword(material, keyword);
+                }
+
+                else
+                {
+                    DisableKeyword(material, keyword);
+                }
+            }
+        }
+        
+        private void EnableKeyword(Material material, string keyword)
+        {
+            material.EnableKeyword(keyword);
+        }
+
+        private void DisableKeyword(Material material, string keyword)
+        {
+            material.DisableKeyword(keyword);
         }
         #endregion
     }

@@ -24,7 +24,7 @@ struct Varyings
 
 #include "MetaInput.hlsl"
 
-Varyings UniversalVertexMeta(Attributes input)
+Varyings MetaVertexMeta(Attributes input)
 {
     Varyings output;
     output.positionCS = MetaVertexPosition(input.positionOS, input.uv1, input.uv2, unity_LightmapST, unity_DynamicLightmapST);
@@ -32,7 +32,7 @@ Varyings UniversalVertexMeta(Attributes input)
     return output;
 }
 
-float4 UniversalFragmentMeta(Varyings input) : SV_Target
+float4 MetaFragmentMeta(Varyings input) : SV_Target
 {
     // InitializeStandardLitSurfaceData(input.uv, surfaceData);
 
