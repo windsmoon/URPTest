@@ -68,6 +68,8 @@ namespace CelPBR.Editor
                 material.renderQueue = renderModeData.RenderQueue;
                 material.SetFloat("_ScrBlend", (int)renderModeData.SrcBlend);
                 material.SetFloat("_DstBlend", (int)renderModeData.DstBlend);
+                material.SetFloat("_ZWrite", renderModeData.ZWrite);
+                
             }
         }
 
