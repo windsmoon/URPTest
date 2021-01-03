@@ -11,6 +11,7 @@ struct Surface_CelPBR
     real smoothness;
     real occlusion;
     real3 emission;
+
     // real perceptualRoughness;
     // real roughness;
     // real roughness2;

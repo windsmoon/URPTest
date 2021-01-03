@@ -19,7 +19,7 @@ struct Attributes
 
 struct Varyings
 {
-    float4 positionHCS : SV_POSITION;
+    float4 positionCS : SV_POSITION;
     float3 positionWS : VAR_POSITION;
     float3 normalWS : VAR_NORMAL;
     float3 tangentWS : VAR_TANGENT;
@@ -46,7 +46,7 @@ Varyings CelPBRVert(Attributes input)
     UNITY_TRANSFER_INSTANCE_ID(input, output);
     
     output.positionWS = TransformObjectToWorld(input.positionOS);
-    output.positionHCS = TransformWorldToHClip(output.positionWS);
+    output.positionCS = TransformWorldToHClip(output.positionWS);
     output.normalWS = TransformObjectToWorldNormal(input.normalOS);
     output.tangentWS.xyz = TransformObjectToWorldDir(input.tangentOS.xyz);
     output.bitangentWS = cross(output.normalWS.xyz, output.tangentWS.xyz) * input.tangentOS.w * GetOddNegativeScale();
@@ -62,6 +62,14 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     Surface_CelPBR surface = GetSurface(input);
     LightData_CelPBR mainLightData = GetMainLightData(input);
     TempData_CelPBR mainTempData = GetTempData(input, surface, mainLightData);
+
+    // adjust light and surface data
+    #if defined(_SCREEN_SPACE_OCCLUSION)
+        AmbientOcclusionFactor aoFactor = GetScreenSpaceAmbientOcclusion(GetNormalizedScreenSpaceUV(input.positionCS));
+        mainLightData.color *= aoFactor.directAmbientOcclusion;
+        surface.occlusion = min(surface.occlusion, aoFactor.indirectAmbientOcclusion);
+    #endif
+    
     BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData);
     GI_CelPBR gi = GetGI(input, brdf, surface, mainTempData);
 

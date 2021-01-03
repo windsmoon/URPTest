@@ -44,7 +44,6 @@ LightData_CelPBR GetMainLightData(Varyings input)
     lightData.direction = light.direction;
     lightData.distanceAttenuation = 1;
     lightData.shadowAttenuation = light.shadowAttenuation;
-
     return lightData;
 }
 
