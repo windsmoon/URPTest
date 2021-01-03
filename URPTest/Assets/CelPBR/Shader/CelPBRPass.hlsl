@@ -64,6 +64,13 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     TempData_CelPBR mainTempData = GetTempData(input, surface, mainLightData);
     BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData);
     GI_CelPBR gi = GetGI(input, brdf, surface, mainTempData);
+
+    // compile error with out gi.bakeGI parameter
+    // MixRealtimeAndBakedGI(ConvertToUnityLight(mainLightData), surface.normal, gi.bakedGI);
+    #if defined(LIGHTMAP_ON) && defined(_MIXED_LIGHTING_SUBTRACTIVE)
+        gi.bakedGI = SubtractDirectMainLightFromLightmap(ConvertToUnityLight(mainLightData), surface.normal, gi.bakedGI);
+    #endif
+    
     // gi.color = gi.color.bbb;
     // return float4(gi.color, surface.color.r);
     real3 color = gi.color;
