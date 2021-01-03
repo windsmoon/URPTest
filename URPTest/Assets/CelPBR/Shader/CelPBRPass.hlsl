@@ -38,7 +38,6 @@ struct Varyings
 #include "GI.hlsl"
 #include "Lighting.hlsl"
 
-
 Varyings CelPBRVert(Attributes input)
 {
     Varyings output;
