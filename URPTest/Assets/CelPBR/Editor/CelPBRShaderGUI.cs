@@ -23,13 +23,13 @@ namespace CelPBR.Editor
             
             RenderModeData opaqueRenderModeData = new RenderModeData()
             {
-                RenderQueue = (int) RenderQueue.Geometry, SrcBlend = BlendMode.One, DstBlend = BlendMode.Zero
+                RenderQueue = (int) RenderQueue.Geometry, SrcBlend = BlendMode.One, DstBlend = BlendMode.Zero, ZWrite = 1
             };
             
             RenderModeData transparentModeData = new RenderModeData()
             {
                 RenderQueue = (int) RenderQueue.Transparent, SrcBlend = BlendMode.SrcAlpha,
-                DstBlend = BlendMode.OneMinusSrcAlpha
+                DstBlend = BlendMode.OneMinusSrcAlpha, ZWrite = 0
             };
             
             renderModeDataDict[RenderMode.Opaque] = opaqueRenderModeData;
@@ -108,6 +108,7 @@ namespace CelPBR.Editor
         public int RenderQueue;
         public BlendMode SrcBlend;
         public BlendMode DstBlend;
+        public int ZWrite;
         #endregion
     }
     #endregion
