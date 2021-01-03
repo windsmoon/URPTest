@@ -133,8 +133,36 @@ Shader "CelPBR/CelPBR"
             ENDHLSL
         }
         
-//        UsePass "Universal Render Pipeline/Lit/Meta"
+        // This pass is used when drawing to a _CameraNormalsTexture texture
+        Pass
+        {
+            Tags{"LightMode" = "DepthNormals"}
 
+            ZWrite On
+
+            HLSLPROGRAM
+            // #pragma exclude_renderers gles gles3 glcore
+            // #pragma target 4.5
+
+            #pragma vertex DepthNormalsVertex
+            #pragma fragment DepthNormalsFragment
+
+            // -------------------------------------
+            // Material Keywords
+            // #pragma shader_feature_local _NORMALMAP
+            // #pragma shader_feature_local_fragment _ALPHATEST_ON
+            // #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+
+            #define _NORMALMAP
+
+            //--------------------------------------
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #include "DepthNormalsPass.hlsl"
+            ENDHLSL
+        }
         Pass
         {
             Name "Meta"
