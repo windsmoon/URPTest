@@ -11,21 +11,6 @@ struct Surface_CelPBR
     real smoothness;
     real occlusion;
     real3 emission;
-
-    // real perceptualRoughness;
-    // real roughness;
-    // real roughness2;
-    // real occlusion;
-    // real3 viewDirection;
-    // real nDotV;
-    // real3 viewReflectionDirection;
-    // real oneMinusReflectivity;
-    // real reflectivity;
-    // real grazingTerm;
-    // // We save some light invariant BRDF terms so we don't have to recompute
-    // // them in the light loop. Take a look at DirectBRDF function for detailed explaination.
-    // real normalizationTerm;     // roughness * 4.0 + 2.0
-    // real roughness2MinusOne;    // roughness^2 - 1.0
 };
 
 float3 GetWorldNormal(Varyings input, float3 normalTS)

@@ -15,7 +15,7 @@ Shader "CelPBR/CelPBR"
         [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
         [HideInInspector] _SrcBlend("_SrcBlend", Float) = 1.0
         [HideInInspector] _DstBlend("_DstBlend", Float) = 0.0
-        [HideInInspector] _ZWrite("__ZWrite", Float) = 1.0
+        [HideInInspector] _ZWrite("_ZWrite", Float) = 1.0
     }
     
     SubShader

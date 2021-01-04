@@ -181,6 +181,10 @@ half4 LitPassFragment(Varyings input) : SV_Target
     // color.rgb = color.rgb < 0.8 ? 0 : 1;
 
     color.a = OutputAlpha(color.a, _Surface);
+
+    #if defined(_ALPHAPREMULTIPLY_ON)
+    color.rgb = color.aaa;
+    #endif
     return color;
 }
 

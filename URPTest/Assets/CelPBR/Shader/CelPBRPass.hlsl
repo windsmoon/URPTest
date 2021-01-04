@@ -93,6 +93,10 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
         color += GetLighting(lightData, surface, brdf, tempData);
     }
 
+    #if defined(_ALPHAPREMULTIPLY_ON)
+        return real4(surface.alpha.rrr, 1);
+    #endif
+
     return real4(color, surface.alpha);
 }
 
