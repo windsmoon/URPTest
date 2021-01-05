@@ -22,7 +22,8 @@ struct Varyings
     float2 baseUV           : TEXCOORD0;
 };
 
-#include "MetaInput.hlsl"
+#include "Input.hlsl"
+
 
 Varyings MetaVertexMeta(Attributes input)
 {
