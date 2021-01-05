@@ -34,7 +34,7 @@ Shader "CelPBR/CelPBR"
             // -------------------------------------
             // Material Keywords
             // #pragma shader_feature_local _NORMALMAP
-            // #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _ _ALPHATEST_ON
             #pragma shader_feature_local_fragment _ _ALPHAPREMULTIPLY_ON
             // #pragma shader_feature_local_fragment _EMISSION
             // #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
@@ -91,7 +91,7 @@ Shader "CelPBR/CelPBR"
 
             // -------------------------------------
             // Material Keywords
-            // #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _ _ALPHATEST_ON
             // #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
             //--------------------------------------
@@ -122,7 +122,7 @@ Shader "CelPBR/CelPBR"
 
             // -------------------------------------
             // Material Keywords
-            #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _ _ALPHATEST_ON
             // #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
             //--------------------------------------
@@ -151,7 +151,7 @@ Shader "CelPBR/CelPBR"
             // -------------------------------------
             // Material Keywords
             // #pragma shader_feature_local _NORMALMAP
-            // #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _ _ALPHATEST_ON
             // #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
             #define _NORMALMAP
@@ -178,7 +178,7 @@ Shader "CelPBR/CelPBR"
             // #pragma shader_feature_local_fragment _SPECULAR_SETUP
             // #pragma shader_feature_local_fragment _EMISSION
             // #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
-            // #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _ _ALPHATEST_ON
             // #pragma shader_feature_local_fragment _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
             // #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
             //
