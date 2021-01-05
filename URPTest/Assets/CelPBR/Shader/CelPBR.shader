@@ -4,6 +4,7 @@ Shader "CelPBR/CelPBR"
     {
         _BaseMap("Base Map", 2D) = "white" {}
         _BaseColor ("Base Color", Color) = (1, 1, 1, 1)
+        _Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
         [NoScaleOffset]_NormalMap("Normap Map", 2D) = "bump" {}
         _NormalScale("Normal Scale", Float) = 1
         [NoScaleOffset]_MaskMap("Mask Map (R:Metallic, G:Occlusion, A:Smoothness)", 2D) = "white" {}
@@ -164,37 +165,38 @@ Shader "CelPBR/CelPBR"
             #include "DepthNormalsPass.hlsl"
             ENDHLSL
         }
-        Pass
-        {
-            Name "Meta"
-            Tags{"LightMode" = "Meta"}
-
-            Cull Off
-
-            HLSLPROGRAM
-            #pragma vertex MetaVertexMeta
-            #pragma fragment MetaFragmentMeta
-
-            // #pragma shader_feature_local_fragment _SPECULAR_SETUP
-            // #pragma shader_feature_local_fragment _EMISSION
-            // #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
-            #pragma shader_feature_local_fragment _ _ALPHATEST_ON
-            // #pragma shader_feature_local_fragment _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            // #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
-            //
-            // #pragma shader_feature_local_fragment _SPECGLOSSMAP
-
-            // #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
-
-            #define _NORMALMAP
-            #define _METALLICSPECGLOSSMAP
-            #define _OCCLUSIONMAP
-            #define _EMISSION   
-            
-            #include "MetaPass.hlsl"
-
-            ENDHLSL
-        }
+        
+//        Pass
+//        {
+//            Name "Meta"
+//            Tags{"LightMode" = "Meta"}
+//
+//            Cull Off
+//
+//            HLSLPROGRAM
+//            #pragma vertex MetaVertexMeta
+//            #pragma fragment MetaFragmentMeta
+//
+//            // #pragma shader_feature_local_fragment _SPECULAR_SETUP
+//            // #pragma shader_feature_local_fragment _EMISSION
+//            // #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
+//            #pragma shader_feature_local_fragment _ _ALPHATEST_ON
+//            // #pragma shader_feature_local_fragment _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+//            // #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
+//            //
+//            // #pragma shader_feature_local_fragment _SPECGLOSSMAP
+//
+//            // #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
+//
+//            #define _NORMALMAP
+//            #define _METALLICSPECGLOSSMAP
+//            #define _OCCLUSIONMAP
+//            #define _EMISSION   
+//            
+//            #include "MetaPass.hlsl"
+//
+//            ENDHLSL
+//        }
     }
     
     CustomEditor "CelPBR.Editor.CelPBRShaderGUI"

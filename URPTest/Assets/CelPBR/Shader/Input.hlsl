@@ -1,5 +1,5 @@
-﻿#ifndef INPUT_CEL_PBR
-#define INPUT_CEL_PBR
+﻿#ifndef CE_PBR_INPUT
+#define CE_PBR_INPUT
 
 TEXTURE2D(_BaseMap);
 TEXTURE2D(_NormalMap);
@@ -11,7 +11,8 @@ SAMPLER(sampler_BaseMap);
 UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(float4, _BaseMap_ST)
     UNITY_DEFINE_INSTANCED_PROP(half4, _BaseColor)
-    UNITY_DEFINE_INSTANCED_PROP(float, _NormalScale)
+    UNITY_DEFINE_INSTANCED_PROP(real, _Cutoff)
+    UNITY_DEFINE_INSTANCED_PROP(real, _NormalScale)
     UNITY_DEFINE_INSTANCED_PROP(half, _MetallicScale)
     UNITY_DEFINE_INSTANCED_PROP(half, _SmoothnessScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _OcclusionScale)
@@ -22,8 +23,13 @@ UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 half4 GetBaseColor(Varyings input)
 {
-    half4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.baseUV);
+    real4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.baseUV);
     baseColor *= INPUT_PROP(_BaseColor);
+
+    #if defined(_ALPHATEST_ON)
+        clip(baseColor.a - INPUT_PROP(_Cutoff));
+    #endif
+
     return baseColor;
 }
 
@@ -61,8 +67,10 @@ half GetSmoothness(Varyings input)
 half GetOcclusion(Varyings input)
 {
     half occlusion = SAMPLE_TEXTURE2D(_OcclusionMap, sampler_BaseMap, input.baseUV).g;
-    // occlusion *= INPUT_PROP(_OcclusionScale);
-    return LerpWhiteTo(occlusion, INPUT_PROP(_OcclusionScale));
+
+    // LerpWhiteTo(occlusion, INPUT_PROP(_OcclusionScale));
+    // equals
+    return lerp(1, occlusion, INPUT_PROP(_OcclusionScale));
 }
 
 half3 GetEmission(Varyings input)
