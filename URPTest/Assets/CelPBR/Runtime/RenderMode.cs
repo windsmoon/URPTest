@@ -4,5 +4,6 @@ namespace CelPBR.Runtime
     {
         Opaque,
         Transparent,
+        AlphaTest
     }
 }

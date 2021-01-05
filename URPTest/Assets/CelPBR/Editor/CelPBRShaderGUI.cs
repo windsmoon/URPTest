@@ -31,9 +31,16 @@ namespace CelPBR.Editor
                 RenderQueue = (int) RenderQueue.Transparent, SrcBlend = BlendMode.SrcAlpha,
                 DstBlend = BlendMode.OneMinusSrcAlpha, ZWrite = 0
             };
+
+            RenderModeData alphaTestModeData = new RenderModeData()
+            {
+                RenderQueue = (int) RenderQueue.AlphaTest, SrcBlend = BlendMode.One, DstBlend = BlendMode.Zero,
+                ZWrite = 1
+            };
             
             renderModeDataDict[RenderMode.Opaque] = opaqueRenderModeData;
             renderModeDataDict[RenderMode.Transparent] = transparentModeData;
+            renderModeDataDict[RenderMode.AlphaTest] = alphaTestModeData;
         }
         #endregion
         
@@ -49,12 +56,21 @@ namespace CelPBR.Editor
             {
                 SetRenderMode(RenderMode.Opaque);
                 SetKeyword("_ALPHAPREMULTIPLY_ON", false);
+                SetKeyword("_ALPHATEST_ON", false);
             }
-            
+
             else if (GUILayout.Button("Transparent"))
             {
                 SetRenderMode(RenderMode.Transparent);
                 SetKeyword("_ALPHAPREMULTIPLY_ON", true);
+                SetKeyword("_ALPHATEST_ON", false);
+            }
+
+            else if (GUILayout.Button("Alpha Test"))
+            {
+                SetRenderMode(RenderMode.AlphaTest);
+                SetKeyword("_ALPHAPREMULTIPLY_ON", false);
+                SetKeyword("_ALPHATEST_ON", true);
             }
         }
 
