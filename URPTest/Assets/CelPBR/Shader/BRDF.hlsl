@@ -118,6 +118,9 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     #if defined(_ALPHAPREMULTIPLY_ON)
         brdf.diffuse *= surface.alpha;
         alpha = surface.alpha * oneMinusReflectivity + brdf.reflectivity; // ?? NOTE: alpha modified and propagated up.
+        // alpha = alpha * (1 - reflectivity) + reflectivity
+        //       = alpha + (1 - alpha) * reflectivity
+        //       = lerp(alpha, 1, reflectivity)
     #else
         alpha = surface.alpha;
     #endif
