@@ -98,7 +98,7 @@ float UnityDirectBRDFSpecular(BRDF_CelPBR brdf, Surface_CelPBR surface, LightDat
 // brdf = kd * lambertian + ks * cook-torrance
 // labertian = albedo / (4pi)
 // cook-torrance = DFG/(4 * (wo * n) * (wi * n))
-BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
+BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData, out real alpha)
 {
     // half oneMinusReflectivity = OneMinusReflectivityMetallic(metallic);
     // half reflectivity = 1.0 - oneMinusReflectivity;
@@ -117,7 +117,9 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
 
     #if defined(_ALPHAPREMULTIPLY_ON)
         brdf.diffuse *= surface.alpha;
-        surface.alpha = surface.alpha * oneMinusReflectivity + brdf.reflectivity; // ?? NOTE: alpha modified and propagated up.
+        alpha = surface.alpha * oneMinusReflectivity + brdf.reflectivity; // ?? NOTE: alpha modified and propagated up.
+    #else
+        alpha = surface.alpha;
     #endif
     
     brdf.ks = lerp(kDieletricSpec.rgb, surface.color, surface.metallic);

@@ -69,7 +69,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
         surface.occlusion = min(surface.occlusion, aoFactor.indirectAmbientOcclusion);
     #endif
     
-    BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData);
+    BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData, surface.alpha);
     GI_CelPBR gi = GetGI(input, brdf, surface, mainTempData);
 
     // compile error with out gi.bakeGI parameter
@@ -92,10 +92,6 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
         TempData_CelPBR tempData = GetTempData(input, surface, lightData);
         color += GetLighting(lightData, surface, brdf, tempData);
     }
-
-    #if defined(_ALPHAPREMULTIPLY_ON)
-        return real4(surface.alpha.rrr, 1);
-    #endif
 
     return real4(color, surface.alpha);
 }
