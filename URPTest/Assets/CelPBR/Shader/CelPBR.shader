@@ -16,7 +16,9 @@ Shader "CelPBR/CelPBR"
         [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
         [HideInInspector] _SrcBlend("_SrcBlend", Float) = 1.0
         [HideInInspector] _DstBlend("_DstBlend", Float) = 0.0
-        [HideInInspector] _ZWrite("_ZWrite", Float) = 1.0
+        [HideInInspector] _ZWrite("_ZWrite", Float) = 1.
+        _OutlineColor("Outline Color", Color) = (0, 0, 0, 1)
+        _OutlineWidth("Outline Width", Range(0, 10)) = 1
     }
     
     SubShader
@@ -196,6 +198,22 @@ Shader "CelPBR/CelPBR"
             #include "MetaPass.hlsl"
 
             ENDHLSL
+        }
+        
+        Pass
+        {
+            Name "Outline"
+            Tags{"LightMode" = "Outline"}
+
+            Cull Front
+            
+            HLSLPROGRAM
+
+            #pragma vertex OutlineVert
+            #pragma fragment OutlineFrag
+
+            #include "OutlinePass.hlsl"
+            ENDHLSL    
         }
     }
     

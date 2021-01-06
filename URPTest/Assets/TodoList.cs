@@ -6,6 +6,6 @@
 // clear : sample environment indirect light
 // clear : support depth and normals texture
 // clear : support alpha test
-// 1 : add the cel shading
+// 1 doing : add the cel shading
 // 1 : support pre depth for alpha test performance
 // 3 : make the japanese class room demo beautiful

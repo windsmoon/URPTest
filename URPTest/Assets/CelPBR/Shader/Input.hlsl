@@ -17,6 +17,8 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(half, _SmoothnessScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _OcclusionScale)
     UNITY_DEFINE_INSTANCED_PROP(real4, _EmissionColor)
+    UNITY_DEFINE_INSTANCED_PROP(real4, _OutlineColor)
+    UNITY_DEFINE_INSTANCED_PROP(real, _OutlineWidth)
 UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 #define INPUT_PROP(name) UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, name)
@@ -33,6 +35,11 @@ half4 GetBaseColor(Varyings input)
     return baseColor;
 }
 
+real4 GetOutline(Varyings input)
+{
+    return real4(INPUT_PROP(_OutlineColor).rgb, INPUT_PROP(_OutlineWidth));
+}
+
 half3 SampleNormal(float2 uv, TEXTURE2D_PARAM(bumpMap, sampler_bumpMap), half scale = 1.0h)
 {
     half4 n = SAMPLE_TEXTURE2D(bumpMap, sampler_bumpMap, uv);
@@ -47,7 +54,7 @@ float3 GetNormalTS(Varyings input)
     // float3 normalTS = SampleNormal(input.normalUV, TEXTURE2D_ARGS(_NormalMap, sampler_NormalMap), INPUT_PROP(_NormalScale));
     float4 normalTS = SAMPLE_TEXTURE2D(_NormalMap, sampler_BaseMap, input.baseUV);
     normalTS.xyz = UnpackNormalScale(normalTS, INPUT_PROP(_NormalScale));
-    return normalTS;
+    return normalTS.xyz;
 }
 
 half GetMetallic(Varyings input)
@@ -76,7 +83,7 @@ half GetOcclusion(Varyings input)
 half3 GetEmission(Varyings input)
 {
     half3 emission = SAMPLE_TEXTURE2D(_EmissionMap, sampler_BaseMap, input.baseUV).rgb;
-    emission *= INPUT_PROP(_EmissionColor);
+    emission *= INPUT_PROP(_EmissionColor).rgb;
     return emission;
 }
 
