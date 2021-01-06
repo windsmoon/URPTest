@@ -17,6 +17,17 @@ Shader "CelPBR/CelPBR"
         [HideInInspector] _SrcBlend("_SrcBlend", Float) = 1.0
         [HideInInspector] _DstBlend("_DstBlend", Float) = 0.0
         [HideInInspector] _ZWrite("_ZWrite", Float) = 1.
+        
+        [Space(50)]
+        [Toggle(CEL_SHADING)] _CelShading("Cel Shading", Float) = 0.0
+        _OutlineWidth("Outline Width", Range(0.01, 2)) = 0.24
+        _OutlineColor("Outline Color", Color) = (0.5, 0.5, 0.5, 1)
+        _RampMap("Ramp Texture", 2D) = "gray" {}
+        _CelShadeColor("Cel Shade Color", Color) = (1, 1, 1)
+    	_ShadowColor("Shadow Color", Color) = (0.7, 0.7, 0.8)
+		_ShadowRange("Shadow Range", Range(0, 1)) = 0.5
+    	_RimColor("Rim Color", Color) = (0, 0, 0, 0)
+    	_RimRange("Rim Range (Min and Max, 0 ~ 1)", Vector) = (0.8, 1, 0, 0) 
         _OutlineColor("Outline Color", Color) = (0, 0, 0, 1)
         _OutlineWidth("Outline Width", Range(0, 10)) = 1
     }
@@ -76,6 +87,9 @@ Shader "CelPBR/CelPBR"
             // GPU Instancing
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            // custom defined keywords
+            #pragma shader_feature_local _ CEL_SHADING
             
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag
