@@ -23,9 +23,11 @@ UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 #define INPUT_PROP(name) UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, name)
 
-half4 GetBaseColor(Varyings input)
+#define TRANSFORM_UV(tex, name) ((tex.xy) * INPUT_PROP(name##_ST).xy + INPUT_PROP(name##_ST).zw)
+
+half4 GetBaseColor(float2 uv)
 {
-    real4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.baseUV);
+    real4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, uv);
     baseColor *= INPUT_PROP(_BaseColor);
 
     #if defined(_ALPHATEST_ON)
@@ -35,9 +37,9 @@ half4 GetBaseColor(Varyings input)
     return baseColor;
 }
 
-real4 GetOutline(Varyings input)
+real GetCutoff()
 {
-    return real4(INPUT_PROP(_OutlineColor).rgb, INPUT_PROP(_OutlineWidth));
+    return INPUT_PROP(_Cutoff);
 }
 
 half3 SampleNormal(float2 uv, TEXTURE2D_PARAM(bumpMap, sampler_bumpMap), half scale = 1.0h)
@@ -46,46 +48,50 @@ half3 SampleNormal(float2 uv, TEXTURE2D_PARAM(bumpMap, sampler_bumpMap), half sc
     return UnpackNormalScale(n, scale);
 }
 
-float3 GetNormalTS(Varyings input)
+float3 GetNormalTS(float2 uv)
 {
     // return input.normalWS;
     // float4 normalMap = SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, input.baseUV);
 
     // float3 normalTS = SampleNormal(input.normalUV, TEXTURE2D_ARGS(_NormalMap, sampler_NormalMap), INPUT_PROP(_NormalScale));
-    float4 normalTS = SAMPLE_TEXTURE2D(_NormalMap, sampler_BaseMap, input.baseUV);
+    float4 normalTS = SAMPLE_TEXTURE2D(_NormalMap, sampler_BaseMap, uv);
     normalTS.xyz = UnpackNormalScale(normalTS, INPUT_PROP(_NormalScale));
     return normalTS.xyz;
 }
 
-half GetMetallic(Varyings input)
+half GetMetallic(float2 uv)
 {
-    half metallic = SAMPLE_TEXTURE2D(_MaskMap, sampler_BaseMap, input.baseUV).r;
+    half metallic = SAMPLE_TEXTURE2D(_MaskMap, sampler_BaseMap, uv).r;
     metallic *= INPUT_PROP(_MetallicScale);
     return metallic;
 }
 
-half GetSmoothness(Varyings input)
+half GetSmoothness(float2 uv)
 {
-    half smoothness = SAMPLE_TEXTURE2D(_MaskMap, sampler_BaseMap, input.baseUV).a;
+    half smoothness = SAMPLE_TEXTURE2D(_MaskMap, sampler_BaseMap, uv).a;
     smoothness *= INPUT_PROP(_SmoothnessScale);
     return smoothness;
 }
 
-half GetOcclusion(Varyings input)
+half GetOcclusion(float2 uv)
 {
-    half occlusion = SAMPLE_TEXTURE2D(_OcclusionMap, sampler_BaseMap, input.baseUV).g;
+    half occlusion = SAMPLE_TEXTURE2D(_OcclusionMap, sampler_BaseMap, uv).g;
 
     // LerpWhiteTo(occlusion, INPUT_PROP(_OcclusionScale));
     // equals
     return lerp(1, occlusion, INPUT_PROP(_OcclusionScale));
 }
 
-half3 GetEmission(Varyings input)
+half3 GetEmission(float2 uv)
 {
-    half3 emission = SAMPLE_TEXTURE2D(_EmissionMap, sampler_BaseMap, input.baseUV).rgb;
+    half3 emission = SAMPLE_TEXTURE2D(_EmissionMap, sampler_BaseMap, uv).rgb;
     emission *= INPUT_PROP(_EmissionColor).rgb;
     return emission;
 }
 
+real4 GetOutline()
+{
+    return real4(INPUT_PROP(_OutlineColor).rgb, INPUT_PROP(_OutlineWidth));
+}
 
 #endif

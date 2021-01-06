@@ -49,7 +49,7 @@ Varyings CelPBRVert(Attributes input)
     output.normalWS = TransformObjectToWorldNormal(input.normalOS);
     output.tangentWS.xyz = TransformObjectToWorldDir(input.tangentOS.xyz);
     output.bitangentWS = cross(output.normalWS.xyz, output.tangentWS.xyz) * input.tangentOS.w * GetOddNegativeScale();
-    output.baseUV = TRANSFORM_TEX(input.baseUV, _BaseMap);
+    output.baseUV = TRANSFORM_UV(input.baseUV, _BaseMap);
     OUTPUT_LIGHTMAP_UV(input.lightmapUV, unity_LightmapST, output.lightmapUV)
     return output;
 }

@@ -206,6 +206,7 @@ Shader "CelPBR/CelPBR"
             Tags{"LightMode" = "Outline"}
 
             Cull Front
+            ZWrite Off
             
             HLSLPROGRAM
 

@@ -27,14 +27,14 @@ float3 GetWorldNormal(Varyings input, float3 normalTS)
 Surface_CelPBR GetSurface(Varyings input)
 {
     Surface_CelPBR surface;
-    surface.color = GetBaseColor(input).rgb;
-    surface.alpha = GetBaseColor(input).a;
+    surface.color = GetBaseColor(input.baseUV).rgb;
+    surface.alpha = GetBaseColor(input.baseUV).a;
     surface.pos = input.positionWS;
-    surface.normal = GetWorldNormal(input, GetNormalTS(input));
-    surface.metallic = GetMetallic(input);
-    surface.smoothness = GetSmoothness(input);
-    surface.occlusion = GetOcclusion(input);
-    surface.emission = GetEmission(input);
+    surface.normal = GetWorldNormal(input, GetNormalTS(input.baseUV));
+    surface.metallic = GetMetallic(input.baseUV);
+    surface.smoothness = GetSmoothness(input.baseUV);
+    surface.occlusion = GetOcclusion(input.baseUV);
+    surface.emission = GetEmission(input.baseUV);
     return surface;
 }
 

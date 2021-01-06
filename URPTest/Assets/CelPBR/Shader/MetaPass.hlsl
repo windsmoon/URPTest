@@ -29,7 +29,7 @@ Varyings MetaVertexMeta(Attributes input)
 {
     Varyings output;
     output.positionCS = MetaVertexPosition(input.positionOS, input.uv1, input.uv2, unity_LightmapST, unity_DynamicLightmapST);
-    output.baseUV = TRANSFORM_TEX(input.uv0, _BaseMap);
+    output.baseUV = TRANSFORM_UV(input.uv0, _BaseMap);
     return output;
 }
 
@@ -38,13 +38,13 @@ float4 MetaFragmentMeta(Varyings input) : SV_Target
     // InitializeStandardLitSurfaceData(input.uv, surfaceData);
 
     BRDFData brdfData;
-    real4 baseColor = GetBaseColor(input);
-    InitializeBRDFData(baseColor.rgb, GetMetallic(input), 0, GetSmoothness(input), baseColor.a, brdfData);
+    real4 baseColor = GetBaseColor(input.baseUV);
+    InitializeBRDFData(baseColor.rgb, GetMetallic(input.baseUV), 0, GetSmoothness(input.baseUV), baseColor.a, brdfData);
 
     MetaInput metaInput;
     metaInput.Albedo = brdfData.diffuse + brdfData.specular * brdfData.roughness * 0.5;
     metaInput.SpecularColor = 0;
-    metaInput.Emission = GetEmission(input);
+    metaInput.Emission = GetEmission(input.baseUV);
     return MetaFragment(metaInput);
 }
 

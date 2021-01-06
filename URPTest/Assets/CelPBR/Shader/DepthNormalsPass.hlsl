@@ -30,7 +30,7 @@ Varyings DepthNormalsVertex(Attributes input)
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-    output.baseUV         = TRANSFORM_TEX(input.texcoord, _BaseMap);
+    output.baseUV         = TRANSFORM_UV(input.texcoord, _BaseMap);
     output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
 
     VertexNormalInputs normalInput = GetVertexNormalInputs(input.normal, input.tangentOS);
@@ -42,7 +42,7 @@ Varyings DepthNormalsVertex(Attributes input)
 real4 DepthNormalsFragment(Varyings input) : SV_TARGET
 {
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-    real4 baseColor = GetBaseColor(input);
+    real4 baseColor = GetBaseColor(input.baseUV);
     // Alpha(SampleAlbedoAlpha(input.uv, TEXTURE2D_ARGS(_BaseMap, sampler_BaseMap)).a, _BaseColor, _Cutoff);
     return float4(PackNormalOctRectEncode(TransformWorldToViewDir(input.normalWS, true)), 0.0, 0.0);
 }

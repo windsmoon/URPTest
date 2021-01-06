@@ -7,14 +7,12 @@ struct Attributes
 {
     float3 positionOS : POSITION;
     float3 normalOS : NORMAL;
-    float2 uv : TEXCOORD0;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 struct Varyings
 {
     float4 positionCS : SV_POSITION;
-    float2 baseUV : VAR_BASE_UV;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
@@ -27,20 +25,19 @@ Varyings OutlineVert(Attributes input)
     UNITY_TRANSFER_INSTANCE_ID(input, output);
 
     output.positionCS = TransformObjectToHClip(input.positionOS);
-    output.baseUV = TRANSFORM_TEX(input.uv, _BaseMap);
     float3 outlineDirection = TransformObjectToWorldNormal(input.normalOS);
     outlineDirection = TransformWorldToViewDir(outlineDirection);
     float2 ndcNormal = normalize(TransformWViewToHClip(outlineDirection).xy) * output.positionCS.w;
     float ratio = _ScreenParams.y / _ScreenParams.x;
     ndcNormal.x *= ratio;
-    output.positionCS.xy += 0.01 * GetOutline(output).a * ndcNormal;
+    output.positionCS.xy += 0.01 * GetOutline().a * ndcNormal;
     return output;
 }
 
 real4 OutlineFrag(Varyings input) : SV_TARGET
 {
     UNITY_SETUP_INSTANCE_ID(input);
-    return GetOutline(input);
+    return GetOutline();
 }
 
 #endif
