@@ -20,7 +20,7 @@ real3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPB
 
     // diffuse
     float halfLambert = nDotL * 0.5 + 0.5;
-    half ramp = GetRamp(halfLambert * lightData.distanceAttenuation * (lightData.shadowAttenuation + 0) - GetShadowRange()); // todo : edge light ?
+    half ramp = GetRamp(halfLambert * lightData.distanceAttenuation * (saturate(lightData.shadowAttenuation + 0.2)) - GetShadowRange()); // todo : edge light ?
     // half ramp = smoothstep(0, _ShadowSmooth, halfLambert -  GetShadowRange());
     // float3 diffuse = halfLambert >  GetShadowRange() ? GetCelShadeColor() : GetShadowColor();
     float3 diffuse = lerp(GetShadowColor(), GetCelShadeColor(), ramp);
