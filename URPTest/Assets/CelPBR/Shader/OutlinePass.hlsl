@@ -25,12 +25,16 @@ Varyings OutlineVert(Attributes input)
     UNITY_TRANSFER_INSTANCE_ID(input, output);
 
     output.positionCS = TransformObjectToHClip(input.positionOS);
-    float3 outlineDirection = TransformObjectToWorldNormal(input.normalOS);
-    outlineDirection = TransformWorldToViewDir(outlineDirection);
-    float2 ndcNormal = normalize(TransformWViewToHClip(outlineDirection).xy) * output.positionCS.w;
-    float ratio = _ScreenParams.y / _ScreenParams.x;
-    ndcNormal.x *= ratio;
-    output.positionCS.xy += 0.01 * GetOutline().a * ndcNormal;
+
+    #if defined(CEL_SHADING)
+        float3 outlineDirection = TransformObjectToWorldNormal(input.normalOS);
+        outlineDirection = TransformWorldToViewDir(outlineDirection);
+        float2 ndcNormal = normalize(TransformWViewToHClip(outlineDirection).xy) * output.positionCS.w;
+        float ratio = _ScreenParams.y / _ScreenParams.x;
+        ndcNormal.x *= ratio;
+        output.positionCS.xy += 0.01 * GetOutline().a * ndcNormal;
+    #endif
+
     return output;
 }
 
