@@ -25,11 +25,9 @@ Shader "CelPBR/CelPBR"
         _RampMap("Ramp Texture", 2D) = "gray" {}
         _CelShadeColor("Cel Shade Color", Color) = (1, 1, 1)
     	_ShadowColor("Shadow Color", Color) = (0.7, 0.7, 0.8)
-		_ShadowRange("Shadow Range", Range(0, 1)) = 0.5
+		_ShadowRange("Shadow Range", Range(0, 1)) = 0.2
     	_RimColor("Rim Color", Color) = (0, 0, 0, 0)
     	_RimRange("Rim Range (Min and Max, 0 ~ 1)", Vector) = (0.8, 1, 0, 0) 
-        _OutlineColor("Outline Color", Color) = (0, 0, 0, 1)
-        _OutlineWidth("Outline Width", Range(0, 10)) = 1
     }
     
     SubShader
