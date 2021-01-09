@@ -11,6 +11,13 @@ struct Surface_CelPBR
     real smoothness;
     real occlusion;
     real3 emission;
+
+    // cel shading
+    real3 celShadeColor;
+    real3 celShadowColor;
+    real celShadowRange;
+    real3 rimColor;
+    real2 rimRange;
 };
 
 float3 GetWorldNormal(Varyings input, float3 normalTS)
@@ -35,6 +42,13 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.smoothness = GetSmoothness(input.baseUV);
     surface.occlusion = GetOcclusion(input.baseUV);
     surface.emission = GetEmission(input.baseUV);
+
+    // cel shading
+    surface.celShadeColor = GetCelShadeColor();
+    surface.celShadowColor = GetCelShadowColor();
+    surface.celShadowRange = GetCelShadowRange();
+    surface.rimColor = GetRimColor();
+    surface.rimRange = GetRimRange();
     return surface;
 }
 

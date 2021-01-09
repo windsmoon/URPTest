@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9ad90e9b44d3f2a4cbf81384431b86b3
+guid: 0fa2f41739c9e054ab8d89fc52d118d4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -103,6 +103,6 @@ TextureImporter:
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
-  userData: gradient:241F1F,0.07058824,FFFFFF,0.1941253;1,0,1,1;Blend
+  userData: gradient:000000,0.9882353,FFFFFF,1;1,0,1,1;Fixed
   assetBundleName: 
   assetBundleVariant: 

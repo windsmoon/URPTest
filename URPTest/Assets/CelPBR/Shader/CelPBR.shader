@@ -18,14 +18,16 @@ Shader "CelPBR/CelPBR"
         [HideInInspector] _DstBlend("_DstBlend", Float) = 0.0
         [HideInInspector] _ZWrite("_ZWrite", Float) = 1.
         
+        // cel shading
         [Space(50)]
         [Toggle(CEL_SHADING)] _CelShading("Cel Shading", Float) = 0.0
         _OutlineWidth("Outline Width", Range(0.01, 2)) = 0.24
         _OutlineColor("Outline Color", Color) = (0, 0, 0, 0)
         _RampMap("Ramp Texture", 2D) = "gray" {}
         _CelShadeColor("Cel Shade Color", Color) = (1, 1, 1)
-    	_ShadowColor("Shadow Color", Color) = (0, 0, 0)
-		_ShadowRange("Shadow Range", Range(0, 1)) = 0.2
+    	_CelShadowColor("Cel Shadow Color", Color) = (0, 0, 0)
+		_CelShadowRange("Cel Shadow Range", Range(0, 1)) = 0.2
+        _CelSpecularRamp("Cel Specular Ramp", 2D) = "gray" {}
     	_RimColor("Rim Color", Color) = (1, 1, 1, 1)
     	_RimRange("Rim Range (Min and Max, 0 ~ 1)", Vector) = (0.8, 1, 0, 0) 
     }

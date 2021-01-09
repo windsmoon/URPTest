@@ -10,14 +10,14 @@
 // half3 specularColor = lightData.color * powNDotH * lightData.distanceAttenuation * surface.color; 
 // return (diffuseColor + specularColor) * lightData.shadowAttenuation;
 
-#if defined(CEL_SHADING)
-real3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPBR brdf, TempData_CelPBR tempData)
+// #if defined(CEL_SHADING)
+real3 GetLighting_Old(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPBR brdf, TempData_CelPBR tempData)
 {
     // diffuse
-    half ramp = GetRamp(tempData.nDotL - GetShadowRange()); // todo : edge light ?
+    half ramp = GetRamp(tempData.nDotL - surface.celShadowRange); // todo : edge light ?
     // half ramp = smoothstep(0, _ShadowSmooth, halfLambert -  GetShadowRange());
     // float3 diffuse = halfLambert >  GetShadowRange() ? GetCelShadeColor() : GetShadowColor();
-    float3 kd = lerp(GetShadowColor(), GetCelShadeColor(), ramp);
+    float3 kd = lerp(surface.celShadowColor, GetCelShadeColor(), ramp);
 
     // rim light
     float f = 1 - tempData.nDotV;
@@ -34,7 +34,7 @@ real3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPB
     return color;
 }
 
-#else
+// #else
 real3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPBR brdf, TempData_CelPBR tempData)
 {
     return (brdf.diffuse + brdf.specular) * lightData.color * lightData.distanceAttenuation * lightData.shadowAttenuation * tempData.nDotL;
@@ -50,5 +50,10 @@ real3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPB
     // color = LightingPhysicallyBased(brdfData, brdfDataClearCoat, light, surface.normal, tempData.viewDirection, 0, false);
     // return color;
 }
-#endif
+// #endif
+
+real3 GetCelLighting(LightData_CelPBR lightData, CelData_CelPBR celData)
+{
+    return (celData.diffuse + celData.specular + celData.rim) * lightData.color * lightData.distanceAttenuation * lightData.shadowAttenuation;
+}
 #endif

@@ -6,7 +6,7 @@ TextureImporter:
   serializedVersion: 11
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -32,7 +32,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -103,6 +103,6 @@ TextureImporter:
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
-  userData: gradient:000000,0,373737,0.1250019,808080,0.2500038,FFFFFF,0.3235371,FFFFFF,1;1,0,1,1;Fixed
+  userData: gradient:000000,0,373737,0.06471352,808080,0.123537,9F9E9E,0.1705959,FFFFFF,0.2264744;1,0,1,1;Blend
   assetBundleName: 
   assetBundleVariant: 

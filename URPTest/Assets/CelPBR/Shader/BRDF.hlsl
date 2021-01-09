@@ -107,6 +107,7 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     brdf.roughness = max(PerceptualRoughnessToRoughness(brdf.perceptualRoughness), HALF_MIN_SQRT);
     brdf.roughness2 = max(brdf.roughness * brdf.roughness, HALF_MIN);
     float oneMinusReflectivity = OneMinusReflectivityMetallic(surface.metallic);
+    brdf.oneMinusReflectivity = oneMinusReflectivity;
     brdf.reflectivity = 1.0h - oneMinusReflectivity;
     brdf.grazingTerm = saturate(surface.smoothness + brdf.reflectivity);
     brdf.normalizationTerm = brdf.roughness * 4.0h + 2.0h;
@@ -136,6 +137,36 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     // brdf.specular = ks * (d * f * g) / max(denom, FLT_MIN);
     
     return brdf;
+}
+
+struct CelData_CelPBR
+{
+    real3 kd;
+    real3 ks;
+    real3 diffuse;
+    real3 specular;
+    real rim;
+
+    real oneMinusReflectivity;
+    real reflectivity;
+};
+
+CelData_CelPBR GetCelData(Surface_CelPBR surface, BRDF_CelPBR brdf, LightData_CelPBR lightData, TempData_CelPBR tempData)
+{
+    CelData_CelPBR celData;
+    real halfLambert = tempData.nDotL;
+    real diffuseRampUV = halfLambert - surface.celShadowRange;
+    celData.diffuse = GetRamp(diffuseRampUV) * brdf.diffuse;
+    celData.specular = brdf.specular;
+    
+    float f = 1 - tempData.nDotV;
+    f = f * tempData.nDotL;
+    real2 rimRange = surface.rimRange;
+    real3 rimColor = surface.rimColor;
+    f = smoothstep(rimRange.x, rimRange.y, f);
+    float3 rim = f * rimColor.rgb;
+    celData.rim = rim;
+    return celData;
 }
 
 #endif
