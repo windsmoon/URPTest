@@ -100,10 +100,11 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
+    - _CelPBR: 1
     - _CelShading: 1
     - _CelShadowRange: 0.385
     - _CelSpecularGlossiness: 128
-    - _CelSpecularThreshold: 0.93
+    - _CelSpecularThreshold: 0.089
     - _ClearCoat: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 1

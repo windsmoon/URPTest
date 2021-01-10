@@ -3,6 +3,8 @@
 
 struct Surface_CelPBR
 {
+    real celPBR;
+    
     real3 color;
     real alpha;
     real3 pos;
@@ -36,6 +38,7 @@ float3 GetWorldNormal(Varyings input, float3 normalTS)
 Surface_CelPBR GetSurface(Varyings input)
 {
     Surface_CelPBR surface;
+    surface.celPBR = GetCelPBR();
     surface.color = GetBaseColor(input.baseUV).rgb;
     surface.alpha = GetBaseColor(input.baseUV).a;
     surface.pos = input.positionWS;

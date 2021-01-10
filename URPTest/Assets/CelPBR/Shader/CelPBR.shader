@@ -2,6 +2,9 @@ Shader "CelPBR/CelPBR"
 {
     Properties
     {
+        _CelPBR("CelPBR", Range(0, 1)) = 1
+        
+        [Space(50)]
         _BaseMap("Base Map", 2D) = "white" {}
         _BaseColor ("Base Color", Color) = (1, 1, 1, 1)
         _Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
