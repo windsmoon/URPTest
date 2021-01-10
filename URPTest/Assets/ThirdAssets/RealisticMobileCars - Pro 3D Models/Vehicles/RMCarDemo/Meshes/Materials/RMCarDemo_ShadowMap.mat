@@ -102,9 +102,9 @@ Material:
     - _BumpScale: 1
     - _CelPBR: 0
     - _CelShading: 0
-    - _CelShadowRange: 0.385
+    - _CelShadowRange: 0
     - _CelSpecularGlossiness: 128
-    - _CelSpecularThreshold: 0.089
+    - _CelSpecularThreshold: 0.904
     - _ClearCoat: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 1
@@ -123,7 +123,7 @@ Material:
     - _NormalScale: 1
     - _OcclusionScale: 1
     - _OcclusionStrength: 1
-    - _OutlineWidth: 1.175
+    - _OutlineWidth: 0.328
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -139,7 +139,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CelShadeColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CelShadeColor: {r: 0.8773585, g: 0.8703332, b: 0.624911, a: 1}
     - _CelShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}

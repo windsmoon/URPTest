@@ -9,11 +9,11 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: RMCarDemo_Body
   m_Shader: {fileID: 4800000, guid: b63e0de9e7a43794ca1211615572261a, type: 3}
-  m_ShaderKeywords: _METALLICSPECGLOSSMAP _NORMALMAP
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _METALLICSPECGLOSSMAP _NORMALMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -101,19 +101,19 @@ Material:
     - _BumpScale: 1
     - _CelPBR: 0
     - _CelShading: 0
-    - _CelShadowRange: 0.385
+    - _CelShadowRange: 0
     - _CelShadowThreshold: 0.2
     - _CelSpecularGlossiness: 128
     - _CelSpecularRange: 0
-    - _CelSpecularThreshold: 0.089
+    - _CelSpecularThreshold: 0.904
     - _ClearCoat: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 1
     - _Cull: 2
-    - _Cutoff: 0.5
+    - _Cutoff: 0.526
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0.801
     - _Glossiness: 0
@@ -124,7 +124,7 @@ Material:
     - _NormalScale: 1
     - _OcclusionScale: 1
     - _OcclusionStrength: 1
-    - _OutlineWidth: 1.175
+    - _OutlineWidth: 0.328
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -137,10 +137,10 @@ Material:
     - _Surface: 0
     - _UVSec: 0
     - _WorkflowMode: 1
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CelShadeColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 0.59607846}
+    - _CelShadeColor: {r: 0.8773585, g: 0.8703332, b: 0.624911, a: 1}
     - _CelShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}

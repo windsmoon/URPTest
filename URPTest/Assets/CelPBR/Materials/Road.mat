@@ -114,7 +114,7 @@ Material:
     - _CelShadowThreshold: 0.2
     - _CelSpecularGlossiness: 128
     - _CelSpecularRange: 0
-    - _CelSpecularThreshold: 0
+    - _CelSpecularThreshold: 0.878
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
