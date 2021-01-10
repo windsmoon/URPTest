@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: knight1Color
   m_Shader: {fileID: 4800000, guid: b63e0de9e7a43794ca1211615572261a, type: 3}
-  m_ShaderKeywords: CEL_SHADING _EMISSION _NORMALMAP _SPECGLOSSMAP
+  m_ShaderKeywords: _EMISSION _NORMALMAP _SPECGLOSSMAP
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -90,7 +90,7 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _CelPBR: 0
-    - _CelShading: 1
+    - _CelShading: 0
     - _CelShadowRange: 0
     - _CelShadowThreshold: 0.848
     - _CelSpecularGlossiness: 128

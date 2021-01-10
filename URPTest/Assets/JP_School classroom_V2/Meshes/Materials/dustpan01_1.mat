@@ -77,8 +77,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 2
+    - _CelPBR: 0
     - _CelShading: 1
-    - _CelShadowRange: 0.2
+    - _CelShadowRange: 0
+    - _CelSpecularGlossiness: 128
+    - _CelSpecularThreshold: 0.896
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
