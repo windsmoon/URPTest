@@ -13,7 +13,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -100,7 +100,9 @@ Material:
     - _Blend: 0
     - _BumpScale: 1
     - _CelShading: 1
-    - _CelShadowRange: 0
+    - _CelShadowRange: 0.385
+    - _CelSpecularGlossiness: 128
+    - _CelSpecularThreshold: 0.93
     - _ClearCoat: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 1
@@ -119,7 +121,7 @@ Material:
     - _NormalScale: 1
     - _OcclusionScale: 1
     - _OcclusionStrength: 1
-    - _OutlineWidth: 1
+    - _OutlineWidth: 1.175
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -134,7 +136,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0, g: 1, b: 0.11449838, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _CelShadeColor: {r: 1, g: 1, b: 1, a: 1}
     - _CelShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 0, g: 0, b: 0, a: 1}

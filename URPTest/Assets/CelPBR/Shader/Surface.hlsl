@@ -16,6 +16,8 @@ struct Surface_CelPBR
     real3 celShadeColor;
     real3 celShadowColor;
     real celShadowRange;
+    real celSpecularThreshold;
+    real celSpecularGlossiness;
     real3 rimColor;
     real2 rimRange;
 };
@@ -47,6 +49,8 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.celShadeColor = GetCelShadeColor();
     surface.celShadowColor = GetCelShadowColor();
     surface.celShadowRange = GetCelShadowRange();
+    surface.celSpecularThreshold = GetCelSpecularThreshold();
+    surface.celSpecularGlossiness = GetCelSpecularGlossiness();
     surface.rimColor = GetRimColor();
     surface.rimRange = GetRimRange();
     return surface;

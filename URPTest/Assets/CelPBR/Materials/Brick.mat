@@ -110,6 +110,8 @@ Material:
     - _BumpScale: 1
     - _CelShading: 1
     - _CelShadowRange: 0
+    - _CelSpecularGlossiness: 128
+    - _CelSpecularThreshold: 0.922
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2

@@ -9,7 +9,7 @@ TEXTURE2D(_EmissionMap);
 SAMPLER(sampler_BaseMap);
 
 TEXTURE2D(_RampMap);
-TEXTURE2D(_CelSpecularRamp);
+// TEXTURE2D(_CelSpecularRamp);
 SAMPLER(sampler_RampMap);
 
 UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
@@ -28,6 +28,8 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(real4, _CelShadeColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _CelShadowColor)
     UNITY_DEFINE_INSTANCED_PROP(real, _CelShadowRange)
+    UNITY_DEFINE_INSTANCED_PROP(real, _CelSpecularThreshold)
+    UNITY_DEFINE_INSTANCED_PROP(real, _CelSpecularGlossiness)
     UNITY_DEFINE_INSTANCED_PROP(real4, _RimColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _RimRange)
 UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
@@ -127,9 +129,15 @@ float GetCelShadowRange()
     return INPUT_PROP(_CelShadowRange);
 }
 
-real GetCelSpecularRamp(float rampUV)
+real GetCelSpecularThreshold()
 {
-    return SAMPLE_TEXTURE2D(_CelSpecularRamp, sampler_RampMap, float2(rampUV, 0.5)).r;
+    // return SAMPLE_TEXTURE2D(_CelSpecularRamp, sampler_RampMap, float2(rampUV, 0.5)).r;
+    return INPUT_PROP(_CelSpecularThreshold);
+}
+
+real GetCelSpecularGlossiness()
+{
+    return INPUT_PROP(_CelSpecularGlossiness);
 }
 
 float4 GetRimColor()

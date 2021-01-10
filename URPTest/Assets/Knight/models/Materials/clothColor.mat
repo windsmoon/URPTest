@@ -94,7 +94,11 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _CelShading: 1
-    - _CelShadowRange: 0.2
+    - _CelShadowRange: 0
+    - _CelShadowThreshold: 0.848
+    - _CelSpecularGlossiness: 128
+    - _CelSpecularRange: 0
+    - _CelSpecularThreshold: 0.037
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
