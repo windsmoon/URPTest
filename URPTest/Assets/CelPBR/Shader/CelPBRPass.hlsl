@@ -98,6 +98,11 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     {
         LightData_CelPBR lightData = GetOtherLightData(input, i);
         TempData_CelPBR tempData = GetTempData(input, surface, lightData);
+        BRDF_CelPBR lightBRDF = GetBRDF(surface, lightData, tempData, surface.alpha);
+
+        celColor += GetCelLighting(lightData, GetCelData(surface, lightBRDF, lightData, tempData));
+        pbrColor += GetLighting(lightData, surface, lightBRDF, tempData);
+        // pbrColor += GetLighting(lightData, surface, brdf, tempData);
 
         // #if defined(CEL_SHADING)
         //     color += GetCelLighting(lightData, GetCelData(surface, brdf, lightData, tempData));
@@ -108,6 +113,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     }
 
     real3 resultColor = lerp(celColor, pbrColor, surface.celPBR) + color;
+    // resultColor = resultColor > 0.05 ? 1 : 0;
     return real4(resultColor, surface.alpha);
 }
 

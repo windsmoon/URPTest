@@ -8,3 +8,4 @@
 // clear : support alpha test
 // 1 doing : add the cel shading
 // 1 : support pre depth for alpha test performance
+// 1 doing : make a demo

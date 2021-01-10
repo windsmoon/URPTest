@@ -179,12 +179,10 @@ half4 LitPassFragment(Varyings input) : SV_Target
     // color.rgb = color.rrr;
     // color.rgb = surfaceData.albedo;
     // color.rgb = color.rgb < 0.8 ? 0 : 1;
-
+    // color.rgb = color.rgb > 0.05 ? 1 : 0;
+    // color.rgb = color.bbb;
     color.a = OutputAlpha(color.a, _Surface);
 
-    #if defined(_ALPHAPREMULTIPLY_ON)
-    color.rgb = color.aaa;
-    #endif
     return color;
 }
 
