@@ -26,11 +26,7 @@ struct Surface_CelPBR
 
 float3 GetWorldNormal(Varyings input, float3 normalTS)
 {
-    float3 normalWS = SafeNormalize(input.normalWS.xyz);
-    float3 tangentWS = SafeNormalize(input.tangentWS.xyz);
-    float3 bitangentWS = SafeNormalize(input.bitangentWS.xyz);
-    // float3 normal = TransformTangentToWorld(normalTS, half3x3(tangentWS, bitangentWS, normalWS));
-    float3 normal = mul(normalTS.xyz, float3x3(tangentWS, bitangentWS, normalWS));
+    float3 normal = mul(normalTS.xyz, GetTBN(input.normalWS.xyz, input.tangentWS.xyz, input.bitangentWS.xyz));
     normal = normalize(normal);
     return normal;
 }

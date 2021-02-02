@@ -6,6 +6,7 @@ TEXTURE2D(_NormalMap);
 TEXTURE2D(_MaskMap);
 TEXTURE2D(_OcclusionMap);
 TEXTURE2D(_EmissionMap);
+TEXTURE2D(_HeightMap);
 SAMPLER(sampler_BaseMap);
 
 TEXTURE2D(_RampMap);
@@ -23,6 +24,7 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(half, _SmoothnessScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _OcclusionScale)
     UNITY_DEFINE_INSTANCED_PROP(real4, _EmissionColor)
+    UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxScale)
 
     // cel shading
     UNITY_DEFINE_INSTANCED_PROP(real, _OutlineWidth)
@@ -107,6 +109,12 @@ half3 GetEmission(float2 uv)
     half3 emission = SAMPLE_TEXTURE2D(_EmissionMap, sampler_BaseMap, uv).rgb;
     emission *= INPUT_PROP(_EmissionColor).rgb;
     return emission;
+}
+
+real GetParallaxHeight(float2 uv)
+{
+    half height = SAMPLE_TEXTURE2D(_HeightMap, sampler_BaseMap, uv).r;
+    return height * INPUT_PROP(_ParallaxScale);
 }
 
 // cel shading

@@ -17,6 +17,9 @@ Shader "CelPBR/CelPBR"
         _OcclusionScale("Strength", Range(0.0, 1.0)) = 1.0
         [NoScaleOffset]_EmissionMap("Emission Map", 2D) = "black" {}
         [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
+        [NoScaleOffset]_HeightMap("Height Map", 2D) = "black" {}
+        [HDR] _ParallaxScale("ParallaxScale Scale", float) = 0
+        
         [HideInInspector] _SrcBlend("_SrcBlend", Float) = 1.0
         [HideInInspector] _DstBlend("_DstBlend", Float) = 0.0
         [HideInInspector] _ZWrite("_ZWrite", Float) = 1.
@@ -48,7 +51,7 @@ Shader "CelPBR/CelPBR"
             ZWrite[_ZWrite]
 //            Cull[_Cull]
 
-                        HLSLPROGRAM
+            HLSLPROGRAM
             // -------------------------------------
             // Material Keywords
             // #pragma shader_feature_local _NORMALMAP
@@ -58,7 +61,7 @@ Shader "CelPBR/CelPBR"
             // #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
             // #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
             // #pragma shader_feature_local_fragment _OCCLUSIONMAP
-            // #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature_local _ _PARALLAXMAP
             // #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
             // #pragma shader_feature_local_fragment _SPECULARHIGHLIGHTS_OFF
             // #pragma shader_feature_local_fragment _ENVIRONMENTREFLECTIONS_OFF
@@ -68,7 +71,8 @@ Shader "CelPBR/CelPBR"
             #define _NORMALMAP
             #define _METALLICSPECGLOSSMAP
             #define _OCCLUSIONMAP
-            #define _EMISSION   
+            #define _EMISSION
+            #define _PARALLAXMAP
                         
             // -------------------------------------
             // Universal Pipeline keywords
