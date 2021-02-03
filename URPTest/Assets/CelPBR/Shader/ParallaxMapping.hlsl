@@ -13,12 +13,15 @@ float2 ParallaxMapping(float2 uv, real3 viewDir)
 float2 SteepParallaxMapping(float2 uv, real3 viewDir)
 {
     float2 parallaxUVDir = -viewDir.xy;
-    float2 totalParallaxUVOffset = parallaxUVDir * 0.01 * GetParallaxScale();
-    float layerCount = 20;
+    float minLayerCount = 4;
+    float maxLayerCont = 16;
+    float layerCount = lerp(maxLayerCont, minLayerCount, saturate(dot(viewDir, real3(0, 0, 1))));
+    
     float deltaDepth = 1 / layerCount;
+    float2 totalParallaxUVOffset = parallaxUVDir * 0.01 * GetParallaxScale();
     float2 deltaUV = totalParallaxUVOffset / layerCount;
     real currentDepth = 0;
-    float2 parallaxedUV = 0;
+    float2 parallaxedUV = uv;
     
     for (int i = 0; i <= layerCount; ++i)
     {
