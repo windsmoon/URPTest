@@ -24,6 +24,7 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(half, _SmoothnessScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _OcclusionScale)
     UNITY_DEFINE_INSTANCED_PROP(real4, _EmissionColor)
+    UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxMappingType);
     UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxScale)
 
     // cel shading
@@ -111,25 +112,25 @@ half3 GetEmission(float2 uv)
     return emission;
 }
 
-real GetParallaxScale()
-{
-    return INPUT_PROP(_ParallaxScale);
-}
-
 real GetHeightMap(float2 uv)
 {
-    real height = SAMPLE_TEXTURE2D(_HeightMap, sampler_BaseMap, uv).r;
+    real height = SAMPLE_TEXTURE2D(_HeightMap, sampler_BaseMap, uv);
 
     #if defined(REVERT_HEIGHT)
         height = 1 - height;
     #endif
-
+        
     return height;
 }
 
-real GetParallaxHeight(float2 uv)
+real GetParallaxMappingType()
 {
-    return GetHeightMap(uv) * GetParallaxScale();
+    return INPUT_PROP(_ParallaxMappingType);        
+}
+
+real GetParallaxScale()
+{
+    return INPUT_PROP(_ParallaxScale);
 }
 
 // cel shading

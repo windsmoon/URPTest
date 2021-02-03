@@ -22,7 +22,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Brick
   m_Shader: {fileID: 4800000, guid: b63e0de9e7a43794ca1211615572261a, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: REVERT_HEIGHT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -131,10 +131,12 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineWidth: 0.24
     - _Parallax: 0.005
-    - _ParallaxScale: 0.42
+    - _ParallaxMapping: 0
+    - _ParallaxMappingType: 0
+    - _ParallaxScale: 0.43
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RevertHeight: 0
+    - _RevertHeight: 1
     - _Smoothness: 0.5
     - _SmoothnessScale: 0.415
     - _SmoothnessTextureChannel: 0
