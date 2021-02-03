@@ -111,10 +111,25 @@ half3 GetEmission(float2 uv)
     return emission;
 }
 
+real GetParallaxScale()
+{
+    return INPUT_PROP(_ParallaxScale);
+}
+
+real GetHeightMap(float2 uv)
+{
+    real height = SAMPLE_TEXTURE2D(_HeightMap, sampler_BaseMap, uv).r;
+
+    #if defined(REVERT_HEIGHT)
+        height = 1 - height;
+    #endif
+
+    return height;
+}
+
 real GetParallaxHeight(float2 uv)
 {
-    half height = SAMPLE_TEXTURE2D(_HeightMap, sampler_BaseMap, uv).r;
-    return height * INPUT_PROP(_ParallaxScale);
+    return GetHeightMap(uv) * GetParallaxScale();
 }
 
 // cel shading

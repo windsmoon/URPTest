@@ -18,6 +18,7 @@ Shader "CelPBR/CelPBR"
         [NoScaleOffset]_EmissionMap("Emission Map", 2D) = "black" {}
         [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
         [NoScaleOffset]_HeightMap("Height Map", 2D) = "black" {}
+        [Toggle(REVERT_HEIGHT)] _RevertHeight("Revert Height", Float) = 0
         [HDR] _ParallaxScale("ParallaxScale Scale", float) = 0
         
         [HideInInspector] _SrcBlend("_SrcBlend", Float) = 1.0
@@ -98,6 +99,7 @@ Shader "CelPBR/CelPBR"
 
             // custom defined keywords
             #pragma shader_feature_local _ CEL_SHADING
+            #pragma shader_feature_local _ REVERT_HEIGHT
             
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag
