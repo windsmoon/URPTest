@@ -28,7 +28,7 @@ float2 SteepParallaxMapping(float2 uv, real3 viewDir)
         // parallaxedUV = parallaxedUV + GetParallaxHeight(parallaxedUV) * parallaxUVDir * 0.01;
         parallaxedUV = uv + deltaUV * i;
         currentDepth = deltaDepth * i;
-        real tempDepth = 1 - GetHeightMap(uv);
+        real tempDepth = 1 - GetHeightMap(parallaxedUV);
         
         if (tempDepth <= currentDepth)
         {
