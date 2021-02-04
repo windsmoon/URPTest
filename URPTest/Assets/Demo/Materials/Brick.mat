@@ -132,8 +132,8 @@ Material:
     - _OutlineWidth: 0.24
     - _Parallax: 0.005
     - _ParallaxMapping: 0
-    - _ParallaxMappingType: 0
-    - _ParallaxScale: 0.43
+    - _ParallaxMappingType: 1
+    - _ParallaxScale: 2.34
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 1
