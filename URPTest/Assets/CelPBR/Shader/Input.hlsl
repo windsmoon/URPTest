@@ -24,7 +24,7 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(half, _SmoothnessScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _OcclusionScale)
     UNITY_DEFINE_INSTANCED_PROP(real4, _EmissionColor)
-    UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxMappingType);
+    UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxMappingType)
     UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxScale)
 
     // cel shading

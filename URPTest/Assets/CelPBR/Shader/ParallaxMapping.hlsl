@@ -39,6 +39,11 @@ float2 SteepParallaxMapping(float2 uv, real3 viewDir)
     return parallaxedUV;
 }
 
+float2 GetParallaxOcclusionMapping(float2 uv, real3 viewDi)
+{
+    
+}
+
 float2 GetParallaxedUV(float2 uv, real3 viewDir)
 {
     real parallaxMappingType = GetParallaxMappingType();
