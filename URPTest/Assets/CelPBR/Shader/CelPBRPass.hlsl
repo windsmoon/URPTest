@@ -67,6 +67,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
         half3 viewDirWS = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
         half3 viewDirTS = mul(GetTBN(input.normalWS, input.tangentWS, input.bitangentWS), viewDirWS);
         input.baseUV = GetParallaxedUV(input.baseUV, viewDirTS);
+        // return float4(input.baseUV.rg, 1, GetBaseColor(input.baseUV).a);
     #endif
     
     Surface_CelPBR surface = GetSurface(input);
