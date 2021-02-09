@@ -21,6 +21,7 @@ Shader "CelPBR/CelPBR"
         [Toggle(REVERT_HEIGHT)] _RevertHeight("Revert Height", Float) = 0
         [Enum(None, 0, ParallaxMapping, 1, SteepParallaxMapping, 2, ParallaxOcclusionMapping, 3, RelifParallaxMapping, 4)] _ParallaxMappingType ("Parallax Mapping Type", Float) = 0
         _ParallaxScale("ParallaxScale Scale", float) = 0
+        [Toggle(PARALLAX_SELF_SHADOW)] _ParallaxSelfShadow("Parallax Self Shadow", Float) = 0
         
         [HideInInspector] _SrcBlend("_SrcBlend", Float) = 1.0
         [HideInInspector] _DstBlend("_DstBlend", Float) = 0.0
@@ -101,6 +102,7 @@ Shader "CelPBR/CelPBR"
             // custom defined keywords
             #pragma shader_feature_local _ CEL_SHADING
             #pragma shader_feature_local _ REVERT_HEIGHT
+            #pragma shader_feature_local _ PARALLAX_SELF_SHADOW
             
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag

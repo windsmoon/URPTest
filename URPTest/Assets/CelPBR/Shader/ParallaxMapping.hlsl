@@ -1,6 +1,36 @@
 #ifndef CEL_PBR_PARALLAX_MAPPING
 #define CEL_PBR_PARALLAX_MAPPING
 
+real HasSelfShadow(float2 uv, real3 lightDir)
+{
+    float2 parallaxUVDir = lightDir.xy;
+    float minLayerCount = 16;
+    float maxLayerCont = 32;
+    float layerCount = lerp(maxLayerCont, minLayerCount, saturate(dot(lightDir, real3(0, 0, 1))));
+    float endDepth = 1 - GetHeightMap(uv);
+    
+    float deltaDepth = endDepth / layerCount;
+    float2 totalParallaxUVOffset = parallaxUVDir * GetParallaxScale() * 0.01;
+    float2 deltaUV = totalParallaxUVOffset / layerCount;
+    real currentLayerDepth = endDepth;
+    float2 currentUV = uv;
+    
+    for (int i = 0; i <= 32; ++i)
+    {
+        // parallaxedUV = parallaxedUV + GetParallaxHeight(parallaxedUV) * parallaxUVDir * 0.01;
+        currentUV += deltaUV;
+        currentLayerDepth -= deltaDepth;
+        real depthMapValue = 1 - GetHeightMap(currentUV);
+        
+        if (depthMapValue < currentLayerDepth)
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 float2 ParallaxMapping(float2 uv, real3 viewDir)
 {
     // view dir is from surface to camera

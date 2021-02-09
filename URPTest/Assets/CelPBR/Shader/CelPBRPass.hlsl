@@ -31,13 +31,13 @@ struct Varyings
 
 #include "Common.hlsl"
 #include "Input.hlsl"
+#include "ParallaxMapping.hlsl"
 #include "Light.hlsl"
 #include "Surface.hlsl"
 #include "TempData.hlsl"
 #include "BRDF.hlsl"
 #include "GI.hlsl"
 #include "Lighting.hlsl"
-#include "ParallaxMapping.hlsl"
 
 Varyings CelPBRVert(Attributes input)
 {
@@ -62,12 +62,12 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     input.tangentWS = normalize(input.tangentWS);
     input.bitangentWS = normalize(input.bitangentWS);
 
+
     #if defined(_PARALLAXMAP)
-    // todo : caculate viewDir in a hlsl file
+        // todo : caculate viewDir in a hlsl file
         half3 viewDirWS = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
         half3 viewDirTS = mul(GetTBN(input.normalWS, input.tangentWS, input.bitangentWS), viewDirWS);
         input.baseUV = GetParallaxedUV(input.baseUV, viewDirTS);
-        // return float4(input.baseUV.rg, 1, GetBaseColor(input.baseUV).a);
     #endif
     
     Surface_CelPBR surface = GetSurface(input);
