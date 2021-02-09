@@ -19,8 +19,8 @@ Shader "CelPBR/CelPBR"
         [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
         [NoScaleOffset]_HeightMap("Height Map", 2D) = "black" {}
         [Toggle(REVERT_HEIGHT)] _RevertHeight("Revert Height", Float) = 0
-        [Enum(None, 0, ParallaxMapping, 1, SteepParallaxMapping, 2, ParallaxOcclusionMapping, 3)] _ParallaxMappingType ("Parallax Mapping Type", Float) = 0
-        [HDR] _ParallaxScale("ParallaxScale Scale", float) = 0
+        [Enum(None, 0, ParallaxMapping, 1, SteepParallaxMapping, 2, ParallaxOcclusionMapping, 3, RelifParallaxMapping, 4)] _ParallaxMappingType ("Parallax Mapping Type", Float) = 0
+        _ParallaxScale("ParallaxScale Scale", float) = 0
         
         [HideInInspector] _SrcBlend("_SrcBlend", Float) = 1.0
         [HideInInspector] _DstBlend("_DstBlend", Float) = 0.0

@@ -131,9 +131,10 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineWidth: 0.24
     - _Parallax: 0.005
+    - _ParallaxBinarySearchStepCount: 6.12
     - _ParallaxMapping: 0
-    - _ParallaxMappingType: 3
-    - _ParallaxScale: 6.89
+    - _ParallaxMappingType: 4
+    - _ParallaxScale: 6.56
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 1
