@@ -135,6 +135,7 @@ Material:
     - _ParallaxMapping: 0
     - _ParallaxMappingType: 4
     - _ParallaxScale: 6.56
+    - _ParallaxSelfShadow: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 1

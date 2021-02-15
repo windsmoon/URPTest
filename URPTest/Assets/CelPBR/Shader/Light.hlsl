@@ -44,19 +44,6 @@ LightData_CelPBR GetMainLightData(Varyings input)
     lightData.direction = light.direction;
     lightData.distanceAttenuation = 1;
     lightData.shadowAttenuation = light.shadowAttenuation;
-
-    #if defined(_PARALLAXMAP)
-        #if defined(PARALLAX_SELF_SHADOW)
-            half3 lightDirTS = mul(GetTBN(input.normalWS, input.tangentWS, input.bitangentWS), light.direction);
-            bool hasSelfShadow = HasSelfShadow(input.baseUV, lightDirTS);
-
-            if (hasSelfShadow)
-            {
-                lightData.shadowAttenuation = 0;
-            }
-        #endif
-    #endif
-    
     return lightData;
 }
 

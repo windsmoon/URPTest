@@ -22,7 +22,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: WoodBox
   m_Shader: {fileID: 4800000, guid: b63e0de9e7a43794ca1211615572261a, type: 3}
-  m_ShaderKeywords: REVERT_HEIGHT
+  m_ShaderKeywords: PARALLAX_SELF_SHADOW REVERT_HEIGHT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -133,7 +133,8 @@ Material:
     - _Parallax: 0.005
     - _ParallaxBinarySearchStepCount: 4
     - _ParallaxMappingType: 3
-    - _ParallaxScale: 6
+    - _ParallaxScale: 19.3
+    - _ParallaxSelfShadow: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 1

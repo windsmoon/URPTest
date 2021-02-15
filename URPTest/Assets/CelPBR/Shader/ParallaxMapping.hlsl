@@ -1,46 +1,48 @@
 #ifndef CEL_PBR_PARALLAX_MAPPING
 #define CEL_PBR_PARALLAX_MAPPING
 
-real HasSelfShadow(float2 uv, real3 lightDir)
+bool GetParallaxMappingSelfShadowAttenuation(float2 uv, real3 lightDir, real depth)
 {
     float2 parallaxUVDir = lightDir.xy;
-    float minLayerCount = 16;
-    float maxLayerCont = 32;
+    float minLayerCount = 4;
+    float maxLayerCont = 16;
     float layerCount = lerp(maxLayerCont, minLayerCount, saturate(dot(lightDir, real3(0, 0, 1))));
-    float endDepth = 1 - GetHeightMap(uv);
-    
-    float deltaDepth = endDepth / layerCount;
-    float2 totalParallaxUVOffset = parallaxUVDir * GetParallaxScale() * 0.01;
+
+    float deltaDepth = depth / layerCount;
+    float2 totalParallaxUVOffset = parallaxUVDir * (depth / lightDir.z) *  GetParallaxScale() * 0.01;
     float2 deltaUV = totalParallaxUVOffset / layerCount;
-    real currentLayerDepth = endDepth;
+
+    real currentLayerDepth = depth;
     float2 currentUV = uv;
-    
-    for (int i = 0; i <= 32; ++i)
+    float currentDepthMapValue = depth;
+
+    for (int i = 0; i <= layerCount; ++i)
     {
         // parallaxedUV = parallaxedUV + GetParallaxHeight(parallaxedUV) * parallaxUVDir * 0.01;
         currentUV += deltaUV;
         currentLayerDepth -= deltaDepth;
-        real depthMapValue = 1 - GetHeightMap(currentUV);
+        currentDepthMapValue = 1 - GetHeightMap(currentUV);
         
-        if (depthMapValue < currentLayerDepth)
+        if ((currentDepthMapValue + 0.05 ) < currentLayerDepth)
         {
-            return true;
+            return 0;
         }
     }
-    
-    return false;
+
+    return 1;
 }
 
-float2 ParallaxMapping(float2 uv, real3 viewDir)
+float3 ParallaxMapping(float2 uv, real3 viewDir)
 {
     // view dir is from surface to camera
     float2 parallaxUVDir = -viewDir.xy / viewDir.z;
     // parallaxedUV.y = -1 * parallaxedUV.y;
     uv = uv + (1 - GetHeightMap(uv)) * GetParallaxScale() * parallaxUVDir * 0.01;
-    return uv;
+    float depth = 1 - GetHeightMap(uv);
+    return float3(uv, depth);
 }
 
-float2 SteepParallaxMapping(float2 uv, real3 viewDir)
+float3 SteepParallaxMapping(float2 uv, real3 viewDir)
 {
     float2 parallaxUVDir = -viewDir.xy;
     float minLayerCount = 4;
@@ -52,24 +54,25 @@ float2 SteepParallaxMapping(float2 uv, real3 viewDir)
     float2 deltaUV = totalParallaxUVOffset / layerCount;
     real currentLayerDepth = 0;
     float2 currentUV = uv;
+    float currentDepthMapValue = 0;
     
     for (int i = 0; i <= layerCount; ++i)
     {
         // parallaxedUV = parallaxedUV + GetParallaxHeight(parallaxedUV) * parallaxUVDir * 0.01;
         currentUV = uv + deltaUV * i;
         currentLayerDepth = deltaDepth * i;
-        real depthMapValue = 1 - GetHeightMap(currentUV);
+        currentDepthMapValue = 1 - GetHeightMap(currentUV);
         
-        if (depthMapValue <= currentLayerDepth)
+        if (currentDepthMapValue <= currentLayerDepth)
         {
             break;
         }
     }
     
-    return currentUV;
+    return float3(currentUV, currentDepthMapValue);
 }
 
-float2 GetParallaxOcclusionMapping(float2 uv, real3 viewDir)
+float3 GetParallaxOcclusionMapping(float2 uv, real3 viewDir)
 {
     float2 parallaxUVDir = -viewDir.xy;
     float minLayerCount = 4;
@@ -108,10 +111,11 @@ float2 GetParallaxOcclusionMapping(float2 uv, real3 viewDir)
     float currentDepthDiff = currentLayerDepth - currentDepthMapValue;
     float weight = currentDepthDiff / (currentDepthDiff + preDepthDiff);
     float2 finalUV = (1 - weight) * currentUV + weight * preUV;
-    return finalUV;
+    float finalDepth = (1 - weight) * currentDepthMapValue + weight * preDepthMapValue;
+    return float3(finalUV, finalDepth);
 }
 
-float2 GetRelifParallaxMapping(float2 uv, real3 viewDir)
+float3 GetRelifParallaxMapping(float2 uv, real3 viewDir)
 {
     float2 parallaxUVDir = -viewDir.xy;
     float minLayerCount = 4;
@@ -176,20 +180,20 @@ float2 GetRelifParallaxMapping(float2 uv, real3 viewDir)
     
         else // equal
         {
-            return midUV;
+            return float3(midUV, midDepth);
         }
     }
     
-    return 0.5 * (startUV + endUV);
+    return float3(startUV + endUV, startDepth = endDepth) * 0.5;
 }
 
-float2 GetParallaxedUV(float2 uv, real3 viewDir)
+float3 GetParallaxMappingResult(float2 uv, real3 viewDir)
 {
     real parallaxMappingType = GetParallaxMappingType();
 
     if (parallaxMappingType == 0)
     {
-        return uv;
+        return float3(uv, 1);
     }
     
     if (parallaxMappingType == 1)
@@ -212,6 +216,6 @@ float2 GetParallaxedUV(float2 uv, real3 viewDir)
         return GetRelifParallaxMapping(uv, viewDir);
     }
 
-    return uv;
+    return float3(uv, 1);
 }
 #endif

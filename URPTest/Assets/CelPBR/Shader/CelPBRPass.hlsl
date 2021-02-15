@@ -62,16 +62,24 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     input.tangentWS = normalize(input.tangentWS);
     input.bitangentWS = normalize(input.bitangentWS);
 
+    real parallaxMappingSelfShadowAttenuation = 1;
+    LightData_CelPBR mainLightData = GetMainLightData(input);
 
     #if defined(_PARALLAXMAP)
         // todo : caculate viewDir in a hlsl file
         half3 viewDirWS = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
         half3 viewDirTS = mul(GetTBN(input.normalWS, input.tangentWS, input.bitangentWS), viewDirWS);
-        input.baseUV = GetParallaxedUV(input.baseUV, viewDirTS);
+        float3 parallaxMappingResult = GetParallaxMappingResult(input.baseUV, viewDirTS);
+        input.baseUV = parallaxMappingResult.xy;
+
+        #if defined(PARALLAX_SELF_SHADOW)
+            half3 lightDirTS = mul(GetTBN(input.normalWS, input.tangentWS, input.bitangentWS), mainLightData.direction);
+            parallaxMappingSelfShadowAttenuation = GetParallaxMappingSelfShadowAttenuation(input.baseUV, lightDirTS, parallaxMappingResult.z);
+        #endif
     #endif
     
+    mainLightData.shadowAttenuation *= parallaxMappingSelfShadowAttenuation;
     Surface_CelPBR surface = GetSurface(input);
-    LightData_CelPBR mainLightData = GetMainLightData(input);
     TempData_CelPBR mainTempData = GetTempData(input, surface, mainLightData);
 
     // adjust light and surface data
