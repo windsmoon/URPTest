@@ -17,6 +17,11 @@ Shader "CelPBR/CelPBR"
         _OcclusionScale("Strength", Range(0.0, 1.0)) = 1.0
         [NoScaleOffset]_EmissionMap("Emission Map", 2D) = "black" {}
         [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
+        [Toggle(SSS)] _SSS("SSS", Float) = 0
+        _SSSScale("SSS Scale", Range(0, 1)) = 0
+        _SSSPower("SSS Power", Float) = 2
+        _SSSDistort("SSS Distort", Range(0, 1)) = 0
+        _ThicknessMap("Thickness Map", 2D) = "white" {}
         [NoScaleOffset]_HeightMap("Height Map", 2D) = "black" {}
         [Toggle(REVERT_HEIGHT)] _RevertHeight("Revert Height", Float) = 0
         [Enum(None, 0, ParallaxMapping, 1, SteepParallaxMapping, 2, ParallaxOcclusionMapping, 3, RelifParallaxMapping, 4)] _ParallaxMappingType ("Parallax Mapping Type", Float) = 0
@@ -103,6 +108,7 @@ Shader "CelPBR/CelPBR"
             #pragma shader_feature_local _ CEL_SHADING
             #pragma shader_feature_local _ REVERT_HEIGHT
             #pragma shader_feature_local _ PARALLAX_SELF_SHADOW
+            #pragma shader_feature_local _ SSS
             
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag

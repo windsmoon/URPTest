@@ -91,6 +91,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     
     BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData, surface.alpha);
     GI_CelPBR gi = GetGI(input, brdf, surface, mainTempData);
+    // return float4(brdf.transmit, surface.alpha);
 
     // compile error with out gi.bakeGI parameter
     // MixRealtimeAndBakedGI(ConvertToUnityLight(mainLightData), surface.normal, gi.bakedGI);

@@ -11,6 +11,8 @@ struct TempData_CelPBR
     real3 lightReflectionDirection;
     real nDotV;
     real3 viewReflectionDirection;
+    real backLDotV;
+    real sssFactor;
 };
 
 TempData_CelPBR GetTempData(Varyings input, Surface_CelPBR surface, LightData_CelPBR lightData)
@@ -24,6 +26,9 @@ TempData_CelPBR GetTempData(Varyings input, Surface_CelPBR surface, LightData_Ce
     tempData.lightReflectionDirection = reflect(-lightData.direction, surface.normal);
     tempData.nDotV = max(dot(surface.normal, tempData.viewDirection), 0.0);
     tempData.viewReflectionDirection = reflect(-tempData.viewDirection, surface.normal);
+    tempData.backLDotV = max(dot(-lightData.direction, tempData.viewDirection), 0.0);
+    real3 sssDirection = -SafeNormalize(lightData.direction + surface.normal * GetSSSDistort());
+    tempData.sssFactor = pow(max(dot(sssDirection, tempData.viewDirection), 0.0), GetSSSPower());
     return tempData;
 }
 

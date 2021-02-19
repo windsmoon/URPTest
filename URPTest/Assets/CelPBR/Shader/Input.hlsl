@@ -6,6 +6,7 @@ TEXTURE2D(_NormalMap);
 TEXTURE2D(_MaskMap);
 TEXTURE2D(_OcclusionMap);
 TEXTURE2D(_EmissionMap);
+TEXTURE2D(_ThicknessMap);
 TEXTURE2D(_HeightMap);
 SAMPLER(sampler_BaseMap);
 
@@ -24,6 +25,9 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(half, _SmoothnessScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _OcclusionScale)
     UNITY_DEFINE_INSTANCED_PROP(real4, _EmissionColor)
+    UNITY_DEFINE_INSTANCED_PROP(real, _SSSScale)
+    UNITY_DEFINE_INSTANCED_PROP(real, _SSSPower)
+    UNITY_DEFINE_INSTANCED_PROP(real, _SSSDistort)
     UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxMappingType)
     UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxScale)
 
@@ -110,6 +114,21 @@ half3 GetEmission(float2 uv)
     half3 emission = SAMPLE_TEXTURE2D(_EmissionMap, sampler_BaseMap, uv).rgb;
     emission *= INPUT_PROP(_EmissionColor).rgb;
     return emission;
+}
+
+real3 GetSSSScale()
+{
+    return INPUT_PROP(_SSSScale);
+}
+
+real GetSSSPower()
+{
+    return INPUT_PROP(_SSSPower);
+}
+
+real GetSSSDistort()
+{
+    return INPUT_PROP(_SSSDistort);
 }
 
 real GetHeightMap(float2 uv)
