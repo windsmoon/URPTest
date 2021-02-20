@@ -28,6 +28,7 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(real, _SSSScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _SSSPower)
     UNITY_DEFINE_INSTANCED_PROP(real, _SSSDistort)
+    UNITY_DEFINE_INSTANCED_PROP(real, _ThicknessScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxMappingType)
     UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxScale)
 
@@ -129,6 +130,11 @@ real GetSSSPower()
 real GetSSSDistort()
 {
     return INPUT_PROP(_SSSDistort);
+}
+
+real GetThickness(float2 uv)
+{
+    return SAMPLE_TEXTURE2D(_ThicknessMap, sampler_BaseMap, uv).r * INPUT_PROP(_ThicknessScale);
 }
 
 real GetHeightMap(float2 uv)

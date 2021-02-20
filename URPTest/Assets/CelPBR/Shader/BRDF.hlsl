@@ -116,7 +116,7 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     brdf.roughness2MinusOne = brdf.roughness2 - 1.0h;
 
     #if defined(SSS)
-        brdf.kt = lerp(0, oneMinusReflectivity, surface.sss);
+        brdf.kt = 1 - surface.thickness;
         brdf.kd = oneMinusReflectivity;
     #else
         brdf.kd = oneMinusReflectivity;

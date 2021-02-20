@@ -21,7 +21,8 @@ Shader "CelPBR/CelPBR"
         _SSSScale("SSS Scale", Range(0, 1)) = 0
         _SSSPower("SSS Power", Float) = 2
         _SSSDistort("SSS Distort", Range(0, 1)) = 0
-        _ThicknessMap("Thickness Map", 2D) = "white" {}
+        [NoScaleOffset]_ThicknessMap("Thickness Map", 2D) = "white" {}
+        _ThicknessScale("Thickness Scale", Range(0, 1)) = 1
         [NoScaleOffset]_HeightMap("Height Map", 2D) = "black" {}
         [Toggle(REVERT_HEIGHT)] _RevertHeight("Revert Height", Float) = 0
         [Enum(None, 0, ParallaxMapping, 1, SteepParallaxMapping, 2, ParallaxOcclusionMapping, 3, RelifParallaxMapping, 4)] _ParallaxMappingType ("Parallax Mapping Type", Float) = 0
