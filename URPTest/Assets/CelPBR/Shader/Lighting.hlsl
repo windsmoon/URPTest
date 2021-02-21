@@ -38,8 +38,8 @@ real3 GetLighting_Old(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_C
 real3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPBR brdf, TempData_CelPBR tempData)
 {
     #if defined(SSS)
-        real3 finalLightColor = lightData.color * lightData.distanceAttenuation * lightData.shadowAttenuation;
-        return (brdf.diffuse * (1 - brdf.ksss) + brdf.specular) * finalLightColor * tempData.nDotL + brdf.sss * finalLightColor;
+        real3 finalLightColor = lightData.color * lightData.distanceAttenuation;
+        return (brdf.diffuse * (1 - brdf.ksss) + brdf.specular) * finalLightColor * lightData.shadowAttenuation * tempData.nDotL + brdf.sss * finalLightColor * tempData.halfNDotL;
     #else
         return (brdf.diffuse + brdf.specular) * lightData.color * lightData.distanceAttenuation * lightData.shadowAttenuation * tempData.nDotL;
     #endif
