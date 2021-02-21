@@ -16,6 +16,11 @@ GI_CelPBR GetGI(Varyings input, BRDF_CelPBR brdf, Surface_CelPBR surface, TempDa
     real fresnelTerm = Pow4(1.0 - tempData.nDotV);
     BRDFData brdfData = ConvertToBRDFData(brdf);
     real3 giColor = EnvironmentBRDF(brdfData, indirectDiffuse, indirectSpecular, fresnelTerm);
+
+    // #if defined(SSS)
+    //     giColor = giColor + brdf.sss * indirectDiffuse;
+    // #endif
+
     gi.color = giColor;
     return gi;
 }

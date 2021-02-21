@@ -38,7 +38,7 @@ real3 GetLighting_Old(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_C
 real3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPBR brdf, TempData_CelPBR tempData)
 {
     real3 finalLightColor = lightData.color * lightData.distanceAttenuation;
-    return (brdf.diffuse + brdf.specular) * finalLightColor * lightData.shadowAttenuation * tempData.nDotL + brdf.sss * finalLightColor;
+    return (brdf.diffuse * (1 - brdf.ksss) + brdf.specular + brdf.sss) * finalLightColor * lightData.shadowAttenuation * tempData.nDotL;
 
     // for debug
     // BRDFData brdfData = ConvertToBRDFData(brdf);

@@ -118,7 +118,7 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     #if defined(SSS)
         // brdf.kt = 1 - surface.thickness;
         brdf.ksss = surface.sssMask;
-        brdf.kd = oneMinusReflectivity * (1 - surface.sssMask);
+        brdf.kd = oneMinusReflectivity; // * (1 - surface.sssMask);
     #else
         brdf.kd = oneMinusReflectivity;
         brdf.ksss = 0;
@@ -126,7 +126,7 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     
     // brdf.kd = oneMinusReflectivity;
     brdf.diffuse = surface.color * brdf.kd;
-    brdf.sss = surface.color * GetSSSLut(float2(tempData.halfNDotL, surface.curvature) + GetSSSLutOffset()) * brdf.ksss;
+    brdf.sss = surface.color * GetSSSLut(float2(tempData.nDotL, surface.curvature) + GetSSSLutOffset()) * brdf.ksss;
     // brdf.transmit = surface.color * brdf.kt;
 
     #if defined(_ALPHAPREMULTIPLY_ON)
