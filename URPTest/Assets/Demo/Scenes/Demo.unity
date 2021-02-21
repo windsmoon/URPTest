@@ -280,7 +280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0517fab291a015f4bb90ff3fff2f1c1b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.538
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0517fab291a015f4bb90ff3fff2f1c1b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -860,6 +860,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &177133810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177133808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c887d425e49ecc5489902650e5044a9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 30
+  direction: {x: 0, y: 1, z: 0}
 --- !u!1001 &407850407
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1064,7 +1078,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.5304824, g: 0.659433, b: 0.8584906, a: 1}
-  m_Intensity: 7.6
+  m_Intensity: 10.8
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1121,13 +1135,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526894225}
-  m_LocalRotation: {x: 0.40400046, y: 0.24411938, z: -0.11279895, w: 0.8743374}
+  m_LocalRotation: {x: 0.30145586, y: 0.5691146, z: -0.23573501, w: 0.72777873}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 49.6, y: 31.2, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 76.05, z: 0}
 --- !u!1001 &532694966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2102,7 +2116,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216918875}
   m_LocalRotation: {x: 0.12871917, y: -0, z: -0, w: 0.9916811}
-  m_LocalPosition: {x: 0, y: 1.3, z: -1.73}
+  m_LocalPosition: {x: 0, y: 1.3, z: -1.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2246,7 +2260,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1403378728}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5170644, y: 0.9509329, z: 1.8816029}
+  m_LocalPosition: {x: 0, y: 0.9509329, z: 1.8816029}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2513,7 +2527,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!136 &1839731312
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2609,7 +2623,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &1885763779
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2744,7 +2758,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: afb8e503a77858b40ad5bdf8a5439c1b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afb8e503a77858b40ad5bdf8a5439c1b, type: 3}
@@ -2772,6 +2786,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2079081434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079081432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c887d425e49ecc5489902650e5044a9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 30
+  direction: {x: 0, y: 1, z: 0}
 --- !u!1001 &971758900312132622
 PrefabInstance:
   m_ObjectHideFlags: 0
