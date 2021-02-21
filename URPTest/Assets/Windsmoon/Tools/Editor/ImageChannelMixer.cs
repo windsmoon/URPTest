@@ -17,6 +17,10 @@ namespace Windsmoon.Tools.Editor
         private Operation operationG;
         private Operation operationB;
         private Operation operationA;
+        private float thresholdR;
+        private float thresholdG;
+        private float thresholdB;
+        private float thresholdA;
         #endregion
 
         #region unity methods
@@ -25,10 +29,10 @@ namespace Windsmoon.Tools.Editor
             EditorGUILayout.BeginVertical();
             
             texture = EditorGUILayout.ObjectField("Texture", texture, typeof(Texture2D)) as Texture2D;
-            ChannelOperation(Channel.R, ref operationR);
-            ChannelOperation(Channel.G, ref operationG);
-            ChannelOperation(Channel.B, ref operationB);
-            ChannelOperation(Channel.A, ref operationA);
+            ChannelOperation(Channel.R, ref operationR, ref thresholdR);
+            ChannelOperation(Channel.G, ref operationG, ref thresholdG);
+            ChannelOperation(Channel.B, ref operationB, ref thresholdB);
+            ChannelOperation(Channel.A, ref operationA, ref thresholdA);
 
             if (GUILayout.Button("Mix"))
             {
@@ -41,20 +45,21 @@ namespace Windsmoon.Tools.Editor
         #endregion
         
         #region methods
-        private void ChannelOperation(Channel channel, ref Operation operation)
+        private void ChannelOperation(Channel channel, ref Operation operation, ref float threshold)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(channel.ToString());
             operation = (Operation)EditorGUILayout.EnumPopup(operation);
+            threshold = EditorGUILayout.Slider("Threshold", threshold, 0, 1);
             EditorGUILayout.EndHorizontal();
         }
 
         private void Mix()
         {
-            float[] rColors = Mix(0, operationR);
-            float[] gColors = Mix(1, operationG);
-            float[] bColors = Mix(2, operationB);
-            float[] aColors = Mix(3, operationA);
+            float[] rColors = Mix(0, operationR, thresholdR);
+            float[] gColors = Mix(1, operationG, thresholdG);
+            float[] bColors = Mix(2, operationB, thresholdB);
+            float[] aColors = Mix(3, operationA, thresholdA);
 
             Color[] colors = texture.GetPixels();
             Color[] tempColors = new Color[colors.Length];
@@ -78,7 +83,7 @@ namespace Windsmoon.Tools.Editor
             AssetDatabase.Refresh();
         }
 
-        private float[] Mix(int channel, Operation operation)
+        private float[] Mix(int channel, Operation operation, float threshold)
         {
             switch (operation)
             {
@@ -106,6 +111,14 @@ namespace Windsmoon.Tools.Editor
                     return InvertSingleChannel(3);
                 case Operation.InvertSelf:
                     return InvertSingleChannel(channel);
+                case Operation.BinarizationR:
+                    return BinarizationSingleChannel(0, threshold);
+                case Operation.BinarizationG:
+                    return BinarizationSingleChannel(1, threshold);
+                case Operation.BinarizationB:
+                    return BinarizationSingleChannel(2, threshold);
+                case Operation.BinarizationA:
+                    return BinarizationSingleChannel(3, threshold);
             }
 
             return null;
@@ -162,6 +175,19 @@ namespace Windsmoon.Tools.Editor
 
             return results;
         }
+
+        private float[] BinarizationSingleChannel(int index, float threshold)
+        {
+            Color[] colors = texture.GetPixels();
+            float[] results = new float[colors.Length];
+            
+            for (int i = 0; i < colors.Length; ++i)
+            {
+                results[i] = colors[i][index] <= threshold ? 0 : 1;
+            }
+
+            return results;
+        }
         
         [MenuItem("Windsmoon/Tools/Image Channel Mixer")]
         private static void OpenImageChannelMixer()
@@ -194,6 +220,10 @@ namespace Windsmoon.Tools.Editor
             InvertG,
             InvertB,
             InvertA,
+            BinarizationR,
+            BinarizationG,
+            BinarizationB,
+            BinarizationA,
         }
         #endregion
     }
