@@ -9,6 +9,8 @@ struct Surface_CelPBR
     real alpha;
     real3 pos;
     real3 normal;
+    real3 tangent;
+    real3 bitangent;
     real metallic;
     real smoothness;
     real occlusion;
@@ -16,6 +18,7 @@ struct Surface_CelPBR
     real sssMask;
     real curvature;
     real thickness;
+    real kkHighlightOffset;
 
     // cel shading
     real3 celShadeColor;
@@ -42,13 +45,16 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.alpha = GetBaseColor(input.baseUV).a;
     surface.pos = input.positionWS;
     surface.normal = GetWorldNormal(input, GetNormalTS(input.baseUV));
+    surface.tangent = input.tangentWS;
+    surface.bitangent = input.bitangentWS;
     surface.metallic = GetMetallic(input.baseUV);
     surface.smoothness = GetSmoothness(input.baseUV);
     surface.occlusion = GetOcclusion(input.baseUV);
     surface.emission = GetEmission(input.baseUV);
     surface.sssMask = GetSSSMask(input.baseUV);
-    surface.curvature = GetSSSLutCurvature() * length(fwidth(surface.normal)) / length(fwidth(surface.pos));
+    surface.curvature = GetSSSLutCurvatureScale() * length(fwidth(surface.normal)) / length(fwidth(surface.pos));
     surface.thickness = GetThickness(input.baseUV);
+    surface.kkHighlightOffset = GetKKHighlightOffset(input.kkHighlightUV) + GetKKHighlightOffset();
 
     // cel shading
     surface.celShadeColor = GetCelShadeColor();

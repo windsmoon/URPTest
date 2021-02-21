@@ -9,9 +9,11 @@ TEXTURE2D(_EmissionMap);
 TEXTURE2D(_SSSMask);
 TEXTURE2D(_SSSLut);
 TEXTURE2D(_ThicknessMap);
+TEXTURE2D(_KKHighlightOffsetMap);
 TEXTURE2D(_HeightMap);
 SAMPLER(sampler_BaseMap);
 SAMPLER(sampler_SSSLut);
+SAMPLER(sampler_KKHighlightOffsetMap);
 
 TEXTURE2D(_RampMap);
 // TEXTURE2D(_CelSpecularRamp);
@@ -32,6 +34,8 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(real, _SSSPower)
     UNITY_DEFINE_INSTANCED_PROP(real, _SSSDistort)
     UNITY_DEFINE_INSTANCED_PROP(real, _ThicknessScale)
+    UNITY_DEFINE_INSTANCED_PROP(real4, _KKHighlightOffsetMap_ST)
+    UNITY_DEFINE_INSTANCED_PROP(real4, _KKHighlightData)
     UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxMappingType)
     UNITY_DEFINE_INSTANCED_PROP(real, _ParallaxScale)
 
@@ -135,7 +139,7 @@ float2 GetSSSLutOffset()
     return INPUT_PROP(_SSSLutOffset).xy;
 }
 
-float GetSSSLutCurvature()
+float GetSSSLutCurvatureScale()
 {
     return INPUT_PROP(_SSSLutOffset).z;
 }
@@ -153,6 +157,28 @@ real GetSSSDistort()
 real GetThickness(float2 uv)
 {
     return SAMPLE_TEXTURE2D(_ThicknessMap, sampler_BaseMap, uv).r * INPUT_PROP(_ThicknessScale);
+}
+
+real GetKKHighlightOffset(float2 uv)
+{
+    real offset = SAMPLE_TEXTURE2D(_KKHighlightOffsetMap, sampler_KKHighlightOffsetMap, uv).r * 2 - 1;
+    real2 data = INPUT_PROP(_KKHighlightData);
+    return offset * data.y; 
+}
+
+real GetKKHighlightOffset()
+{
+    return INPUT_PROP(_KKHighlightData).x;
+}
+
+real GetKKHighlightShiness()
+{
+    return INPUT_PROP(_KKHighlightData).z;
+}
+
+real GetKKHighlightUseTangent()
+{
+    return INPUT_PROP(_KKHighlightData).w;
 }
 
 real GetHeightMap(float2 uv)

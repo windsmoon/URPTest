@@ -25,6 +25,7 @@ struct Varyings
     float3 tangentWS : VAR_TANGENT;
     float3 bitangentWS : VAR_BITANGENT;
     float2 baseUV : VAR_BASE_UV;
+    float2 kkHighlightUV : VAR_KK_HIGHLIGHT_UV;
     DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 1);
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
@@ -51,6 +52,7 @@ Varyings CelPBRVert(Attributes input)
     output.tangentWS.xyz = TransformObjectToWorldDir(input.tangentOS.xyz);
     output.bitangentWS = cross(output.normalWS.xyz, output.tangentWS.xyz) * input.tangentOS.w * GetOddNegativeScale();
     output.baseUV = TRANSFORM_UV(input.baseUV, _BaseMap);
+    output.kkHighlightUV = TRANSFORM_UV(input.baseUV, _KKHighlightOffsetMap);
     OUTPUT_LIGHTMAP_UV(input.lightmapUV, unity_LightmapST, output.lightmapUV)
     return output;
 }
@@ -91,7 +93,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     
     BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData, surface.alpha);
     GI_CelPBR gi = GetGI(input, brdf, surface, mainTempData);
-    // return float4(brdf.transmit, surface.alpha);
+    // return float4(mainTempData.kkTSinH.rrr, surface.alpha);
 
     // compile error with out gi.bakeGI parameter
     // MixRealtimeAndBakedGI(ConvertToUnityLight(mainLightData), surface.normal, gi.bakedGI);

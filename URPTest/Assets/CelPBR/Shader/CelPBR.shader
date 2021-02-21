@@ -17,6 +17,8 @@ Shader "CelPBR/CelPBR"
         _OcclusionScale("Strength", Range(0.0, 1.0)) = 1.0
         [NoScaleOffset]_EmissionMap("Emission Map", 2D) = "black" {}
         [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
+        
+        [Space(50)]
         [Toggle(SSS)] _SSS("SSS", Float) = 0
         [NoScaleOffset]_SSSMask("SSS Mask", 2D) = "black" {}
         [NoScaleOffset]_SSSLut("SSS Lut", 2D) = "white" {}
@@ -25,6 +27,13 @@ Shader "CelPBR/CelPBR"
         _SSSDistort("SSS Distort", Range(0, 1)) = 0
         [NoScaleOffset]_ThicknessMap("Thickness Map", 2D) = "white" {}
         _ThicknessScale("Thickness Scale", Range(0, 1)) = 1
+        
+        [Space(50)]
+        [Toggle(KK_HIGHLIGHT)] _KKHighlight("KK Highlight", Float) = 0
+        _KKHighlightOffsetMap("KK Highlight Shift Map", 2D) = "black" {}
+        _KKHighlightData("KK Highlight Data, X Offset, Y Intensity, Z Shiness， D Use Tangent", Vector) = (0, 1, 128, 1) 
+                
+        [Space(50)]
         [NoScaleOffset]_HeightMap("Height Map", 2D) = "black" {}
         [Toggle(REVERT_HEIGHT)] _RevertHeight("Revert Height", Float) = 0
         [Enum(None, 0, ParallaxMapping, 1, SteepParallaxMapping, 2, ParallaxOcclusionMapping, 3, RelifParallaxMapping, 4)] _ParallaxMappingType ("Parallax Mapping Type", Float) = 0
@@ -33,7 +42,7 @@ Shader "CelPBR/CelPBR"
         
         [HideInInspector] _SrcBlend("_SrcBlend", Float) = 1.0
         [HideInInspector] _DstBlend("_DstBlend", Float) = 0.0
-        [HideInInspector] _ZWrite("_ZWrite", Float) = 1.
+        [HideInInspector] _ZWrite("_ZWrite", Float) = 1.0
         
         // cel shading
         [Space(50)]
@@ -112,6 +121,7 @@ Shader "CelPBR/CelPBR"
             #pragma shader_feature_local _ REVERT_HEIGHT
             #pragma shader_feature_local _ PARALLAX_SELF_SHADOW
             #pragma shader_feature_local _ SSS
+            #pragma shader_feature_local _ KK_HIGHLIGHT
             
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag

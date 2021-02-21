@@ -14,6 +14,8 @@ struct TempData_CelPBR
     real3 viewReflectionDirection;
     real backLDotV;
     real sssFactor;
+    real kkTDotH;
+    real kkTSinH;
 };
 
 TempData_CelPBR GetTempData(Varyings input, Surface_CelPBR surface, LightData_CelPBR lightData)
@@ -32,6 +34,14 @@ TempData_CelPBR GetTempData(Varyings input, Surface_CelPBR surface, LightData_Ce
     tempData.backLDotV = max(dot(-lightData.direction, tempData.viewDirection), 0.0);
     real3 sssDirection = -SafeNormalize(lightData.direction + surface.normal * GetSSSDistort());
     tempData.sssFactor = pow(max(dot(sssDirection, tempData.viewDirection), 0.0), GetSSSPower());
+
+    // kk
+    real3 usedTangent = GetKKHighlightUseTangent() == 1 ? surface.tangent : surface.bitangent;
+    // real3 offsetDir = surface.normal * GetKKHighlightOffset(input.kkHighlightUV);
+    // real3 direction = normalize(usedTangent + offsetDir);
+    real3 direction = normalize(usedTangent + surface.normal * surface.kkHighlightOffset);
+    tempData.kkTDotH = dot(direction, tempData.halfDirection);
+    tempData.kkTSinH = sqrt(1 - tempData.kkTDotH * tempData.kkTDotH);
     return tempData;
 }
 
