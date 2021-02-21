@@ -7,6 +7,7 @@ struct TempData_CelPBR
     real3 halfDirection;
     real nDotH;
     real nDotL;
+    real halfNDotL;
     real lDotH;
     real3 lightReflectionDirection;
     real nDotV;
@@ -21,7 +22,9 @@ TempData_CelPBR GetTempData(Varyings input, Surface_CelPBR surface, LightData_Ce
     tempData.viewDirection = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
     tempData.halfDirection = SafeNormalize(tempData.viewDirection + lightData.direction);
     tempData.nDotH = max(dot(surface.normal, tempData.halfDirection), 0.0);
-    tempData.nDotL = max(dot(surface.normal, lightData.direction), 0.0);
+    real tempNDotL = dot(surface.normal, lightData.direction);
+    tempData.nDotL = max(tempNDotL, 0.0);
+    tempData.halfNDotL = 0.5 * tempNDotL + 0.5;
     tempData.lDotH = max(dot(lightData.direction, tempData.halfDirection), 0.0);
     tempData.lightReflectionDirection = reflect(-lightData.direction, surface.normal);
     tempData.nDotV = max(dot(surface.normal, tempData.viewDirection), 0.0);

@@ -18,6 +18,8 @@ Shader "CelPBR/CelPBR"
         [NoScaleOffset]_EmissionMap("Emission Map", 2D) = "black" {}
         [HDR] _EmissionColor("Color", Color) = (0, 0, 0, 0)
         [Toggle(SSS)] _SSS("SSS", Float) = 0
+        [NoScaleOffset]_SSSMask("SSS Mask", 2D) = "black" {}
+        [NoScaleOffset]_SSSLut("SSS Lut", 2D) = "white" {}
         _SSSScale("SSS Scale", Range(0, 1)) = 0
         _SSSPower("SSS Power", Float) = 2
         _SSSDistort("SSS Distort", Range(0, 1)) = 0

@@ -80,7 +80,11 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     
     mainLightData.shadowAttenuation *= parallaxMappingSelfShadowAttenuation;
     Surface_CelPBR surface = GetSurface(input);
+    // return float4(surface.sssMask.rrr, surface.alpha);
+    // return float4(surface.metallic.rrr, surface.alpha);
+
     TempData_CelPBR mainTempData = GetTempData(input, surface, mainLightData);
+    // return float4(GetSSSLut(float2(mainTempData.nDotL, 0.5)), surface.alpha);
 
     // adjust light and surface data
     #if defined(_SCREEN_SPACE_OCCLUSION)

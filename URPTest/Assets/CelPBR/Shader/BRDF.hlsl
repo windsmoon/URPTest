@@ -5,10 +5,10 @@ struct BRDF_CelPBR
 {
     real3 kd;
     real3 ks;
-    real3 kt;
+    real3 ksss;
     real3 diffuse;
     real3 specular;
-    real3 transmit;
+    real3 sss;
 
     real perceptualRoughness;
     real roughness;
@@ -116,16 +116,18 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     brdf.roughness2MinusOne = brdf.roughness2 - 1.0h;
 
     #if defined(SSS)
-        brdf.kt = 1 - surface.thickness;
-        brdf.kd = oneMinusReflectivity;
+        // brdf.kt = 1 - surface.thickness;
+        brdf.ksss = surface.sssMask;
+        brdf.kd = oneMinusReflectivity * (1 - surface.sssMask);
     #else
         brdf.kd = oneMinusReflectivity;
-        brdf.kt = 0;
+        brdf.ksss = 0;
     #endif
     
     // brdf.kd = oneMinusReflectivity;
     brdf.diffuse = surface.color * brdf.kd;
-    brdf.transmit = surface.color * brdf.kt;
+    brdf.sss = surface.color * GetSSSLut(float2(tempData.halfNDotL, GetSSSScale())) * brdf.ksss;
+    // brdf.transmit = surface.color * brdf.kt;
 
     #if defined(_ALPHAPREMULTIPLY_ON)
         brdf.diffuse *= surface.alpha;

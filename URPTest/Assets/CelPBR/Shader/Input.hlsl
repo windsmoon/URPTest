@@ -6,9 +6,12 @@ TEXTURE2D(_NormalMap);
 TEXTURE2D(_MaskMap);
 TEXTURE2D(_OcclusionMap);
 TEXTURE2D(_EmissionMap);
+TEXTURE2D(_SSSMask);
+TEXTURE2D(_SSSLut);
 TEXTURE2D(_ThicknessMap);
 TEXTURE2D(_HeightMap);
 SAMPLER(sampler_BaseMap);
+SAMPLER(sampler_SSSLut);
 
 TEXTURE2D(_RampMap);
 // TEXTURE2D(_CelSpecularRamp);
@@ -117,7 +120,17 @@ half3 GetEmission(float2 uv)
     return emission;
 }
 
-real3 GetSSSScale()
+real GetSSSMask(float2 uv)
+{
+    return SAMPLE_TEXTURE2D(_SSSMask, sampler_BaseMap, uv).r;
+}
+
+real3 GetSSSLut(float2 uv)
+{
+    return SAMPLE_TEXTURE2D(_SSSLut, sampler_SSSLut, uv).rgb;
+}
+
+real GetSSSScale()
 {
     return INPUT_PROP(_SSSScale);
 }

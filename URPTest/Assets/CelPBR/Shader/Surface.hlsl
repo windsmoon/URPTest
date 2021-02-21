@@ -13,6 +13,7 @@ struct Surface_CelPBR
     real smoothness;
     real occlusion;
     real3 emission;
+    real sssMask;
     real thickness;
 
     // cel shading
@@ -44,6 +45,7 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.smoothness = GetSmoothness(input.baseUV);
     surface.occlusion = GetOcclusion(input.baseUV);
     surface.emission = GetEmission(input.baseUV);
+    surface.sssMask = GetSSSMask(input.baseUV);
     surface.thickness = GetThickness(input.baseUV);
 
     // cel shading
