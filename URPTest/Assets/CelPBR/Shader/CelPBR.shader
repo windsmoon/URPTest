@@ -20,7 +20,7 @@ Shader "CelPBR/CelPBR"
         [Toggle(SSS)] _SSS("SSS", Float) = 0
         [NoScaleOffset]_SSSMask("SSS Mask", 2D) = "black" {}
         [NoScaleOffset]_SSSLut("SSS Lut", 2D) = "white" {}
-        _SSSScale("SSS Scale", Range(0, 1)) = 0
+        _SSSLutOffset("SSS Lut Offset", Vector) = (0, 0, 1, 0)
         _SSSPower("SSS Power", Float) = 2
         _SSSDistort("SSS Distort", Range(0, 1)) = 0
         [NoScaleOffset]_ThicknessMap("Thickness Map", 2D) = "white" {}

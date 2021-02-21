@@ -28,7 +28,7 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(half, _SmoothnessScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _OcclusionScale)
     UNITY_DEFINE_INSTANCED_PROP(real4, _EmissionColor)
-    UNITY_DEFINE_INSTANCED_PROP(real, _SSSScale)
+    UNITY_DEFINE_INSTANCED_PROP(float4, _SSSLutOffset)
     UNITY_DEFINE_INSTANCED_PROP(real, _SSSPower)
     UNITY_DEFINE_INSTANCED_PROP(real, _SSSDistort)
     UNITY_DEFINE_INSTANCED_PROP(real, _ThicknessScale)
@@ -130,9 +130,14 @@ real3 GetSSSLut(float2 uv)
     return SAMPLE_TEXTURE2D(_SSSLut, sampler_SSSLut, uv).rgb;
 }
 
-real GetSSSScale()
+float2 GetSSSLutOffset()
 {
-    return INPUT_PROP(_SSSScale);
+    return INPUT_PROP(_SSSLutOffset).xy;
+}
+
+float GetSSSLutCurvature()
+{
+    return INPUT_PROP(_SSSLutOffset).z;
 }
 
 real GetSSSPower()
