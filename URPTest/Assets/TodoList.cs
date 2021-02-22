@@ -1,7 +1,6 @@
 // 0 : urgent
 // 1 : important
 // 2 : normal
-// 3 : not urgent
 
 // clear : sample environment indirect light
 // clear : support depth and normals texture
@@ -9,5 +8,6 @@
 // 1 doing : add the cel shading
 // 1 : support pre depth for alpha test performance
 // 1 doing : make a demo
-// 1 doing add sss effect
+// clear : add simple sss effect
 // 1 doing add kk highlight
+// 1 add character self shadow
