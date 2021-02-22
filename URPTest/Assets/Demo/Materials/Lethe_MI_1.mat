@@ -115,9 +115,9 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
-    - _CelPBR: 0.522
+    - _CelPBR: 0.5
     - _CelShading: 0
-    - _CelShadowRange: 0.302
+    - _CelShadowRange: 0.133
     - _CelSpecularGlossiness: 128
     - _CelSpecularThreshold: 0.33
     - _ClearCoatMask: 0
@@ -170,7 +170,7 @@ Material:
     - _KKHighlightData: {r: 0, g: 1, b: 0, a: 0}
     - _KKHighlightOffsetIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
-    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 0.78823537, g: 0.64705884, b: 0.5529412, a: 1}
     - _RimRange: {r: 0.7, g: 1, b: 0, a: 0}
     - _SSSLutOffset: {r: 0.05, g: 0.05, b: 1, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

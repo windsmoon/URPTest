@@ -209,7 +209,7 @@ CelData_CelPBR GetCelData(Surface_CelPBR surface, BRDF_CelPBR brdf, LightData_Ce
     celData.diffuse = GetRamp(diffuseRampUV) * surface.color;
     real specular = pow(tempData.nDotH, surface.celSpecularGlossiness);
     celData.specular = specular < surface.celSpecularThreshold ? 0 : 1;
-    celData.specular *= surface.metallic;
+    celData.specular *= surface.metallic * surface.smoothness;
     float f = 1 - tempData.nDotV;
     f = f * tempData.nDotL;
     real2 rimRange = surface.rimRange;

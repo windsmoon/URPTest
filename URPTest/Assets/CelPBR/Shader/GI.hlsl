@@ -22,6 +22,7 @@ GI_CelPBR GetGI(Varyings input, BRDF_CelPBR brdf, Surface_CelPBR surface, TempDa
     // #endif
 
     gi.color = giColor;
+    // gi.color = 0;
     return gi;
 }
 
