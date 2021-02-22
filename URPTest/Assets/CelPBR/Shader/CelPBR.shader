@@ -52,7 +52,7 @@ Shader "CelPBR/CelPBR"
         _RampMap("Ramp Texture", 2D) = "gray" {}
         _CelShadeColor("Cel Shade Color", Color) = (1, 1, 1)
     	_CelShadowColor("Cel Shadow Color", Color) = (0, 0, 0)
-		_CelShadowRange("Cel Shadow Threshold", Range(0, 1)) = 0.2
+		_CelShadowRange("Cel Shadow Range", Range(0, 1)) = 0.2
     	_CelSpecularThreshold("Cel Specular Threshold", Range(0, 1)) = 0.8
         _CelSpecularGlossiness("Cel Specular Glossiness", Float) = 128
         _RimColor("Rim Color", Color) = (1, 1, 1, 1)

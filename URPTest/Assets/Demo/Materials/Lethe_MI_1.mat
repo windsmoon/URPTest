@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Lethe_MI_1
   m_Shader: {fileID: 4800000, guid: b63e0de9e7a43794ca1211615572261a, type: 3}
-  m_ShaderKeywords: CEL_SHADING SSS
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -115,11 +115,11 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
-    - _CelPBR: 0.554
-    - _CelShading: 1
-    - _CelShadowRange: 0.324
+    - _CelPBR: 0.416
+    - _CelShading: 0
+    - _CelShadowRange: 0.302
     - _CelSpecularGlossiness: 128
-    - _CelSpecularThreshold: 0.229
+    - _CelSpecularThreshold: 0.33
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -147,7 +147,7 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 0
-    - _SSS: 1
+    - _SSS: 0
     - _SSSDistort: 0
     - _SSSPower: 2
     - _SSSScale: 1
@@ -171,7 +171,7 @@ Material:
     - _KKHighlightOffsetIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimRange: {r: 0.8, g: 1, b: 0, a: 0}
+    - _RimRange: {r: 0.7, g: 1, b: 0, a: 0}
     - _SSSLutOffset: {r: 0.05, g: 0.05, b: 1, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

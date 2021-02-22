@@ -104,6 +104,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     // gi.color = gi.color.bbb;
     // return float4(gi.color, surface.color.r);
     real3 color = gi.color;
+    // color = 0;
     color += surface.emission;
     real3 celColor = GetCelLighting(mainLightData, GetCelData(surface, brdf, mainLightData, mainTempData));
     real3 pbrColor = GetLighting(mainLightData, surface, brdf, mainTempData);
