@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-591912011933493053
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 4
 --- !u!21 &2100000
 Material:
   serializedVersion: 6
@@ -7,9 +20,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: 10.eye
+  m_Name: 9.face
   m_Shader: {fileID: 4800000, guid: b63e0de9e7a43794ca1211615572261a, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: SSS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -80,11 +93,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SSSLut:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 32679f547a496c14bbf72bacb7d0eab3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SSSMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 9bf78724050796241ac7197c21a08608, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -100,7 +113,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ToonTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 4b27dfac70974dd4f86f75f1f56d0af6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -136,7 +149,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EdgeScale: 0.001
-    - _EdgeSize: 0.0011946321
+    - _EdgeSize: 0.00058200007
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -149,7 +162,7 @@ Material:
     - _NormalScale: 1
     - _OcclusionScale: 1
     - _OcclusionStrength: 1
-    - _OutlineWidth: 0.24
+    - _OutlineWidth: 0.135
     - _Parallax: 0.02
     - _ParallaxMappingType: 0
     - _ParallaxScale: 0
@@ -160,14 +173,14 @@ Material:
     - _ReceiveShadows: 1
     - _RevertHeight: 0
     - _Revision: 2
-    - _SSS: 0
+    - _SSS: 1
     - _SSSDistort: 0
     - _SSSPower: 2
     - _SampleGI: 0
     - _ShadowLum: 1.5
     - _Shininess: 5
     - _Smoothness: 0.5
-    - _SmoothnessScale: 1
+    - _SmoothnessScale: 0.1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -186,28 +199,15 @@ Material:
     - _CelShadeColor: {r: 1, g: 1, b: 1, a: 1}
     - _CelShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EdgeColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EdgeColor: {r: 1, g: 0.5, b: 0.5, a: 0.6}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emissive: {r: 0, g: 0, b: 0, a: 0}
     - _KKHighlightData: {r: 0, g: 1, b: 128, a: 1}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
-    - _RimColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 0}
+    - _RimColor: {r: 1, g: 0.5019608, b: 0.5019608, a: 1}
     - _RimRange: {r: 0.6, g: 1, b: 0, a: 0}
     - _SSSLutOffset: {r: 0, g: 0, b: 1, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Specular: {r: 0, g: 0, b: 0, a: 0}
     - _ToonTone: {r: 1, g: 0.5, b: 0.5, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &5246059038308730905
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 4
