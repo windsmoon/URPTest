@@ -167,6 +167,8 @@ Material:
     - _ParallaxMappingType: 0
     - _ParallaxScale: 0
     - _ParallaxSelfShadow: 0
+    - _PerspectiveCorrection: 0
+    - _PerspectiveCorrectionScale: 100
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 0

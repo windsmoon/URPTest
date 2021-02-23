@@ -3,6 +3,8 @@ Shader "CelPBR/CelPBR"
     Properties
     {
         _CelPBR("CelPBR", Range(0, 1)) = 1
+        [Toggle(PERSPECTIVE_CORRECTION)] _PerspectiveCorrection("Perspective Correction", Float) = 0
+        _PerspectiveCorrectionScale("Perspective Correction Scale", Float) = 1
         
         [Space(50)]
         _BaseMap("Base Map", 2D) = "white" {}
@@ -117,6 +119,7 @@ Shader "CelPBR/CelPBR"
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             // custom defined keywords
+            #pragma shader_feature_local _ PERSPECTIVE_CORRECTION
             #pragma shader_feature_local _ CEL_SHADING
             #pragma shader_feature_local _ REVERT_HEIGHT
             #pragma shader_feature_local _ PARALLAX_SELF_SHADOW

@@ -21,6 +21,7 @@ SAMPLER(sampler_RampMap);
 
 UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(real, _CelPBR)
+    UNITY_DEFINE_INSTANCED_PROP(real, _PerspectiveCorrectionScale)
 
     UNITY_DEFINE_INSTANCED_PROP(float4, _BaseMap_ST)
     UNITY_DEFINE_INSTANCED_PROP(half4, _BaseColor)
@@ -58,6 +59,11 @@ UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 real GetCelPBR()
 {
     return INPUT_PROP(_CelPBR);
+}
+
+real GetPerspectiveCorrectionScale()
+{
+    return INPUT_PROP(_PerspectiveCorrectionScale) * 0.01;
 }
 
 half4 GetBaseColor(float2 uv)

@@ -45,9 +45,20 @@ Varyings CelPBRVert(Attributes input)
     Varyings output;
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_TRANSFER_INSTANCE_ID(input, output);
-    
+
     output.positionWS = TransformObjectToWorld(input.positionOS);
-    output.positionCS = TransformWorldToHClip(output.positionWS);
+
+    #if defined(PERSPECTIVE_CORRECTION)
+        float3 positionVS = mul(UNITY_MATRIX_MV, float4(input.positionOS.xyz, 1)).xyz;
+        float zOffset = UNITY_MATRIX_MV[2][3];
+        positionVS.z = (positionVS.z - zOffset) / GetPerspectiveCorrectionScale() + zOffset;
+        // positionVS.z = positionVS.z;
+
+        output.positionCS = TransformWViewToHClip(positionVS);
+    #else
+        output.positionCS = TransformWorldToHClip(output.positionWS);
+    #endif
+
     output.normalWS = TransformObjectToWorldNormal(input.normalOS);
     output.tangentWS.xyz = TransformObjectToWorldDir(input.tangentOS.xyz);
     output.bitangentWS = cross(output.normalWS.xyz, output.tangentWS.xyz) * input.tangentOS.w * GetOddNegativeScale();
