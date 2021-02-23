@@ -71,6 +71,11 @@ Varyings CelPBRVert(Attributes input)
 real4 CelPBRFrag(Varyings input) : SV_TARGET
 {
     UNITY_SETUP_INSTANCE_ID(input);
+
+    #if defined(UNLIT)
+        return GetBaseColor(input.baseUV);
+    #endif
+    
     input.normalWS = normalize(input.normalWS);
     input.tangentWS = normalize(input.tangentWS);
     input.bitangentWS = normalize(input.bitangentWS);

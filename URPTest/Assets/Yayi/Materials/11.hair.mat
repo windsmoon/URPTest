@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: 11.hair
   m_Shader: {fileID: 4800000, guid: b63e0de9e7a43794ca1211615572261a, type: 3}
-  m_ShaderKeywords: KK_HIGHLIGHT SELFSHADOW_ON _TOON
+  m_ShaderKeywords: KK_HIGHLIGHT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -163,6 +163,7 @@ Material:
     - _SSS: 0
     - _SSSDistort: 0
     - _SSSPower: 2
+    - _SampleGI: 0
     - _ShadowLum: 1.5
     - _Shininess: 5
     - _Smoothness: 0.5
@@ -176,6 +177,7 @@ Material:
     - _TessPhongStrength: 0.5
     - _ThicknessScale: 1
     - _UVSec: 0
+    - _Unlit: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
