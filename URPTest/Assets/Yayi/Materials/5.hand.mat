@@ -149,7 +149,7 @@ Material:
     - _NormalScale: 1
     - _OcclusionScale: 1
     - _OcclusionStrength: 1
-    - _OutlineWidth: 0.417
+    - _OutlineWidth: 0.14
     - _Parallax: 0.02
     - _ParallaxMappingType: 0
     - _ParallaxScale: 0
@@ -186,7 +186,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emissive: {r: 0, g: 0, b: 0, a: 0}
     - _KKHighlightData: {r: 0, g: 1, b: 128, a: 1}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
+    - _OutlineColor: {r: 0, g: 0.5019608, b: 0.6, a: 0}
     - _RimColor: {r: 0, g: 0.5019608, b: 0.6, a: 1}
     - _RimRange: {r: 0.8, g: 1, b: 0, a: 0}
     - _SSSLutOffset: {r: 0, g: 0, b: 1, a: 0}
