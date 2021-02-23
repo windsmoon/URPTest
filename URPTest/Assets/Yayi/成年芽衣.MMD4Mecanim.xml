@@ -141,9 +141,10 @@
     <vertexScaleByHeight>158</vertexScaleByHeight>
     <waitProcessExitting>false</waitProcessExitting>
     <pmxAssetPath>Assets/Yayi/成年芽衣.pmx</pmxAssetPath>
-    <vmdAssetPathList />
-    <fbxOutputPath>Assets/Yayi 1/成年芽衣.fbx</fbxOutputPath>
-    <fbxAssetPath>Assets/Yayi/成年芽衣.fbx</fbxAssetPath>
+    <vmdAssetPathList>
+      <string>Assets/Yayi/Yayi_101/Produce 101 Dance.vmd</string>
+    </vmdAssetPathList>
+    <fbxOutputPath>Assets/Yayi/Yayi_101/成年芽衣.fbx</fbxOutputPath>
     <bulletPhysicsVersion>_275</bulletPhysicsVersion>
     <useWineFlag>false</useWineFlag>
     <wine>Manual</wine>
