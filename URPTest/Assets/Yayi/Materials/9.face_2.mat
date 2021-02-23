@@ -89,7 +89,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RampMap:
-        m_Texture: {fileID: 2800000, guid: 9e912bf6db3487c4f98522b7a1a36ff8, type: 3}
+        m_Texture: {fileID: 2800000, guid: 86a254edfc0cfea4b99c4fe086e605dc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SSSLut:
