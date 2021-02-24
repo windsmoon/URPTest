@@ -108,30 +108,12 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     #endif
     
     BRDF_CelPBR brdf = GetBRDF(surface, mainLightData, mainTempData, surface.alpha);
-    GI_CelPBR gi = GetGI(input, brdf, surface, mainTempData);
-    // return float4(mainTempData.kkTSinH.rrr, surface.alpha);
-    // return float4(surface.normal * 0.5 + 0.5, surface.alpha);
-
-    // compile error with out gi.bakeGI parameter
-    // MixRealtimeAndBakedGI(ConvertToUnityLight(mainLightData), surface.normal, gi.bakedGI);
-    #if defined(LIGHTMAP_ON) && defined(_MIXED_LIGHTING_SUBTRACTIVE)
-        gi.bakedGI = SubtractDirectMainLightFromLightmap(ConvertToUnityLight(mainLightData), surface.normal, gi.bakedGI);
-    #endif
+    GI_CelPBR gi = GetGI(input, brdf, surface, mainLightData, mainTempData);
     
-    // gi.color = gi.color.bbb;
-    // return float4(gi.color, surface.color.r);
     real3 color = gi.color;
-    // color = 0;
     color += surface.emission;
     real3 celColor = GetCelLighting(mainLightData, GetCelData(surface, brdf, mainLightData, mainTempData));
     real3 pbrColor = GetLighting(mainLightData, surface, brdf, mainTempData);
-
-    // #if defined(CEL_SHADING)
-        // color += GetCelLighting(mainLightData, GetCelData(surface, brdf, mainLightData, mainTempData));
-    // #else
-        // color += GetLighting(mainLightData, surface, brdf, mainTempData);
-        // color += GetLighting_Old(mainLightData, surface, brdf, mainTempData);
-    // #endif
 
     int otherLightCount = GetOtherLightCount();
     
@@ -143,18 +125,9 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
 
         celColor += GetCelLighting(lightData, GetCelData(surface, lightBRDF, lightData, tempData));
         pbrColor += GetLighting(lightData, surface, lightBRDF, tempData);
-        // pbrColor += GetLighting(lightData, surface, brdf, tempData);
-
-        // #if defined(CEL_SHADING)
-        //     color += GetCelLighting(lightData, GetCelData(surface, brdf, lightData, tempData));
-        // #else
-        //     color += GetLighting(lightData, surface, brdf, tempData);
-        // // color += GetLighting_Old(mainLightData, surface, brdf, mainTempData);
-        // #endif
     }
 
     real3 resultColor = lerp(celColor, pbrColor, surface.celPBR) + color;
-    // resultColor = resultColor > 0.05 ? 1 : 0;
     return real4(resultColor, surface.alpha);
 }
 
