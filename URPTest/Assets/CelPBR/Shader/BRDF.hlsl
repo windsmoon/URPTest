@@ -124,10 +124,8 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
         brdf.ksss = 0;
     #endif
     
-    // brdf.kd = oneMinusReflectivity;
     brdf.diffuse = surface.color * brdf.kd;
     brdf.sss = surface.color * GetSSSLut(float2(tempData.halfNDotL, surface.curvature) + GetSSSLutOffset()) * brdf.ksss;
-    // brdf.transmit = surface.color * brdf.kt;
 
     #if defined(_ALPHAPREMULTIPLY_ON)
         brdf.diffuse *= surface.alpha;
@@ -153,6 +151,15 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     // float g = CaculateGeometryFunction(surface, lightData, tempData);
     // float denom = 4 * tempData.nDotV * tempData.nDotL;
     // brdf.specular = ks * (d * f * g) / max(denom, FLT_MIN);
+
+    //debug
+    #if defined(DEBUG_DISABLE_DIFFUSE)
+        brdf.diffuse = 0;
+    #endif
+
+    #if defined(DEBUG_DISABLE_SPECULAR)
+        brdf.specular = 0;
+    #endif
     
     return brdf;
 }
@@ -163,7 +170,7 @@ struct CelData_CelPBR
     // real3 ks;
     real3 diffuse;
     real3 specular;
-    real rim;
+    real3 rim;
 
     // real oneMinusReflectivity;
     // real reflectivity;
@@ -217,6 +224,20 @@ CelData_CelPBR GetCelData(Surface_CelPBR surface, BRDF_CelPBR brdf, LightData_Ce
     f = smoothstep(rimRange.x, rimRange.y, f);
     float3 rim = f * rimColor.rgb;
     celData.rim = rim;
+
+    //debug
+    #if defined(DEBUG_DISABLE_DIFFUSE)
+        celData.diffuse = 0;
+    #endif
+
+    #if defined(DEBUG_DISABLE_SPECULAR)
+        celData.specular = 0;
+    #endif
+
+    #if defined(DEBUG_DISABLE_RIM)
+        celData.rim = 0;
+    #endif
+    
     return celData;
 }
 

@@ -72,7 +72,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
 {
     UNITY_SETUP_INSTANCE_ID(input);
 
-    #if defined(UNLIT)
+    #if defined(DEBUG_UNLIT)
         return GetBaseColor(input.baseUV);
     #endif
     

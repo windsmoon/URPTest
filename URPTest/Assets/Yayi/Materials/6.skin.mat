@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: 6.skin
   m_Shader: {fileID: 4800000, guid: b63e0de9e7a43794ca1211615572261a, type: 3}
-  m_ShaderKeywords: SSS
+  m_ShaderKeywords: DEBUG_DISABLE_Diffuse DEBUG_DISABLE_Specular SSS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -132,6 +132,15 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DebugUnlit: 1
+    - _Debug_: 1
+    - _Debug_Diffuse: 1
+    - _Debug_Disable_Diffuse: 0
+    - _Debug_Disable_GI: 0
+    - _Debug_Disable_RIM: 0
+    - _Debug_Disable_RIM_LIGHT: 0
+    - _Debug_Disable_SPECULAR: 0
+    - _Debug_Unlit: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0

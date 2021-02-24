@@ -4,7 +4,6 @@ Shader "CelPBR/CelPBR"
     {
         [Enum(UnityEngine.Rendering.CullMode)] _Cull("_Cull" , Float) = 2
         _CelPBR("CelPBR", Range(0, 1)) = 1
-        [Toggle(UNLIT)] _Unlit("Unlit", Float) = 0
         [Toggle(PERSPECTIVE_CORRECTION)] _PerspectiveCorrection("Perspective Correction", Float) = 0
         _PerspectiveCorrectionScale("Perspective Correction Scale", Float) = 1
         
@@ -61,6 +60,13 @@ Shader "CelPBR/CelPBR"
         _CelSpecularGlossiness("Cel Specular Glossiness", Float) = 128
         _RimColor("Rim Color", Color) = (1, 1, 1, 1)
     	_RimRange("Rim Range (Min and Max, 0 ~ 1)", Vector) = (0.8, 1, 0, 0) 
+        
+        // debug
+        [Toggle(DEBUG_UNLIT)] _Debug_Unlit("Debug_Unlit", Float) = 0
+        [Toggle(DEBUG_DISABLE_DIFFUSE)] _Debug_Disable_Diffuse("Debug_Disable_Diffuse", Float) = 0
+        [Toggle(DEBUG_DISABLE_SPECULAR)] _Debug_Disable_SPECULAR("Debug_Disable_SPECULAR", Float) = 0
+        [Toggle(DEBUG_DISABLE_GI)] _Debug_Disable_GI("Debug_Disable_GI", Float) = 0
+        [Toggle(DEBUG_DISABLE_RIM)] _Debug_Disable_RIM("Debug_Disable_RIM", Float) = 0
     }
     
     SubShader
@@ -123,14 +129,20 @@ Shader "CelPBR/CelPBR"
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             // custom defined keywords
-            #pragma shader_feature_local _ UNLIT
             #pragma shader_feature_local _ PERSPECTIVE_CORRECTION
             #pragma shader_feature_local _ CEL_SHADING
             #pragma shader_feature_local _ REVERT_HEIGHT
             #pragma shader_feature_local _ PARALLAX_SELF_SHADOW
             #pragma shader_feature_local _ SSS
             #pragma shader_feature_local _ KK_HIGHLIGHT
-            
+
+            // custom defined debug keywords
+            #pragma shader_feature_local _ DEBUG_UNLIT
+            #pragma shader_feature_local _ DEBUG_DISABLE_DIFFUSE
+            #pragma shader_feature_local _ DEBUG_DISABLE_SPECULAR
+            #pragma shader_feature_local _ DEBUG_DISABLE_RIM
+            #pragma shader_feature_local _ DEBUG_DISABLE_GI
+
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag
 
