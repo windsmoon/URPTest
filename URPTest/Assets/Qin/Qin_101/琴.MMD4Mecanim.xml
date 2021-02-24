@@ -140,11 +140,11 @@
     <vertexScaleByHeightFlag>false</vertexScaleByHeightFlag>
     <vertexScaleByHeight>158</vertexScaleByHeight>
     <waitProcessExitting>false</waitProcessExitting>
-    <pmxAssetPath>Assets/Qin/琴.pmx</pmxAssetPath>
+    <pmxAssetPath>Assets/Qin/Qin_101/琴.pmx</pmxAssetPath>
     <vmdAssetPathList>
       <string>Assets/Qin/Qin_101/Produce 101 Dance.vmd</string>
     </vmdAssetPathList>
-    <fbxOutputPath>Assets/Qin_101/琴.fbx</fbxOutputPath>
+    <fbxOutputPath>Assets/Qin/Qin_101/琴.fbx</fbxOutputPath>
     <bulletPhysicsVersion>_275</bulletPhysicsVersion>
     <useWineFlag>false</useWineFlag>
     <wine>Manual</wine>
@@ -182,7 +182,5 @@
       <selfShadowEnabled>true</selfShadowEnabled>
       <sphereMapEnabled>true</sphereMapEnabled>
     </materialGlobalProperty>
-    <materialProperyList />
-    <materialBlockPropertyList />
   </mmd4MecanimProperty>
 </PMX2FBXConfig>

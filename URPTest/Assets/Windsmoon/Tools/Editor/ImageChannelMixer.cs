@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Rendering;
 
 namespace Windsmoon.Tools.Editor
 {

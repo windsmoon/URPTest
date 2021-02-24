@@ -157,6 +157,8 @@ Material:
     - _ParallaxMappingType: 0
     - _ParallaxScale: 0
     - _ParallaxSelfShadow: 0
+    - _PerspectiveCorrection: 0
+    - _PerspectiveCorrectionScale: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 0
@@ -172,6 +174,7 @@ Material:
     - _Surface: 0
     - _ThicknessScale: 1
     - _UVSec: 0
+    - _Unlit: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

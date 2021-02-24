@@ -2,6 +2,7 @@ Shader "CelPBR/CelPBR"
 {
     Properties
     {
+        [Enum(UnityEngine.Rendering.CullMode)] _Cull("_Cull" , Float) = 2
         _CelPBR("CelPBR", Range(0, 1)) = 1
         [Toggle(UNLIT)] _Unlit("Unlit", Float) = 0
         [Toggle(PERSPECTIVE_CORRECTION)] _PerspectiveCorrection("Perspective Correction", Float) = 0
@@ -72,7 +73,9 @@ Shader "CelPBR/CelPBR"
 
             Blend[_SrcBlend][_DstBlend]
             ZWrite[_ZWrite]
-//            Cull[_Cull]
+            Cull[_Cull]
+            
+//            Cull Off
 
             HLSLPROGRAM
             // -------------------------------------
