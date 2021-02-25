@@ -9237,6 +9237,31 @@ MonoBehaviour:
   boneID: 15
   ikEnabled: 0
   ikWeight: 1
+--- !u!21 &346720100
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MMD4Mecanim/MMDLit-NEXTEdge-Pass4
+  m_Shader: {fileID: 4800000, guid: 684f8af9b4ff4bc459588db5b0f6275d, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2001
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats:
+    - _EdgeSize: 0.005
+    - _PostfixRenderQueue: 1
+    m_Colors:
+    - _EdgeColor: {r: 0.39999998, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &351777599 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1292834250921313413, guid: ee1df7d45c67d8f479a1c6539ff5b4fb, type: 3}
@@ -13206,31 +13231,6 @@ MonoBehaviour:
   boneID: 207
   ikEnabled: 0
   ikWeight: 1
---- !u!21 &519619321
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: MMD4Mecanim/MMDLit-NEXTEdge-Pass4
-  m_Shader: {fileID: 4800000, guid: 684f8af9b4ff4bc459588db5b0f6275d, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2001
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats:
-    - _EdgeSize: 0.005
-    - _PostfixRenderQueue: 1
-    m_Colors:
-    - _EdgeColor: {r: 0.39999998, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &521475443 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2777940960511920471, guid: ce2ecbd04daed4e4b93dbf7811153167, type: 3}
@@ -36842,6 +36842,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.13249114, y: 0.059342317, z: 0.021114103}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &1225828898
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MMD4Mecanim/MMDLit-NEXTEdge-Pass8
+  m_Shader: {fileID: 4800000, guid: ff1e1d0bbf6980244a107d25ff535f9a, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2001
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats:
+    - _EdgeSize: 0.005
+    - _PostfixRenderQueue: 1
+    m_Colors:
+    - _EdgeColor: {r: 0.39999998, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1227438277
 GameObject:
   m_ObjectHideFlags: 0
@@ -55845,31 +55870,6 @@ MonoBehaviour:
   boneID: 315
   ikEnabled: 0
   ikWeight: 1
---- !u!21 &1852207174
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: MMD4Mecanim/MMDLit-NEXTEdge-Pass8
-  m_Shader: {fileID: 4800000, guid: ff1e1d0bbf6980244a107d25ff535f9a, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2001
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats:
-    - _EdgeSize: 0.005
-    - _PostfixRenderQueue: 1
-    m_Colors:
-    - _EdgeColor: {r: 0.39999998, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &1853137704 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7138762608585654071, guid: ee1df7d45c67d8f479a1c6539ff5b4fb, type: 3}
@@ -57859,8 +57859,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dbcb8f64d6a7a640a973b2df934eb10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextEdgeMaterial_Pass4: {fileID: 519619321}
-  nextEdgeMaterial_Pass8: {fileID: 1852207174}
+  nextEdgeMaterial_Pass4: {fileID: 346720100}
+  nextEdgeMaterial_Pass8: {fileID: 1225828898}
   nextEdgePass: 0
   nextEdgeSize: 1
   nextEdgeColor: {r: 0.4, g: 1, b: 1, a: 1}
@@ -60057,9 +60057,9 @@ MonoBehaviour:
     friction: -1
   animList:
   - animatorStateName: Base Layer.Produce 101 Dance_vmd
-    animFile: {fileID: 4900000, guid: f740a3e2989afe74395124efd6501dba, type: 3}
+    animFile: {fileID: 4900000, guid: 1af678f08a8882643995a9f3386ef24a, type: 3}
     audioClip: {fileID: 0}
-  editorViewPage: 5
+  editorViewPage: 4
   editorViewMorphBits: 15
   editorViewRigidBodies: 0
   editorViewMorphNameType: 0
@@ -60073,7 +60073,7 @@ Animator:
   m_GameObject: {fileID: 1934865825}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f7115f9618edd4d4687b25627adf7a4a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 134711884069477419659c56b9418924, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
