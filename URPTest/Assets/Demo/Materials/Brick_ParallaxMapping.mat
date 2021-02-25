@@ -34,7 +34,7 @@ Material:
     m_TexEnvs:
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 8ec3073f45e462644bb8184982c90f6d, type: 3}
-        m_Scale: {x: 2, y: 2}
+        m_Scale: {x: 100, y: 100}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
@@ -58,6 +58,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 2800000, guid: afab262187f88654cb446e70cf2325b3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _KKHighlightOffsetMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -88,7 +92,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SSSLut:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SSSMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ThicknessMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -117,6 +133,14 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _Debug_Disable_Diffuse: 0
+    - _Debug_Disable_GI: 0
+    - _Debug_Disable_Outline: 0
+    - _Debug_Disable_RIM: 0
+    - _Debug_Disable_Rim: 0
+    - _Debug_Disable_SPECULAR: 0
+    - _Debug_Disable_Specular: 0
+    - _Debug_Unlit: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -124,27 +148,34 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _KKHighlight: 0
     - _Metallic: 0
     - _MetallicScale: 0
-    - _NormalScale: 3
+    - _NormalScale: 0
     - _OcclusionScale: 1
     - _OcclusionStrength: 1
     - _OutlineWidth: 0.24
     - _Parallax: 0.005
     - _ParallaxBinarySearchStepCount: 6.12
     - _ParallaxMapping: 0
-    - _ParallaxMappingType: 4
-    - _ParallaxScale: 6.56
+    - _ParallaxMappingType: 0
+    - _ParallaxScale: 6.5
     - _ParallaxSelfShadow: 0
+    - _PerspectiveCorrection: 0
+    - _PerspectiveCorrectionScale: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 1
+    - _SSS: 0
+    - _SSSDistort: 0
+    - _SSSPower: 2
     - _Smoothness: 0.5
     - _SmoothnessScale: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _ThicknessScale: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -153,8 +184,10 @@ Material:
     - _CelShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _KKHighlightData: {r: 0, g: 1, b: 128, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimRange: {r: 0.8, g: 1, b: 0, a: 0}
+    - _SSSLutOffset: {r: 0, g: 0, b: 1, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

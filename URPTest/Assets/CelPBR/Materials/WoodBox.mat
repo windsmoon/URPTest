@@ -60,6 +60,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: c1bc306c5cc7be84095c975a108d7cd0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _KKHighlightOffsetMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -85,6 +89,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RampMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SSSLut:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SSSMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -121,6 +133,14 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _Debug_Disable_Diffuse: 0
+    - _Debug_Disable_GI: 0
+    - _Debug_Disable_Outline: 0
+    - _Debug_Disable_RIM: 0
+    - _Debug_Disable_Rim: 0
+    - _Debug_Disable_SPECULAR: 0
+    - _Debug_Disable_Specular: 0
+    - _Debug_Unlit: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -128,6 +148,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _KKHighlight: 0
     - _Metallic: 0
     - _MetallicScale: 0
     - _NormalScale: 3
@@ -139,6 +160,8 @@ Material:
     - _ParallaxMappingType: 3
     - _ParallaxScale: 19.3
     - _ParallaxSelfShadow: 1
+    - _PerspectiveCorrection: 0
+    - _PerspectiveCorrectionScale: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 1
@@ -152,6 +175,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _ThicknessScale: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -160,8 +184,10 @@ Material:
     - _CelShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _KKHighlightData: {r: 0, g: 1, b: 128, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimRange: {r: 0.8, g: 1, b: 0, a: 0}
+    - _SSSLutOffset: {r: 0, g: 0, b: 1, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
