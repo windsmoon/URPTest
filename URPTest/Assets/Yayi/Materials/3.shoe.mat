@@ -150,9 +150,12 @@ Material:
     - _Debug_Diffuse: 1
     - _Debug_Disable_Diffuse: 0
     - _Debug_Disable_GI: 0
+    - _Debug_Disable_Outline: 0
     - _Debug_Disable_RIM: 0
     - _Debug_Disable_RIM_LIGHT: 0
+    - _Debug_Disable_Rim: 0
     - _Debug_Disable_SPECULAR: 0
+    - _Debug_Disable_Specular: 0
     - _Debug_Unlit: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1

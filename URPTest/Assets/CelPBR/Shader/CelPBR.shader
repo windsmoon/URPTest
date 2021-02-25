@@ -62,11 +62,12 @@ Shader "CelPBR/CelPBR"
     	_RimRange("Rim Range (Min and Max, 0 ~ 1)", Vector) = (0.8, 1, 0, 0) 
         
         // debug
-        [Toggle(DEBUG_UNLIT)] _Debug_Unlit("Debug_Unlit", Float) = 0
-        [Toggle(DEBUG_DISABLE_DIFFUSE)] _Debug_Disable_Diffuse("Debug_Disable_Diffuse", Float) = 0
-        [Toggle(DEBUG_DISABLE_SPECULAR)] _Debug_Disable_SPECULAR("Debug_Disable_SPECULAR", Float) = 0
-        [Toggle(DEBUG_DISABLE_GI)] _Debug_Disable_GI("Debug_Disable_GI", Float) = 0
-        [Toggle(DEBUG_DISABLE_RIM)] _Debug_Disable_RIM("Debug_Disable_RIM", Float) = 0
+        [Toggle(DEBUG_UNLIT)] _Debug_Unlit("Debug Unlit", Float) = 0
+        [Toggle(DEBUG_DISABLE_DIFFUSE)] _Debug_Disable_Diffuse("Debug Disable Diffuse", Float) = 0
+        [Toggle(DEBUG_DISABLE_SPECULAR)] _Debug_Disable_Specular("Debug Disable Specular", Float) = 0
+        [Toggle(DEBUG_DISABLE_GI)] _Debug_Disable_GI("Debug Disable GI", Float) = 0
+        [Toggle(DEBUG_DISABLE_RIM)] _Debug_Disable_Rim("Debug Disable Rim", Float) = 0
+        [Toggle(DEBUG_DISABLE_OUTLINE)] _Debug_Disable_Outline("Debug Disable OUtline", Float) = 0
     }
     
     SubShader
@@ -278,6 +279,9 @@ Shader "CelPBR/CelPBR"
 
             // custom defined keywords
             #pragma shader_feature_local _ CEL_SHADING
+
+            // custom defined keywords
+            #pragma shader_feature_local _ DEBUG_DISABLE_OUTLINE
             
             #pragma vertex OutlineVert
             #pragma fragment OutlineFrag
