@@ -10,6 +10,7 @@ TEXTURE2D(_SSSMask);
 TEXTURE2D(_SSSLut);
 TEXTURE2D(_ThicknessMap);
 TEXTURE2D(_KKHighlightOffsetMap);
+TEXTURE2D(_KKHighlightAnisoMap);
 TEXTURE2D(_HeightMap);
 SAMPLER(sampler_BaseMap);
 SAMPLER(sampler_SSSLut);
@@ -170,6 +171,11 @@ real GetKKHighlightOffset(float2 uv)
     real offset = SAMPLE_TEXTURE2D(_KKHighlightOffsetMap, sampler_KKHighlightOffsetMap, uv).r * 2 - 1;
     real2 data = INPUT_PROP(_KKHighlightData);
     return offset * data.y; 
+}
+
+real2 GetKKHighlightAnisoDirection(float2 uv)
+{
+    return SAMPLE_TEXTURE2D(_KKHighlightAnisoMap, sampler_BaseMap, uv) * 2 - 1;
 }
 
 real GetKKHighlightOffset()

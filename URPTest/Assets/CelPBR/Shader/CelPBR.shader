@@ -35,6 +35,8 @@ Shader "CelPBR/CelPBR"
         [Toggle(KK_HIGHLIGHT)] _KKHighlight("KK Highlight", Float) = 0
         _KKHighlightOffsetMap("KK Highlight Shift Map", 2D) = "black" {}
         _KKHighlightData("KK Highlight Data, X Offset, Y Intensity, Z Shiness， D Use Tangent", Vector) = (0, 1, 128, 1) 
+        [Toggle(ENABLE_KK_HIGHLIGHT_ANISO_MAP)] EnableKKHighlightAnisoMap("Enable KK Highlight Aniso Map", Float) = 0
+        _KKHighlightAnisoMap("KK Highlight Aniso Map", 2D) = "gray" {}
                 
         [Space(50)]
         [NoScaleOffset]_HeightMap("Height Map", 2D) = "black" {}
@@ -136,6 +138,7 @@ Shader "CelPBR/CelPBR"
             #pragma shader_feature_local _ PARALLAX_SELF_SHADOW
             #pragma shader_feature_local _ SSS
             #pragma shader_feature_local _ KK_HIGHLIGHT
+            #pragma shader_feature_local _ ENABLE_KK_HIGHLIGHT_ANISO_MAP
 
             // custom defined debug keywords
             #pragma shader_feature_local _ DEBUG_UNLIT

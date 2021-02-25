@@ -19,6 +19,7 @@ struct Surface_CelPBR
     real curvature;
     real thickness;
     real kkHighlightOffset;
+    real3 kkHighlightAnisoDirection;
 
     // cel shading
     real3 celShadeColor;
@@ -35,6 +36,16 @@ float3 GetWorldNormal(Varyings input, float3 normalTS)
     float3 normal = mul(normalTS.xyz, GetTBN(input.normalWS.xyz, input.tangentWS.xyz, input.bitangentWS.xyz));
     normal = normalize(normal);
     return normal;
+}
+
+real3 GetWorldKKGHighlightAnisoDirection(Varyings input)
+{
+    real3 anisoDireciton = real3(GetKKHighlightAnisoDirection(input.baseUV).rg, 0);
+    anisoDireciton = mul(anisoDireciton, GetTBN(input.normalWS.xyz, input.tangentWS.xyz, input.bitangentWS.xyz));
+    // anisoDireciton = input.tangentWS.xyz * anisoDireciton.x + input.bitangentWS.xyz * anisoDireciton.y;
+
+    anisoDireciton = normalize(anisoDireciton);
+    return anisoDireciton;
 }
 
 Surface_CelPBR GetSurface(Varyings input)
@@ -55,6 +66,7 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.curvature = GetSSSLutCurvatureScale() * length(fwidth(surface.normal)) / length(fwidth(surface.pos));
     surface.thickness = GetThickness(input.baseUV);
     surface.kkHighlightOffset = GetKKHighlightOffset(input.kkHighlightUV) + GetKKHighlightOffset();
+    surface.kkHighlightAnisoDirection = GetWorldKKGHighlightAnisoDirection(input);
 
     // cel shading
     surface.celShadeColor = GetCelShadeColor();

@@ -36,7 +36,13 @@ TempData_CelPBR GetTempData(Varyings input, Surface_CelPBR surface, LightData_Ce
     tempData.sssFactor = pow(max(dot(sssDirection, tempData.viewDirection), 0.0), GetSSSPower());
 
     // kk
-    real3 usedTangent = GetKKHighlightUseTangent() == 1 ? surface.tangent : surface.bitangent;
+    #if defined(ENABLE_KK_HIGHLIGHT_ANISO_MAP)
+        real3 usedTangent = surface.kkHighlightAnisoDirection;
+    #else
+        real3 usedTangent = GetKKHighlightUseTangent() == 1 ? surface.tangent : surface.bitangent;
+    #endif
+
+
     // real3 offsetDir = surface.normal * GetKKHighlightOffset(input.kkHighlightUV);
     // real3 direction = normalize(usedTangent + offsetDir);
     real3 direction = normalize(usedTangent + surface.normal * surface.kkHighlightOffset);
