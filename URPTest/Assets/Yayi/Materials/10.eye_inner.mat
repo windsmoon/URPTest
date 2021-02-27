@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: 10.eye_inner
   m_Shader: {fileID: 4800000, guid: b63e0de9e7a43794ca1211615572261a, type: 3}
-  m_ShaderKeywords: DEBUG_DISABLE_Diffuse DEBUG_DISABLE_RIM DEBUG_DISABLE_Specular
+  m_ShaderKeywords: DEBUG_DISABLE_Diffuse DEBUG_DISABLE_Specular
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -145,7 +145,7 @@ Material:
     - _Debug_Disable_Outline: 0
     - _Debug_Disable_RIM: 0
     - _Debug_Disable_RIM_LIGHT: 0
-    - _Debug_Disable_Rim: 1
+    - _Debug_Disable_Rim: 0
     - _Debug_Disable_SPECULAR: 0
     - _Debug_Disable_Specular: 0
     - _Debug_Unlit: 0
@@ -189,6 +189,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Temp_Debug: 0
     - _TessEdgeLength: 5
     - _TessExtrusionAmount: 0
     - _TessPhongStrength: 0.5
