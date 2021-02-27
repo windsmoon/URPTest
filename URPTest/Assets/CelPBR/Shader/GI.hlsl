@@ -23,7 +23,13 @@ GI_CelPBR GetGI(Varyings input, BRDF_CelPBR brdf, Surface_CelPBR surface, LightD
     real3 indirectSpecular = GlossyEnvironmentReflection(tempData.viewReflectionDirection, brdf.perceptualRoughness, surface.occlusion);
     real fresnelTerm = Pow4(1.0 - tempData.nDotV);
     BRDFData brdfData = ConvertToBRDFData(brdf);
-    real3 giColor = EnvironmentBRDF(brdfData, indirectDiffuse, indirectSpecular, fresnelTerm);
+
+    #if defined(KK_HIGHLIGHT)
+        real3 giColor = indirectDiffuse * brdf.diffuse + indirectSpecular * brdf.specular;
+    #else
+        real3 giColor = EnvironmentBRDF(brdfData, indirectDiffuse, indirectSpecular, fresnelTerm);
+    #endif
+
     gi.color = giColor;
 
     #if defined(DEBUG_DISABLE_GI)

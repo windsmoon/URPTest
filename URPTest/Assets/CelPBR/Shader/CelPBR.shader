@@ -64,6 +64,7 @@ Shader "CelPBR/CelPBR"
     	_RimRange("Rim Range (Min and Max, 0 ~ 1)", Vector) = (0.8, 1, 0, 0) 
         
         // debug
+        [Toggle(TEMP_DEBUG)] _Temp_Debug("Temp Debug", Float) = 0
         [Toggle(DEBUG_UNLIT)] _Debug_Unlit("Debug Unlit", Float) = 0
         [Toggle(DEBUG_DISABLE_DIFFUSE)] _Debug_Disable_Diffuse("Debug Disable Diffuse", Float) = 0
         [Toggle(DEBUG_DISABLE_SPECULAR)] _Debug_Disable_Specular("Debug Disable Specular", Float) = 0
@@ -141,6 +142,7 @@ Shader "CelPBR/CelPBR"
             #pragma shader_feature_local _ ENABLE_KK_HIGHLIGHT_ANISO_MAP
 
             // custom defined debug keywords
+            #pragma shader_feature_local _ TEMP_DEBUG
             #pragma shader_feature_local _ DEBUG_UNLIT
             #pragma shader_feature_local _ DEBUG_DISABLE_DIFFUSE
             #pragma shader_feature_local _ DEBUG_DISABLE_SPECULAR
