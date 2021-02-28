@@ -9,6 +9,7 @@ TEXTURE2D(_EmissionMap);
 TEXTURE2D(_SSSMask);
 TEXTURE2D(_SSSLut);
 TEXTURE2D(_ThicknessMap);
+TEXTURE2D(_ReflectionTexture);
 TEXTURE2D(_KKHighlightOffsetMap);
 TEXTURE2D(_KKHighlightAnisoMap);
 TEXTURE2D(_HeightMap);
@@ -164,6 +165,11 @@ real GetSSSDistort()
 real GetThickness(float2 uv)
 {
     return SAMPLE_TEXTURE2D(_ThicknessMap, sampler_BaseMap, uv).r * INPUT_PROP(_ThicknessScale);
+}
+
+real3 GetReflectionColor(float2 uv, real mipmap)
+{
+    return SAMPLE_TEXTURE2D_LOD(_ReflectionTexture, sampler_BaseMap, uv, mipmap).rgb;
 }
 
 real GetKKHighlightOffset(float2 uv)

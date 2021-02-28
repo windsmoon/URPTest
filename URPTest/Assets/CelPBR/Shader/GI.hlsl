@@ -20,7 +20,14 @@ GI_CelPBR GetGI(Varyings input, BRDF_CelPBR brdf, Surface_CelPBR surface, LightD
     #endif
     
     real3 indirectDiffuse = surface.occlusion * gi.bakedGI;
-    real3 indirectSpecular = GlossyEnvironmentReflection(tempData.viewReflectionDirection, brdf.perceptualRoughness, surface.occlusion);
+
+    #if defined(ENABLE_PLANAR_REFLECTION)
+        real3 indirectSpecular = GetReflectionColor(input.positionSS.xy / input.positionSS.w, PerceptualRoughnessToMipmapLevel(brdf.perceptualRoughness));
+    #else
+        real3 indirectSpecular = GlossyEnvironmentReflection(tempData.viewReflectionDirection, brdf.perceptualRoughness, surface.occlusion);
+    #endif
+
+    // real3 indirectSpecular = GlossyEnvironmentReflection(tempData.viewReflectionDirection, brdf.perceptualRoughness, surface.occlusion);
     real fresnelTerm = Pow4(1.0 - tempData.nDotV);
     BRDFData brdfData = ConvertToBRDFData(brdf);
 

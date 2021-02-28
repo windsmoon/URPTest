@@ -9,7 +9,7 @@
 
 struct Attributes
 {
-    float3 positionOS : POSITION;
+    float4 positionOS : POSITION;
     float3 normalOS : NORMAL;
     float4 tangentOS : TANGENT;
     float2 baseUV : TEXCOORD0;
@@ -21,6 +21,7 @@ struct Varyings
 {
     float4 positionCS : SV_POSITION;
     float3 positionWS : VAR_POSITION;
+    float4 positionSS : VAR_SCREEN_POSITION;
     float3 normalWS : VAR_NORMAL;
     float3 tangentWS : VAR_TANGENT;
     float3 bitangentWS : VAR_BITANGENT;
@@ -59,6 +60,7 @@ Varyings CelPBRVert(Attributes input)
         output.positionCS = TransformWorldToHClip(output.positionWS);
     #endif
 
+    output.positionSS = ComputeScreenPos(output.positionCS); 
     output.normalWS = TransformObjectToWorldNormal(input.normalOS);
     output.tangentWS.xyz = TransformObjectToWorldDir(input.tangentOS.xyz);
     output.bitangentWS = cross(output.normalWS.xyz, output.tangentWS.xyz) * input.tangentOS.w * GetOddNegativeScale();
@@ -73,6 +75,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     UNITY_SETUP_INSTANCE_ID(input);
 
     #if defined(DEBUG_UNLIT)
+        // return float4(GetReflectionColor(input.positionSS.xy / input.positionSS.w),  GetBaseColor(input.baseUV).a);
         return GetBaseColor(input.baseUV);
     #endif
     

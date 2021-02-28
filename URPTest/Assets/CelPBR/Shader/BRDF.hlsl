@@ -13,6 +13,7 @@ struct BRDF_CelPBR
     real perceptualRoughness;
     real roughness;
     real roughness2;
+    real reflectionMipmapLevel;
     real oneMinusReflectivity;
     real reflectivity;
     real grazingTerm;

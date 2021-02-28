@@ -32,6 +32,10 @@ Shader "CelPBR/CelPBR"
         _ThicknessScale("Thickness Scale", Range(0, 1)) = 1
         
         [Space(50)]
+        [Toggle(ENABLE_PLANAR_REFLECTION)] _EnablePlanarReflection("Enable Planar Reflection", Float) = 0
+        _ReflectionTexture("Reflection Texture", 2D) = "white" {}
+        
+        [Space(50)]
         [Toggle(KK_HIGHLIGHT)] _KKHighlight("KK Highlight", Float) = 0
         _KKHighlightOffsetMap("KK Highlight Shift Map", 2D) = "black" {}
         _KKHighlightData("KK Highlight Data, X Offset, Y Intensity, Z Shiness， D Use Tangent", Vector) = (0, 1, 128, 1) 
@@ -138,6 +142,7 @@ Shader "CelPBR/CelPBR"
             #pragma shader_feature_local _ REVERT_HEIGHT
             #pragma shader_feature_local _ PARALLAX_SELF_SHADOW
             #pragma shader_feature_local _ SSS
+            #pragma shader_feature_local _ ENABLE_PLANAR_REFLECTION
             #pragma shader_feature_local _ KK_HIGHLIGHT
             #pragma shader_feature_local _ ENABLE_KK_HIGHLIGHT_ANISO_MAP
 
