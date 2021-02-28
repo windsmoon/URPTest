@@ -149,7 +149,6 @@ namespace CelPBR.Runtime
             CalculateReflectionMatrix(out reflectionMatrix, plane);
             reflectionCamera.worldToCameraMatrix = srcCamera.worldToCameraMatrix * reflectionMatrix; // transform object to symmetry position first, then transform to camera space
             
-            //用逆转置矩阵将平面从世界空间变换到反射相机空间
             Vector4 viewSpacePlane = reflectionCamera.worldToCameraMatrix.inverse.transpose * plane;
             Matrix4x4 clipMatrix = reflectionCamera.CalculateObliqueMatrix(viewSpacePlane);
             reflectionCamera.projectionMatrix = clipMatrix;
