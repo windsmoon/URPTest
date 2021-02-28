@@ -12,13 +12,18 @@ namespace CelPBR.Runtime
         [SerializeField]
         private Camera srcCamera;
         [SerializeField] 
-        private int resolution = 1024;
+        [Range(0.01f, 1)]
+        private float resolutionScale = 0.5f;
+        [SerializeField]
+        private LayerMask cullingMask = -1;
         [SerializeField]
         private bool isRenderShadow;
-        
+
+        private CommandBuffer commandBuffer;
         private Camera reflectionCamera;
         private UniversalAdditionalCameraData reflectionCameraData;
         private RenderTexture reflectionRT;
+        private new Renderer renderer;
         private Material material;
 
         private int reflectionTexturePropertyID = Shader.PropertyToID("_ReflectionTexture");
@@ -29,9 +34,12 @@ namespace CelPBR.Runtime
 
         private void Awake()
         {
+            commandBuffer = new CommandBuffer();
+            commandBuffer.name = "PlanarReflection";
             planarReflectionLayer = LayerMask.NameToLayer("PlanarReflection");
             CreateReflectionCamera();
-            material = GetComponent<MeshRenderer>().sharedMaterial;
+            renderer = GetComponent<Renderer>();
+            material = renderer.sharedMaterial;
         }
 
         private void OnEnable()
@@ -84,54 +92,68 @@ namespace CelPBR.Runtime
             }
 
             RenderTexture.ReleaseTemporary(reflectionRT);
-            reflectionRT = RenderTexture.GetTemporary((int)(resolution * srcCamera.aspect), resolution, 0, RenderTextureFormat.Default, RenderTextureReadWrite.sRGB);
+            reflectionRT = RenderTexture.GetTemporary((int)(srcCamera.pixelWidth * resolutionScale), (int)(srcCamera.pixelHeight * resolutionScale), 0, RenderTextureFormat.Default, RenderTextureReadWrite.sRGB);
             reflectionCamera.CopyFrom(srcCamera);
-            reflectionCamera.cullingMask = ~(1 << planarReflectionLayer) & reflectionCamera.cullingMask;
+            reflectionCamera.cullingMask = ~(1 << planarReflectionLayer) & cullingMask;
             reflectionCamera.useOcclusionCulling = false;
             reflectionCameraData.renderShadows = isRenderShadow; // turn off shadows for the reflection camera
             reflectionCamera.targetTexture = reflectionRT;
+            
         }
 
-        private Matrix4x4 CaculateReflectionMatrix()
+        private static void CalculateReflectionMatrix(out Matrix4x4 reflectionMatrix, Vector4 plane)
         {
-            Vector3 normal = transform.up;
-            float d = -Vector3.Dot(normal, transform.position);
-            Matrix4x4 reflectionMatrix = new Matrix4x4();
-            reflectionMatrix.m00 = 1 - 2 * normal.x * normal.x;
-            reflectionMatrix.m01 = -2 * normal.x * normal.y;
-            reflectionMatrix.m02 = -2 * normal.x * normal.z;
-            reflectionMatrix.m03 = -2 * d * normal.x;
- 
-            reflectionMatrix.m10 = -2 * normal.x * normal.y;
-            reflectionMatrix.m11 = 1 - 2 * normal.y * normal.y;
-            reflectionMatrix.m12 = -2 * normal.y * normal.z;
-            reflectionMatrix.m13 = -2 * d * normal.y;
- 
-            reflectionMatrix.m20 = -2 * normal.x * normal.z;
-            reflectionMatrix.m21 = -2 * normal.y * normal.z;
-            reflectionMatrix.m22 = 1 - 2 * normal.z * normal.z;
-            reflectionMatrix.m23 = -2 * d * normal.z;
- 
-            reflectionMatrix.m30 = 0;
-            reflectionMatrix.m31 = 0;
-            reflectionMatrix.m32 = 0;
-            reflectionMatrix.m33 = 1;
-            
-            // reflectionMatrix *= Matrix4x4.Scale(new Vector3(1, -1, 1));
-            return reflectionMatrix;
+            reflectionMatrix.m00 = (1F - 2F * plane[0] * plane[0]);
+            reflectionMatrix.m01 = (-2F * plane[0] * plane[1]);
+            reflectionMatrix.m02 = (-2F * plane[0] * plane[2]);
+            reflectionMatrix.m03 = (-2F * plane[3] * plane[0]);
+
+            reflectionMatrix.m10 = (-2F * plane[1] * plane[0]);
+            reflectionMatrix.m11 = (1F - 2F * plane[1] * plane[1]);
+            reflectionMatrix.m12 = (-2F * plane[1] * plane[2]);
+            reflectionMatrix.m13 = (-2F * plane[3] * plane[1]);
+
+            reflectionMatrix.m20 = (-2F * plane[2] * plane[0]);
+            reflectionMatrix.m21 = (-2F * plane[2] * plane[1]);
+            reflectionMatrix.m22 = (1F - 2F * plane[2] * plane[2]);
+            reflectionMatrix.m23 = (-2F * plane[3] * plane[2]);
+
+            reflectionMatrix.m30 = 0F;
+            reflectionMatrix.m31 = 0F;
+            reflectionMatrix.m32 = 0F;
+            reflectionMatrix.m33 = 1F;
         }
         
         private void OnBeginCameraRendering(ScriptableRenderContext context, Camera camera)
         {
-            if (camera.cameraType == CameraType.Reflection || camera.cameraType == CameraType.Preview)
+            if (renderer.isVisible == false)
             {
                 return;
             }
+
+            if (camera != srcCamera)
+            {
+                return;;
+            }
+            
+            // if (camera.cameraType == CameraType.Reflection || camera.cameraType == CameraType.Preview)
+            // {
+                // return;
+            // }
             
             UpdateCamera();
-            Matrix4x4 reflectionMatrix = CaculateReflectionMatrix();
+            Vector3 normal = transform.up;
+            float d = -Vector3.Dot(normal, transform.position);
+            Vector4 plane = new Vector4(normal.x, normal.y, normal.z, d);
+            Matrix4x4 reflectionMatrix;
+            CalculateReflectionMatrix(out reflectionMatrix, plane);
             reflectionCamera.worldToCameraMatrix = srcCamera.worldToCameraMatrix * reflectionMatrix; // transform object to symmetry position first, then transform to camera space
-
+            
+            //用逆转置矩阵将平面从世界空间变换到反射相机空间
+            Vector4 viewSpacePlane = reflectionCamera.worldToCameraMatrix.inverse.transpose * plane;
+            Matrix4x4 clipMatrix = reflectionCamera.CalculateObliqueMatrix(viewSpacePlane);
+            reflectionCamera.projectionMatrix = clipMatrix;
+            
             GL.invertCulling = true;
             UniversalRenderPipeline.RenderSingleCamera(context, reflectionCamera); // render planar reflections
             GL.invertCulling = false;
