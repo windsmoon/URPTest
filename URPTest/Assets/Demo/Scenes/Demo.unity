@@ -37373,12 +37373,12 @@ GameObject:
   - component: {fileID: 1238536842}
   - component: {fileID: 1238536846}
   m_Layer: 0
-  m_Name: Plane (1)
+  m_Name: Mirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &1238536842
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -37449,13 +37449,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1238536841}
-  m_LocalRotation: {x: -0.64991546, y: 0.47030848, z: 0.35740972, w: 0.47820306}
+  m_LocalRotation: {x: -0.6940316, y: 0.46859634, z: 0.4311671, w: 0.33590576}
   m_LocalPosition: {x: 1.09, y: 1.218, z: -1.011}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 18
-  m_LocalEulerAnglesHint: {x: -106.711, y: 2.9440002, z: 69.593}
+  m_LocalEulerAnglesHint: {x: -119.501, y: 35.173996, z: 47.106995}
 --- !u!114 &1238536846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37469,7 +37469,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   srcCamera: {fileID: 1216918877}
-  resolution: 1024
+  resolutionScale: 1
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
   isRenderShadow: 0
 --- !u!1 &1239152734
 GameObject:
@@ -53187,6 +53190,7 @@ GameObject:
   - component: {fileID: 1758127489}
   - component: {fileID: 1758127488}
   - component: {fileID: 1758127487}
+  - component: {fileID: 1758127491}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -53227,7 +53231,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0ec5c6efa9197ee408d96e25b194b34e, type: 2}
+  - {fileID: 2100000, guid: 304856dd706178c469f8afcbbdcfb2d5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -53271,6 +53275,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1758127491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758127486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e156201b7a8046ec870a8204da1a967b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  srcCamera: {fileID: 1216918877}
+  resolutionScale: 1
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  isRenderShadow: 0
 --- !u!1 &1761057807
 GameObject:
   m_ObjectHideFlags: 0
