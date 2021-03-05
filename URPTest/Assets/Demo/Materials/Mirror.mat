@@ -158,7 +158,7 @@ Material:
     - _GlossyReflections: 0
     - _KKHighlight: 0
     - _Metallic: 0
-    - _MetallicScale: 1
+    - _MetallicScale: 0.937
     - _NormalScale: 1
     - _OcclusionScale: 1
     - _OcclusionStrength: 1

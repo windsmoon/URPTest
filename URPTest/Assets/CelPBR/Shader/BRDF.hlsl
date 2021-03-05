@@ -224,7 +224,7 @@ CelData_CelPBR GetCelData(Surface_CelPBR surface, BRDF_CelPBR brdf, LightData_Ce
     real3 rimColor = surface.rimColor;
     f = smoothstep(rimRange.x, rimRange.y, f);
     float3 rim = f * rimColor.rgb;
-    celData.rim = rim;
+    celData.rim = rim * surface.color;
 
     //debug
     #if defined(DEBUG_DISABLE_DIFFUSE)
