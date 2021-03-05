@@ -66,9 +66,9 @@ namespace CelPBR.Runtime.PostProcessing
         #endregion
 
         #region methods
-        public PostProcessingSetting AddPostProcessing(PostProcessingType postProcessingType)
+        public PostProcessingSetting AddPostProcessing(PostProcessingType type)
         {
-            int typeInt = (int) postProcessingType;
+            int typeInt = (int) type;
             PostProcessingSetting postProcessingSetting;
             
             if (postProcessingSettingDict.TryGetValue(typeInt, out postProcessingSetting))
@@ -82,9 +82,9 @@ namespace CelPBR.Runtime.PostProcessing
             return postProcessingSetting;
         }
 
-        public bool RemovePostProcessing(PostProcessingType postProcessingType)
+        public bool RemovePostProcessing(PostProcessingType type)
         {
-            int typeInt = (int) postProcessingType;
+            int typeInt = (int) type;
             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
 
             if (postProcessingSetting == null)
@@ -101,52 +101,71 @@ namespace CelPBR.Runtime.PostProcessing
             postProcessingSettingDict.Remove(typeInt);
             return true;
         }
-//
-//         public bool EnablePostProcessing(Type type)
-//         {
-//             PostProcessingInfo postProcessingInfo = GetPostProcessingInfo(type);
-//
-//             if (postProcessingInfo == null)
-//             {
-//                 return false;
-//             }
-//
-//             if (postProcessingInfo.State == State.Enable)
-//             {
-//                 return false;
-//             }
-//
-//             postProcessingInfo.State = State.Enable;
-//
-//             if (enabled == false)
-//             {
-//                 enabled = true;
-//             }
-//
-//             depthTextureMode |= postProcessingInfo.PostProcessing.DepthTextureMode;
-//             OnPostProcessingChanged();
-//             return true;
-//         }
-//
-//         public bool DisablePostProcessing(Type type)
-//         {
-//             PostProcessingInfo postProcessingInfo = GetPostProcessingInfo(type);
-//
-//             if (postProcessingInfo == null)
-//             {
-//                 return false;
-//             }
-//
-//             if (postProcessingInfo.State == State.Disable)
-//             {
-//                 return false;
-//             }
-//             
-//             postProcessingInfo.State = State.Disable;
-//             depthTextureMode &= ~postProcessingInfo.PostProcessing.DepthTextureMode;
-//             OnPostProcessingChanged();
-//             return true;
-//         }
+
+         public bool EnablePostProcessing(PostProcessingType type)
+         {
+             int typeInt = (int) type;
+             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
+
+             if (postProcessingSetting == null)
+             {
+                 return false;
+             }
+
+             if (postProcessingSetting.enabled)
+             {
+                 return false;
+             }
+
+             postProcessingSetting.enabled = true;
+             return true;
+         }
+
+         public bool DisablePostProcessing(PostProcessingType type)
+         {
+             int typeInt = (int) type;
+             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
+
+             if (postProcessingSetting == null)
+             {
+                 return false;
+             }
+
+             if (postProcessingSetting.enabled == false)
+             {
+                 return false;
+             }
+
+             postProcessingSetting.enabled = false;
+             return true;
+         }
+
+         public PostProcessingSetting GetPoseProcessingSetting(PostProcessingType type)
+         {
+             int typeInt = (int) type;
+             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
+             return postProcessingSetting;
+         }
+
+         private bool HasAdded(PostProcessingType type)
+         {
+             int typeInt = (int) type;
+             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
+             return postProcessingSetting != null;
+         }
+         
+         private bool IsEnabled(PostProcessingType type)
+         {
+             int typeInt = (int) type;
+             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
+
+             if (postProcessingSetting == null)
+             {
+                 return false;
+             }
+
+             return postProcessingSetting.enabled;
+         }
 
         private PostProcessingSetting GetPostProcessingSetting(int typeInt)
         {
@@ -154,6 +173,7 @@ namespace CelPBR.Runtime.PostProcessing
             postProcessingSettingDict.TryGetValue(typeInt, out postProcessingSetting);
             return postProcessingSetting;
         }
+        
         
         // private static PostProcessingType GetPostProcessingType<T>() where T : PostProcessingSetting
         // {
