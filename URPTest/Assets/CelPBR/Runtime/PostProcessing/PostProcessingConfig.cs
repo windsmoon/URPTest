@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 namespace CelPBR.Runtime.PostProcessing
 {
@@ -66,28 +65,29 @@ namespace CelPBR.Runtime.PostProcessing
         #endregion
 
         #region methods
-        public PostProcessingSetting AddPostProcessing(PostProcessingType type)
+        public bool AddPostProcessing(PostProcessingType type, out PostProcessingSetting postProcessingSetting)
         {
             int typeInt = (int) type;
-            PostProcessingSetting postProcessingSetting;
-            
-            if (postProcessingSettingDict.TryGetValue(typeInt, out postProcessingSetting))
-            {
-                return postProcessingSetting;
-            }
 
+            if (GetPostProcessingSetting(typeInt, out postProcessingSetting))
+            {
+                Debug.Log("There has already " + postProcessingSetting.PostProcessingName);
+                return false;
+            }
+            
             Type classType = GetPostProcessingSettingType(typeInt);
             postProcessingSetting = gameObject.AddComponent(classType) as PostProcessingSetting;
             postProcessingSetting.hideFlags = HideFlags.HideInInspector;
-            return postProcessingSetting;
+            postProcessingSettingDict.Add(typeInt, postProcessingSetting);
+            return true;
         }
 
         public bool RemovePostProcessing(PostProcessingType type)
         {
             int typeInt = (int) type;
-            PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
+            PostProcessingSetting postProcessingSetting;
 
-            if (postProcessingSetting == null)
+            if (GetPostProcessingSetting(typeInt, out postProcessingSetting) == false)
             {
                 return false;
             }
@@ -101,13 +101,13 @@ namespace CelPBR.Runtime.PostProcessing
             postProcessingSettingDict.Remove(typeInt);
             return true;
         }
-
+        
          public bool EnablePostProcessing(PostProcessingType type)
          {
              int typeInt = (int) type;
-             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
+             PostProcessingSetting postProcessingSetting;
 
-             if (postProcessingSetting == null)
+             if (GetPostProcessingSetting(typeInt, out postProcessingSetting) == false)
              {
                  return false;
              }
@@ -124,9 +124,9 @@ namespace CelPBR.Runtime.PostProcessing
          public bool DisablePostProcessing(PostProcessingType type)
          {
              int typeInt = (int) type;
-             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
+             PostProcessingSetting postProcessingSetting;
 
-             if (postProcessingSetting == null)
+             if (GetPostProcessingSetting(typeInt, out postProcessingSetting) == false)
              {
                  return false;
              }
@@ -140,38 +140,57 @@ namespace CelPBR.Runtime.PostProcessing
              return true;
          }
 
-         public PostProcessingSetting GetPoseProcessingSetting(PostProcessingType type)
+         public bool GetPostProcessingSetting(PostProcessingType type, out PostProcessingSetting postProcessingSetting)
          {
              int typeInt = (int) type;
-             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
-             return postProcessingSetting;
+
+             if (GetPostProcessingSetting(typeInt, out postProcessingSetting))
+             {
+                 return true;
+             }
+
+             return false;
+         }
+
+         public int GetExistPostProcessingTypeList(List<PostProcessingType> postProcessingTypeList)
+         {
+             if (postProcessingTypeList == null)
+             {
+                 return 0;
+             }
+             
+             postProcessingTypeList.Clear();
+
+             foreach (int typeInt in postProcessingSettingDict.Keys)
+             {
+                 postProcessingTypeList.Add((PostProcessingType)typeInt);
+             }
+
+             return postProcessingSettingDict.Count;
          }
 
          private bool HasAdded(PostProcessingType type)
          {
              int typeInt = (int) type;
-             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
-             return postProcessingSetting != null;
+             return postProcessingSettingDict.ContainsKey(typeInt);
          }
          
          private bool IsEnabled(PostProcessingType type)
          {
              int typeInt = (int) type;
-             PostProcessingSetting postProcessingSetting = GetPostProcessingSetting(typeInt);
+             PostProcessingSetting postProcessingSetting;
 
-             if (postProcessingSetting == null)
+             if (GetPostProcessingSetting(typeInt, out postProcessingSetting))
              {
-                 return false;
+                 return postProcessingSetting.enabled;
              }
 
-             return postProcessingSetting.enabled;
+             return false;
          }
 
-        private PostProcessingSetting GetPostProcessingSetting(int typeInt)
+        private bool GetPostProcessingSetting(int typeInt, out PostProcessingSetting postProcessingSetting)
         {
-            PostProcessingSetting postProcessingSetting;
-            postProcessingSettingDict.TryGetValue(typeInt, out postProcessingSetting);
-            return postProcessingSetting;
+            return postProcessingSettingDict.TryGetValue(typeInt, out postProcessingSetting);
         }
         
         
@@ -184,6 +203,21 @@ namespace CelPBR.Runtime.PostProcessing
         private static Type GetPostProcessingSettingType(int typeInt)
         {
             return postProcessingSettingTypeDict[typeInt];
+        }
+
+        [ContextMenu("Clear All")]
+        private void ClearAll()
+        {
+            PostProcessingSetting[] postProcessingSettings = GetComponents<PostProcessingSetting>();
+
+            foreach (PostProcessingSetting postProcessingSetting in postProcessingSettings)
+            {
+                DestroyImmediate(postProcessingSetting);
+            }
+            
+            postProcessingSettingDict.Clear();
+            postProcessingSettingDictKeyList.Clear();
+            postProcessingSettingDictValueList.Clear();
         }
         #endregion
     }

@@ -18,3 +18,4 @@
 // 1 fft water
 // 1 water reflection
 // 1 water refraction
+// 2 post processing config inspector

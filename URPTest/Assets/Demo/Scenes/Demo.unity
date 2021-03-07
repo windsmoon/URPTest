@@ -36488,6 +36488,8 @@ GameObject:
   - component: {fileID: 1216918876}
   - component: {fileID: 1216918879}
   - component: {fileID: 1216918880}
+  - component: {fileID: 1216918881}
+  - component: {fileID: 1216918882}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -36604,11 +36606,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGlobal: 1
+  isGlobal: 0
   priority: 0
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 591ecb01b00391040a058080e1c10373, type: 2}
+--- !u!114 &1216918881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216918875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca11713dfaa2435d8ab07d65dd2199da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  postProcessingSettingDictKeyList: 00000000
+  postProcessingSettingDictValueList:
+  - {fileID: 1216918882}
+--- !u!114 &1216918882
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216918875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8b26331afc4c69a5dd260a0b5353ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  downSampleScale: 2
 --- !u!1 &1217178316 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3511543862585525959, guid: ce2ecbd04daed4e4b93dbf7811153167, type: 3}
