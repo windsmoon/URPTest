@@ -11,10 +11,16 @@ namespace CelPBR.Runtime.PostProcessing
         #endregion
 
         #region properties
-
         public override string PostProcessingName
         {
             get => "Screen Space Reflection";
+        }
+        #endregion
+
+        #region methods
+        public override bool IsEnabled()
+        {
+            return base.IsEnabled();
         }
         #endregion
     }

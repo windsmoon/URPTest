@@ -19,3 +19,4 @@
 // 1 water reflection
 // 1 water refraction
 // 2 post processing config inspector
+// 2 post processing support selecting camera event

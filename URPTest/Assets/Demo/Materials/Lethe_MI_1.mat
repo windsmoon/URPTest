@@ -51,6 +51,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _KKHighlightAnisoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _KKHighlightOffsetMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -83,6 +87,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9e912bf6db3487c4f98522b7a1a36ff8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ReflectionTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SSSLut:
         m_Texture: {fileID: 2800000, guid: 32679f547a496c14bbf72bacb7d0eab3, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -112,6 +120,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - EnableKKHighlightAnisoMap: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -124,9 +133,16 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _Debug_Disable_Diffuse: 0
+    - _Debug_Disable_GI: 0
+    - _Debug_Disable_Outline: 0
+    - _Debug_Disable_Rim: 0
+    - _Debug_Disable_Specular: 0
+    - _Debug_Unlit: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EnablePlanarReflection: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -159,6 +175,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Temp_Debug: 0
     - _ThicknessScale: 1
     - _UVSec: 0
     - _Unlit: 0

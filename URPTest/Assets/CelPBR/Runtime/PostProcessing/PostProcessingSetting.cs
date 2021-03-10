@@ -42,7 +42,10 @@ namespace CelPBR.Runtime.PostProcessing
         #endregion
 
         #region methods
-
+        public virtual bool IsEnabled()
+        {
+            return enabled;
+        }
         // protected methtod, dont need try get
         // protected static Type GetPostProcessingSettingType(PostProcessingType type)
         // {
