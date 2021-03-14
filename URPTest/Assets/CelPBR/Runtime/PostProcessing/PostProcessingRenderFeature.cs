@@ -3,6 +3,7 @@ using CelPBR.Runtime.PostProcessing.RenderPasses;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 namespace CelPBR.Runtime.PostProcessing
 {
@@ -10,37 +11,37 @@ namespace CelPBR.Runtime.PostProcessing
     public class PostProcessingRenderFeature : ScriptableRendererFeature
     {
         #region fields
-        [SerializeField, HideInInspector]
-        private Shader shader;
+        [FormerlySerializedAs("shader")] [SerializeField, HideInInspector]
+        private Shader uberShader;
         
-        private Material material;
+        private Material uberMaterial;
+        private CommandBuffer commandBuffer;
         private List<PostProcessingType> existPostProcessingTypeList;
-        private static Dictionary<int, PostProcessingRenderPass> postProcessingRenderPassDict;
-        #endregion
-
-        #region constructors
-        static PostProcessingRenderFeature()
-        {
-            // todo : need be optimized
-            // can use reflection
-            postProcessingRenderPassDict = new Dictionary<int, PostProcessingRenderPass>();
-            postProcessingRenderPassDict[(int)PostProcessingType.ScreenSpaceRelfection] = new ScreenSpaceRelfectionRenderPass();
-        }
+        private Dictionary<int, PostProcessingRenderPass> postProcessingRenderPassDict;
+        private UberRenderPass uberRenderPass;
         #endregion
 
         #region methods
         public override void Create()
         {
-            if (shader == null)
+            if (uberShader == null)
             {
-                shader = Shader.Find("CelPBR/PostProcessing/ScreenSpaceReflection");
+                uberShader = Shader.Find("CelPBR/PostProcessing/Uber");
             }
             
-            if (material == null)
+            if (uberMaterial == null)
             {
-                material = new Material(shader);
+                uberMaterial = new Material(uberShader);
+            }
+
+            if (commandBuffer == null)
+            {
+                commandBuffer = new CommandBuffer();
             }
             
+            postProcessingRenderPassDict = new Dictionary<int, PostProcessingRenderPass>();
+            postProcessingRenderPassDict[(int)PostProcessingType.ScreenSpaceRelfection] = new ScreenSpaceRelfectionRenderPass();
+            uberRenderPass = new UberRenderPass();
             existPostProcessingTypeList = new List<PostProcessingType>();
         }
 
@@ -62,6 +63,12 @@ namespace CelPBR.Runtime.PostProcessing
             }
 
             int existCount = postProcessingConfig.GetExistPostProcessingTypeList(existPostProcessingTypeList);
+
+            if (existCount == 0)
+            {
+                return;
+            }
+            
             PostProcessingSetting postProcessingSetting;
 
             for (int i = 0; i < existCount; ++i)
@@ -78,18 +85,31 @@ namespace CelPBR.Runtime.PostProcessing
                     continue;
                 }
                 
-                EnqueuePass(renderer, type);
+                EnqueuePass(renderer, type, postProcessingSetting);
             }
+            
+            renderer.EnqueuePass(uberRenderPass);
         }
         
         protected override void Dispose(bool disposing)
         {
-            CoreUtils.Destroy(material);
+            if (uberMaterial != null)
+            {
+#if UNITY_EDITOR
+                if (Application.isPlaying)
+                    Destroy(uberMaterial);
+                else
+                    DestroyImmediate(uberMaterial);
+#else
+                UnityObject.Destroy(obj);
+#endif
+            }
         }
 
-        private static void EnqueuePass(ScriptableRenderer renderer, PostProcessingType type)
+        private void EnqueuePass(ScriptableRenderer renderer, PostProcessingType type, PostProcessingSetting postProcessingSetting)
         {
-            renderer.EnqueuePass(postProcessingRenderPassDict[(int)type]);
+            PostProcessingRenderPass renderPass = postProcessingRenderPassDict[(int) type];
+            renderer.EnqueuePass(renderPass);
         }
         #endregion
     }

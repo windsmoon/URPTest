@@ -12,11 +12,12 @@ namespace CelPBR.Runtime.PostProcessing
         #region fields
         [SerializeField, HideInInspector] 
         private bool isEditorFoldout;
+        private Shader shader;
+        private Material material;
         // private static Dictionary<int, Type> postProcessingTypeSettingDict;
         #endregion
 
         #region properties
-
         public abstract string PostProcessingName
         {
             get;
@@ -27,18 +28,6 @@ namespace CelPBR.Runtime.PostProcessing
             get => isEditorFoldout;
             set => isEditorFoldout = value;
         }
-        #endregion
-
-        #region constructors
-
-        // static PostProcessingSetting()
-        // {
-        //     // postProcessingTypeSettingDict = new Dictionary<int, Type>();
-        //     // postProcessingTypeSettingDict.Add((int)PostProcessingType.ScreenSpaceRelfection, typeof(ScreenSpaceReflectionSetting));
-        //     postProcessingTypeDict = new Dictionary<Type, PostProcessingType>();
-        //     postProcessingTypeDict.Add(typeof(ScreenSpaceReflectionSetting), PostProcessingType.ScreenSpaceRelfection);
-        // }
-
         #endregion
 
         #region methods
