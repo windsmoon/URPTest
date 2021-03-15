@@ -2,6 +2,8 @@
 #define CEL_PBR_POSTPROCESSING_COMMON_INCLUDED
 
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareNormalsTexture.hlsl"
 
 struct Attributes
 {
@@ -29,6 +31,30 @@ Varyings Vert(Attributes input)
 
     output.uv = input.uv;
     return output;
+}
+
+float RawToLinearDepth(float rawDepth)
+{
+    #if defined(_ORTHOGRAPHIC)
+        #if UNITY_REVERSED_Z
+            return ((_ProjectionParams.z - _ProjectionParams.y) * (1.0 - rawDepth) + _ProjectionParams.y);
+        #else
+            return ((_ProjectionParams.z - _ProjectionParams.y) * (rawDepth) + _ProjectionParams.y);
+        #endif
+    #else
+        return LinearEyeDepth(rawDepth, _ZBufferParams);
+    #endif
+}
+
+float SampleAndGetLinearDepth(float2 uv)
+{
+    float rawDepth = SampleSceneDepth(uv.xy).r;
+    return RawToLinearDepth(rawDepth);
+}
+
+float3 GetPosWS(float2 screenUV)
+{
+    float depth = SampleAndGetLinearDepth(screenUV);
 }
 
 #endif

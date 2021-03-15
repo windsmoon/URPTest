@@ -20,3 +20,4 @@
 // 1 water refraction
 // 2 post processing config inspector
 // 2 post processing support selecting camera event
+// 2 post processing support opaque texture and depth texture
