@@ -58,7 +58,6 @@ MonoBehaviour:
   m_Name: NewPostProcessingRenderFeature
   m_EditorClassIdentifier: 
   m_Active: 1
-  uberShader: {fileID: 4800000, guid: 9da4f5a4f31a48acaead9558731cf47d, type: 3}
 --- !u!114 &202860670549521244
 MonoBehaviour:
   m_ObjectHideFlags: 0

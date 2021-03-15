@@ -84,11 +84,13 @@ namespace CelPBR.Runtime.PostProcessing
             }
             
             PostProcessingSetting postProcessingSetting;
+            int enabledCount = 0;
 
             for (int i = 0; i < existCount; ++i)
             {
                 PostProcessingType type = existPostProcessingTypeList[i];
 
+                // todo : can be removed
                 if (postProcessingConfig.GetPostProcessingSetting(type, out postProcessingSetting) == false)
                 {
                     continue;
@@ -98,11 +100,15 @@ namespace CelPBR.Runtime.PostProcessing
                 {
                     continue;
                 }
-                
+
+                ++enabledCount;
                 EnqueuePass(renderer, type, postProcessingSetting);
             }
-            
-            renderer.EnqueuePass(uberRenderPass);
+
+            if (enabledCount > 0)
+            {
+                renderer.EnqueuePass(uberRenderPass);
+            }
         }
         
         protected override void Dispose(bool disposing)
