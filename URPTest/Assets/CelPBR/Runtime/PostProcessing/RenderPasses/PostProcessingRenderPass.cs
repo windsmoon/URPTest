@@ -10,6 +10,8 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         #region fields
         protected CommandBuffer commandBuffer;
         protected Material material;
+        protected PostProcessingSetting postProcessingSetting;
+        protected CommandBuffer uberCommandBuffer;
         #endregion
         
         #region constructors
@@ -28,18 +30,37 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         #endregion
 
         #region methods
-
         public void Init()
         { 
             material = new Material(Shader.Find(ShaderName));
         }
+
+        public void SetData(CommandBuffer uberCommandBuffer, PostProcessingSetting postProcessingSetting)
+        {
+            this.uberCommandBuffer = this.uberCommandBuffer;
+            this.postProcessingSetting = postProcessingSetting;
+        }
         #endregion
 
         #region interface impls
-
         public void Dispose()
         {
-                        
+            if (material != null)
+            {
+#if UNITY_EDITOR
+                if (Application.isPlaying)
+                {
+                    UnityEngine.Object.Destroy(material);
+                }
+                
+                else
+                {
+                    UnityEngine.Object.DestroyImmediate(material);
+                }
+#else
+                UnityEngine.Object.Destroy(obj);
+#endif
+            }                     
         }
         #endregion
     }

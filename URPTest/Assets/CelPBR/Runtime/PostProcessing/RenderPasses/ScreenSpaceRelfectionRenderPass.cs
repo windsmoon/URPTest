@@ -12,14 +12,16 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         #region properties
         public override string ShaderName
         {
-            get => "Screen Space Reflection";
+            get => "CelPBR/PostProcessing/Screen Space Reflection";
         }
         #endregion
         
         #region methods
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) pass);
+            commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);
+            context.ExecuteCommandBuffer(commandBuffer);
+            commandBuffer.Clear();
         }
 
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)

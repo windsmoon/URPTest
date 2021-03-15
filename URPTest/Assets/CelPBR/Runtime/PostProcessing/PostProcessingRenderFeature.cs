@@ -11,19 +11,26 @@ namespace CelPBR.Runtime.PostProcessing
     public class PostProcessingRenderFeature : ScriptableRendererFeature
     {
         #region fields
-        [FormerlySerializedAs("shader")] [SerializeField, HideInInspector]
         private Shader uberShader;
-        
         private Material uberMaterial;
-        private CommandBuffer commandBuffer;
+        private CommandBuffer uberCommandBuffer;
         private List<PostProcessingType> existPostProcessingTypeList;
         private Dictionary<int, PostProcessingRenderPass> postProcessingRenderPassDict;
         private UberRenderPass uberRenderPass;
+        private bool needInit = true;
         #endregion
 
         #region methods
         public override void Create()
         {
+            if (needInit = false)
+            {
+                Debug.Log("2222");
+                return;
+            }
+            
+            Debug.Log("111111");
+            
             if (uberShader == null)
             {
                 uberShader = Shader.Find("CelPBR/PostProcessing/Uber");
@@ -34,15 +41,22 @@ namespace CelPBR.Runtime.PostProcessing
                 uberMaterial = new Material(uberShader);
             }
 
-            if (commandBuffer == null)
+            if (uberCommandBuffer == null)
             {
-                commandBuffer = new CommandBuffer();
+                uberCommandBuffer = new CommandBuffer();
             }
             
             postProcessingRenderPassDict = new Dictionary<int, PostProcessingRenderPass>();
             postProcessingRenderPassDict[(int)PostProcessingType.ScreenSpaceRelfection] = new ScreenSpaceRelfectionRenderPass();
-            uberRenderPass = new UberRenderPass();
+            uberRenderPass = new UberRenderPass(uberCommandBuffer);
             existPostProcessingTypeList = new List<PostProcessingType>();
+
+            foreach (var pair in postProcessingRenderPassDict)
+            {
+                pair.Value.Init();
+            }
+            
+            needInit = false;
         }
 
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
@@ -109,6 +123,7 @@ namespace CelPBR.Runtime.PostProcessing
         private void EnqueuePass(ScriptableRenderer renderer, PostProcessingType type, PostProcessingSetting postProcessingSetting)
         {
             PostProcessingRenderPass renderPass = postProcessingRenderPassDict[(int) type];
+            renderPass.SetData(uberCommandBuffer, postProcessingSetting);
             renderer.EnqueuePass(renderPass);
         }
         #endregion

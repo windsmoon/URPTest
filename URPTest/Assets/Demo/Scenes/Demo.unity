@@ -36650,7 +36650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8b26331afc4c69a5dd260a0b5353ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEditorFoldout: 0
+  isEditorFoldout: 1
   downSampleScale: 2
 --- !u!1 &1217178316 stripped
 GameObject:
