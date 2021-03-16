@@ -46,15 +46,16 @@ float RawToLinearDepth(float rawDepth)
     #endif
 }
 
-float SampleAndGetLinearDepth(float2 uv)
+float SampleAndGetLinearDepth(float2 screenUV)
 {
-    float rawDepth = SampleSceneDepth(uv.xy).r;
+    float rawDepth = SampleSceneDepth(screenUV).r;
     return RawToLinearDepth(rawDepth);
 }
 
-float3 GetPosWS(float2 screenUV)
+float3 GetPosVS(float2 screenUV)
 {
-    float depth = SampleAndGetLinearDepth(screenUV);
+    float rawDepth = SampleSceneDepth(screenUV.xy).r;
+    float viewZ = RawToLinearDepth(rawDepth);
 }
 
 #endif
