@@ -7,6 +7,7 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
     public class ScreenSpaceRelfectionRenderPass : PostProcessingRenderPass
     {
         #region constants
+        public const string ScreenSpaceRelfectionKeyword = "SCREEN_SPACE_REFLECTION";
         #endregion
 
         #region properties
@@ -22,6 +23,7 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
             commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);
             context.ExecuteCommandBuffer(commandBuffer);
             commandBuffer.Clear();
+            // uberMaterial.EnableKeyword(ScreenSpaceRelfectionKeyword);
         }
 
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)

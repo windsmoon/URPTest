@@ -11,7 +11,6 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         protected CommandBuffer commandBuffer;
         protected Material material;
         protected PostProcessingSetting postProcessingSetting;
-        protected CommandBuffer uberCommandBuffer;
         #endregion
         
         #region constructors
@@ -35,9 +34,8 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
             material = new Material(Shader.Find(ShaderName));
         }
 
-        public void SetData(CommandBuffer uberCommandBuffer, PostProcessingSetting postProcessingSetting)
+        public void SetData(UberAgent ubaerAgent, PostProcessingSetting postProcessingSetting)
         {
-            this.uberCommandBuffer = this.uberCommandBuffer;
             this.postProcessingSetting = postProcessingSetting;
         }
         #endregion

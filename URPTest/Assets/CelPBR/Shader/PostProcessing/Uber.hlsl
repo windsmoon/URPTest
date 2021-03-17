@@ -3,7 +3,7 @@
 
 real4 UberFragment(Varyings input) : SV_TARGET
 {
-    return 1;
+    return real4(GetPosVS(input.uv), 1);
 }
 
 #endif

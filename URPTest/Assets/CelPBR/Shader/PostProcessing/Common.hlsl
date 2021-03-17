@@ -33,7 +33,7 @@ Varyings Vert(Attributes input)
     return output;
 }
 
-float RawToLinearDepth(float rawDepth)
+float RawToEyeDepth(float rawDepth)
 {
     #if defined(_ORTHOGRAPHIC)
         #if UNITY_REVERSED_Z
@@ -46,16 +46,34 @@ float RawToLinearDepth(float rawDepth)
     #endif
 }
 
-float SampleAndGetLinearDepth(float2 screenUV)
+// ordinary projectin camera
+float3 ReconstructViewPos(float2 uv, float viewZ)
 {
-    float rawDepth = SampleSceneDepth(screenUV).r;
-    return RawToLinearDepth(rawDepth);
+    float2 p11_22 = 1 / float2(unity_CameraProjection._11, unity_CameraProjection._22);
+    // 13_23 should be 0 in most cases
+    float2 p13_23 = float2(unity_CameraProjection._13, unity_CameraProjection._23);
+
+    // todo : this code may be wrong, it should be care for the different api
+    // #if defined(_ORTHOGRAPHIC)
+    // float3 viewPos = float3(((uv.xy * 2.0 - 1.0 - p13_31) * p11_22), viewZ);
+    // #else
+    // float3 viewPos = float3(viewZ * ((uv.xy * 2.0 - 1.0 - p13_31) * p11_22), viewZ);
+    // #endif
+    
+    #if defined(_ORTHOGRAPHIC)
+        float3 viewPos = float3(((uv.xy * 2.0 - 1.0) * p11_22), viewZ);
+    #else
+        float3 viewPos = float3(viewZ * ((uv.xy * 2.0 - 1.0) * p11_22), viewZ);
+    #endif
+
+    return viewPos;
 }
 
 float3 GetPosVS(float2 screenUV)
 {
     float rawDepth = SampleSceneDepth(screenUV.xy).r;
-    float viewZ = RawToLinearDepth(rawDepth);
+    float viewZ = RawToEyeDepth(rawDepth);
+    return ReconstructViewPos(screenUV, viewZ);
 }
 
 #endif

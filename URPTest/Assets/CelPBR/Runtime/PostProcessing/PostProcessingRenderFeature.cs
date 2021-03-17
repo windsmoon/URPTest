@@ -14,9 +14,10 @@ namespace CelPBR.Runtime.PostProcessing
         private Shader uberShader;
         private Material uberMaterial;
         private CommandBuffer uberCommandBuffer;
+        private UberRenderPass uberRenderPass;
+        private UberAgent uberAgent;
         private List<PostProcessingType> existPostProcessingTypeList;
         private Dictionary<int, PostProcessingRenderPass> postProcessingRenderPassDict;
-        private UberRenderPass uberRenderPass;
         private bool needInit = true;
         #endregion
 
@@ -48,7 +49,8 @@ namespace CelPBR.Runtime.PostProcessing
             
             postProcessingRenderPassDict = new Dictionary<int, PostProcessingRenderPass>();
             postProcessingRenderPassDict[(int)PostProcessingType.ScreenSpaceRelfection] = new ScreenSpaceRelfectionRenderPass();
-            uberRenderPass = new UberRenderPass(uberCommandBuffer);
+            uberRenderPass = new UberRenderPass(uberCommandBuffer, uberMaterial);
+            uberAgent = new UberAgent(uberRenderPass);
             existPostProcessingTypeList = new List<PostProcessingType>();
 
             foreach (var pair in postProcessingRenderPassDict)
@@ -57,6 +59,7 @@ namespace CelPBR.Runtime.PostProcessing
             }
             
             needInit = false;
+            uberRenderPass.OnUberRenderPassExecuted += OnUberRenderPassExecuted;
         }
 
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
@@ -107,6 +110,7 @@ namespace CelPBR.Runtime.PostProcessing
 
             if (enabledCount > 0)
             {
+                uberAgent.PassToUberRenderPass();
                 renderer.EnqueuePass(uberRenderPass);
             }
         }
@@ -129,8 +133,13 @@ namespace CelPBR.Runtime.PostProcessing
         private void EnqueuePass(ScriptableRenderer renderer, PostProcessingType type, PostProcessingSetting postProcessingSetting)
         {
             PostProcessingRenderPass renderPass = postProcessingRenderPassDict[(int) type];
-            renderPass.SetData(uberCommandBuffer, postProcessingSetting);
+            renderPass.SetData(uberAgent, postProcessingSetting);
             renderer.EnqueuePass(renderPass);
+        }
+        
+        private void OnUberRenderPassExecuted(CommandBuffer commandbuffer)
+        {
+            uberAgent.Clear(commandbuffer);
         }
         #endregion
     }

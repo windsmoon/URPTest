@@ -1,32 +1,42 @@
 using System;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace CelPBR.Runtime.PostProcessing.RenderPasses
+namespace CelPBR.Runtime.PostProcessing
 {
     public class UberRenderPass : ScriptableRenderPass, IDisposable
     {
-        #region constants
+        #region delegates
+        public delegate void OnUberRenderPassExecutedDelegate(CommandBuffer commandBuffer);
+        public OnUberRenderPassExecutedDelegate OnUberRenderPassExecuted;
         #endregion
-
+        
         #region fields
         private CommandBuffer commandBuffer;
         private Material material;
         #endregion
 
         #region constructors
-
-        public UberRenderPass(CommandBuffer commandBuffer)
+        public UberRenderPass(CommandBuffer commandBuffer, Material material)
         {
             this.commandBuffer = commandBuffer;
-            this.material = new Material(Shader.Find("CelPBR/PostProcessing/Uber"));
+            this.material = material;
+            // this.material = new Material(Shader.Find("CelPBR/PostProcessing/Uber"));
             renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
+        }
+        #endregion
+        
+        #region Properties
+
+        public Material Material
+        {
+            get => material;
         }
         #endregion
 
         #region interface impls
-
         public void Dispose()
         {
             if (material != null)
@@ -52,6 +62,13 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);
+
+            // this step is essential or the rts will be leak in memory
+            if (OnUberRenderPassExecuted != null)
+            {
+                OnUberRenderPassExecuted(commandBuffer);
+            }
+
             context.ExecuteCommandBuffer(commandBuffer);
             commandBuffer.Clear();
         }
