@@ -59,6 +59,7 @@ namespace CelPBR.Runtime.PostProcessing
             }
             
             needInit = false;
+            uberRenderPass.BeforeUberRenderPassExecute += BeforeUberRenderPassExecute;
             uberRenderPass.OnUberRenderPassExecuted += OnUberRenderPassExecuted;
         }
 
@@ -110,7 +111,6 @@ namespace CelPBR.Runtime.PostProcessing
 
             if (enabledCount > 0)
             {
-                uberAgent.PassToUberRenderPass();
                 renderer.EnqueuePass(uberRenderPass);
             }
         }
@@ -135,6 +135,11 @@ namespace CelPBR.Runtime.PostProcessing
             PostProcessingRenderPass renderPass = postProcessingRenderPassDict[(int) type];
             renderPass.SetData(uberAgent, postProcessingSetting);
             renderer.EnqueuePass(renderPass);
+        }
+        
+        private void BeforeUberRenderPassExecute()
+        {
+            uberAgent.PassToUberRenderPass();
         }
         
         private void OnUberRenderPassExecuted(CommandBuffer commandbuffer)

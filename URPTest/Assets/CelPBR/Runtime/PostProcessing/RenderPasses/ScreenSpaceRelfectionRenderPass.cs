@@ -10,6 +10,10 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         public const string ScreenSpaceRelfectionKeyword = "SCREEN_SPACE_REFLECTION";
         #endregion
 
+        #region fields
+        private int ssrColorID = Shader.PropertyToID("_SSRColor");
+        #endregion
+
         #region properties
         public override string ShaderName
         {
@@ -20,6 +24,8 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         #region methods
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+            uberAgent.SetFloat(ssrColorID, 0.4f);
+            uberAgent.EnableKeyword(ScreenSpaceRelfectionKeyword);
             commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);
             context.ExecuteCommandBuffer(commandBuffer);
             commandBuffer.Clear();

@@ -9,7 +9,9 @@ namespace CelPBR.Runtime.PostProcessing
     public class UberRenderPass : ScriptableRenderPass, IDisposable
     {
         #region delegates
+        public delegate void BeforeUberRenderPassExecuteDelegate();
         public delegate void OnUberRenderPassExecutedDelegate(CommandBuffer commandBuffer);
+        public BeforeUberRenderPassExecuteDelegate BeforeUberRenderPassExecute;
         public OnUberRenderPassExecutedDelegate OnUberRenderPassExecuted;
         #endregion
         
@@ -61,6 +63,11 @@ namespace CelPBR.Runtime.PostProcessing
         #region methods
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+            if (BeforeUberRenderPassExecute != null)
+            {
+                BeforeUberRenderPassExecute();
+            }
+            
             commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);
 
             // this step is essential or the rts will be leak in memory

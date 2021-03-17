@@ -11,6 +11,7 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         protected CommandBuffer commandBuffer;
         protected Material material;
         protected PostProcessingSetting postProcessingSetting;
+        protected UberAgent uberAgent;
         #endregion
         
         #region constructors
@@ -36,6 +37,7 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
 
         public void SetData(UberAgent ubaerAgent, PostProcessingSetting postProcessingSetting)
         {
+            this.uberAgent = ubaerAgent;
             this.postProcessingSetting = postProcessingSetting;
         }
         #endregion
