@@ -24,6 +24,7 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         #region methods
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+            ConfigureInput(ScriptableRenderPassInput.Normal);
             uberAgent.SetFloat(ssrColorID, 0.4f);
             uberAgent.EnableKeyword(ScreenSpaceRelfectionKeyword);
             commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);

@@ -39,6 +39,7 @@ float4 MetaFragmentMeta(Varyings input) : SV_Target
 
     BRDFData brdfData;
     real4 baseColor = GetBaseColor(input.baseUV);
+    clip(baseColor.a - GetCutoff());
     InitializeBRDFData(baseColor.rgb, GetMetallic(input.baseUV), 0, GetSmoothness(input.baseUV), baseColor.a, brdfData);
 
     MetaInput metaInput;
