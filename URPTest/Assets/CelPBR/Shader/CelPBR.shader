@@ -137,22 +137,22 @@ Shader "CelPBR/CelPBR"
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             // custom defined keywords
-            #pragma shader_feature_local _ PERSPECTIVE_CORRECTION
-            #pragma shader_feature_local _ CEL_SHADING
-            #pragma shader_feature_local _ REVERT_HEIGHT
-            #pragma shader_feature_local _ PARALLAX_SELF_SHADOW
-            #pragma shader_feature_local _ SSS
-            #pragma shader_feature_local _ ENABLE_PLANAR_REFLECTION
-            #pragma shader_feature_local _ KK_HIGHLIGHT
-            #pragma shader_feature_local _ ENABLE_KK_HIGHLIGHT_ANISO_MAP
+            #pragma multi_compile_local _ PERSPECTIVE_CORRECTION
+            #pragma multi_compile_local_fragment _ CEL_SHADING
+            #pragma multi_compile_local _ REVERT_HEIGHT
+            #pragma multi_compile_local_fragment _ PARALLAX_SELF_SHADOW
+            #pragma multi_compile_local_fragment _ SSS
+            #pragma multi_compile_local_fragment _ ENABLE_PLANAR_REFLECTION
+            #pragma multi_compile_local_fragment _ KK_HIGHLIGHT
+            #pragma multi_compile_local_fragment _ ENABLE_KK_HIGHLIGHT_ANISO_MAP
 
             // custom defined debug keywords
-            #pragma shader_feature_local _ TEMP_DEBUG
-            #pragma shader_feature_local _ DEBUG_UNLIT
-            #pragma shader_feature_local _ DEBUG_DISABLE_DIFFUSE
-            #pragma shader_feature_local _ DEBUG_DISABLE_SPECULAR
-            #pragma shader_feature_local _ DEBUG_DISABLE_RIM
-            #pragma shader_feature_local _ DEBUG_DISABLE_GI
+            // #pragma multi_compile_local _ TEMP_DEBUG
+            // #pragma multi_compile_local _ DEBUG_UNLIT
+            // #pragma multi_compile_local _ DEBUG_DISABLE_DIFFUSE
+            // #pragma multi_compile_local _ DEBUG_DISABLE_SPECULAR
+            // #pragma multi_compile_local _ DEBUG_DISABLE_RIM
+            // #pragma multi_compile_local _ DEBUG_DISABLE_GI
 
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag
@@ -286,9 +286,6 @@ Shader "CelPBR/CelPBR"
             ZWrite Off
             
             HLSLPROGRAM
-
-            // custom defined keywords
-            #pragma shader_feature_local _ CEL_SHADING
 
             // custom defined keywords
             #pragma shader_feature_local _ DEBUG_DISABLE_OUTLINE
