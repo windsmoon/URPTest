@@ -69,10 +69,22 @@ float3 ReconstructViewPos(float2 uv, float viewZ)
     return viewPos;
 }
 
-float3 GetPosVS(float2 screenUV)
+float GetEyeDepth(float2 screenUV)
 {
     float rawDepth = SampleSceneDepth(screenUV.xy).r;
     float viewZ = RawToEyeDepth(rawDepth);
+    return viewZ;
+}
+
+
+float3 GetNormalVS(float2 screenUV)
+{
+    return SampleSceneNormals(screenUV);    
+}
+
+float3 GetPosVS(float2 screenUV)
+{
+    float viewZ = GetEyeDepth(screenUV);
     return ReconstructViewPos(screenUV, viewZ);
 }
 

@@ -25,7 +25,7 @@ namespace CelPBR.Runtime.PostProcessing
         static PostProcessingConfig()
         {
             postProcessingSettingTypeDict = new Dictionary<int, Type>();
-            postProcessingSettingTypeDict.Add((int)PostProcessingType.ScreenSpaceRelfection, typeof(ScreenSpaceReflectionSetting));
+            postProcessingSettingTypeDict.Add((int)PostProcessingType.ScreenSpaceRelfection, typeof(SSRSetting));
             // postProcessingTypeDict = new Dictionary<Type, PostProcessingType>();
             // postProcessingTypeDict.Add(typeof(ScreenSpaceReflectionSetting), PostProcessingType.ScreenSpaceRelfection);
         }

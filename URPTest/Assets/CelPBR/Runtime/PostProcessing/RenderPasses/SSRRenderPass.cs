@@ -11,7 +11,8 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         #endregion
 
         #region fields
-        private int ssrColorID = Shader.PropertyToID("_SSRColor");
+        private int maxRayMarchingStepID = Shader.PropertyToID("_SSR_MaxRayMarchingStep");
+        private int maxRayMarchingDistanceID = Shader.PropertyToID("_SSR_MaxRayMarchingDistance");
         #endregion
 
         #region properties
@@ -24,12 +25,14 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         #region methods
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+            SSRSetting ssrSetting = postProcessingSetting as SSRSetting;
             ConfigureInput(ScriptableRenderPassInput.Normal);
-            uberAgent.SetFloat(ssrColorID, 0.4f);
+            uberAgent.SetInt(maxRayMarchingStepID, ssrSetting.MaxRayMarchingStep);
+            uberAgent.SetFloat(maxRayMarchingDistanceID, ssrSetting.MaxRayMarchingDistance);
             uberAgent.EnableKeyword(ScreenSpaceRelfectionKeyword);
-            commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);
-            context.ExecuteCommandBuffer(commandBuffer);
-            commandBuffer.Clear();
+            // commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);
+            // context.ExecuteCommandBuffer(commandBuffer);
+            // commandBuffer.Clear();
             // uberMaterial.EnableKeyword(ScreenSpaceRelfectionKeyword);
         }
 

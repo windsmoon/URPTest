@@ -15,7 +15,7 @@ Shader "CelPBR/PostProcessing/Screen Space Reflection"
             #pragma fragment ScreenSpaceReflectionFragment
 
             #include "Common.hlsl"
-            #include "ScreenSpaceReflection.hlsl"
+            #include "SSR.hlsl"
             ENDHLSL
         }
     }
