@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CelPBR.Runtime.PostProcessing
 {
@@ -9,8 +10,12 @@ namespace CelPBR.Runtime.PostProcessing
         private int maxRayMarchingStep = 16;
         [SerializeField, Min(0.001f)]
         private float maxRayMarchingDistance = 10;
-        [SerializeField, Min(0.001f)] 
-        private float thickness = 0.001f;
+        [SerializeField]
+        private float rayMarchingStepDistance = 0.5f;
+        [SerializeField]
+        private float depthThickness = 0.1f;
+        [SerializeField] 
+        private LayerMask ssrObjectLayer = -1;
         #endregion
 
         #region properties
@@ -31,10 +36,22 @@ namespace CelPBR.Runtime.PostProcessing
             set => maxRayMarchingDistance = value;
         }
 
-        public float Thickness
+        public float RayMarchingStepDistance
         {
-            get => thickness;
-            set => thickness = value;
+            get { return rayMarchingStepDistance; }
+            set { rayMarchingStepDistance = value; }
+        }
+
+        public float DepthThickness
+        {
+            get => depthThickness;
+            set => depthThickness = value;
+        }
+
+        public LayerMask SSRObjectLayer
+        {
+            get { return ssrObjectLayer; }
+            set { ssrObjectLayer = value; }
         }
         #endregion
 

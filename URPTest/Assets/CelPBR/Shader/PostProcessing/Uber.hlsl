@@ -19,8 +19,11 @@ real4 UberFragment(Varyings input) : SV_TARGET
 
         if (viewSpaceRayMarching(posVS, reflectDirectionVS, screenUV))
         {
+            // return SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, screenUV);
             color += SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, screenUV);
         }
+
+        // return 0;
     #endif
 
     // return _SSRColor;

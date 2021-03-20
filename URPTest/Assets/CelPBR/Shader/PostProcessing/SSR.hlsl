@@ -3,27 +3,33 @@
 
 float _SSR_MaxRayMarchingStep;
 float _SSR_MaxRayMarchingDistance;
+float _SSR_RayMarchingStepDistance;
 float _SSR_DepthThickness;
 
 bool CheckDepthCollision(float3 posVS, out float2 screenPos)
 {
-    float4 posHCS = TransformWViewToHClip(posVS);
+    float3 realPosVS = posVS;
+    realPosVS.z *= -1;
+    float4 posHCS = TransformWViewToHClip(realPosVS);
     float4 posCS = posHCS / posHCS.w;
     screenPos = posCS * 0.5 + 0.5;
     float depthToPosVS = GetEyeDepth(screenPos);
-    return screenPos.x > 0 && screenPos.y > 0 && screenPos.x < 1.0 && screenPos.y < 1.0 && depthToPosVS < posVS.z;
+    return screenPos.x > 0 && screenPos.y > 0 && screenPos.x < 1.0 && screenPos.y < 1.0 && depthToPosVS < posVS.z && (depthToPosVS + _SSR_DepthThickness) > posVS.z;
 }
 
 bool viewSpaceRayMarching(float3 original, float3 direction, out float2 hitScreenPos)
 {
-    float rayMarchingStepSize = _SSR_MaxRayMarchingDistance / _SSR_MaxRayMarchingStep;
+    // float rayMarchingStepSize = _SSR_MaxRayMarchingDistance / _SSR_MaxRayMarchingStep;
 
     UNITY_LOOP
-    for(int i = 1; i < _SSR_MaxRayMarchingStep; i++)
+    for(int i = 1; i <= _SSR_MaxRayMarchingStep; i++)
     {
-        float3 currentPos = original + direction * rayMarchingStepSize * i;
-        // if (length(original - currentPos) > _ScreenSpaceReflection_MaxRayMarchingDistance)
-        //     return false;
+        float3 currentPos = original + direction * _SSR_RayMarchingStepDistance * i;
+
+        if (_SSR_RayMarchingStepDistance > _SSR_MaxRayMarchingDistance)
+        {
+            return false;
+        }
         
         if (CheckDepthCollision(currentPos, hitScreenPos))
         {

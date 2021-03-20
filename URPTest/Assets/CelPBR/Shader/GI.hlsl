@@ -5,6 +5,8 @@ struct GI_CelPBR
 {
     real3 color;
     real3 bakedGI;
+    real3 specular;
+    real3 diffuse;
 };
 
 GI_CelPBR GetGI(Varyings input, BRDF_CelPBR brdf, Surface_CelPBR surface, LightData_CelPBR lightData, TempData_CelPBR tempData)
@@ -33,11 +35,14 @@ GI_CelPBR GetGI(Varyings input, BRDF_CelPBR brdf, Surface_CelPBR surface, LightD
 
     #if defined(KK_HIGHLIGHT)
         real3 giColor = indirectDiffuse * brdf.diffuse + indirectSpecular * brdf.specular;
+        gi.specular = brdf.specular;
     #else
         real3 giColor = EnvironmentBRDF(brdfData, indirectDiffuse, indirectSpecular, fresnelTerm);
+        gi.specular = EnvironmentBRDFSpecular(brdfData, fresnelTerm);
     #endif
 
     gi.color = giColor;
+    gi.diffuse = brdf.diffuse;
 
     #if defined(DEBUG_DISABLE_GI)
         gi.color = 0;

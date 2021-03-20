@@ -80,11 +80,6 @@ namespace CelPBR.Runtime.PostProcessing
             context.ExecuteCommandBuffer(commandBuffer);
             commandBuffer.Clear();
         }
-
-        public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
-        {
-            base.Configure(cmd, cameraTextureDescriptor);
-        }
         #endregion
     }
 }

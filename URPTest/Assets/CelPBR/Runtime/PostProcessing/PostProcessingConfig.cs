@@ -41,7 +41,7 @@ namespace CelPBR.Runtime.PostProcessing
         }
         #endregion
 
-        #region interface implementations
+        #region interface impls
         public void OnBeforeSerialize()
         {
             postProcessingSettingDictKeyList.Clear();

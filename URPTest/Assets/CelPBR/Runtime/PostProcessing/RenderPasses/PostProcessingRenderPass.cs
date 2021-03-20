@@ -29,19 +29,6 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         }
         #endregion
 
-        #region methods
-        public void Init()
-        { 
-            material = new Material(Shader.Find(ShaderName));
-        }
-
-        public void SetData(UberAgent ubaerAgent, PostProcessingSetting postProcessingSetting)
-        {
-            this.uberAgent = ubaerAgent;
-            this.postProcessingSetting = postProcessingSetting;
-        }
-        #endregion
-
         #region interface impls
         public void Dispose()
         {
@@ -61,6 +48,23 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
                 UnityEngine.Object.Destroy(obj);
 #endif
             }                     
+        }
+        #endregion
+        
+        #region methods
+        public void Init()
+        { 
+            material = new Material(Shader.Find(ShaderName));
+        }
+
+        public void SetData(UberAgent ubaerAgent, PostProcessingSetting postProcessingSetting)
+        {
+            this.uberAgent = ubaerAgent;
+            this.postProcessingSetting = postProcessingSetting;
+        }
+
+        public virtual void BeforeAddPass()
+        {
         }
         #endregion
     }

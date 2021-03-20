@@ -296,6 +296,26 @@ Shader "CelPBR/CelPBR"
             #include "OutlinePass.hlsl"
             ENDHLSL    
         }
+        
+        Pass
+        {
+            Name "SSRObject"
+            Tags{"LightMode" = "SSRObject"}
+
+            Cull Front
+            ZWrite Off
+            
+            HLSLPROGRAM
+
+            // custom defined keywords
+            #pragma shader_feature_local _ DEBUG_DISABLE_OUTLINE
+            
+            #pragma vertex OutlineVert
+            #pragma fragment OutlineFrag
+
+            #include "OutlinePass.hlsl"
+            ENDHLSL    
+        }
     }
     
     CustomEditor "CelPBR.Editor.CelPBRShaderGUI"
