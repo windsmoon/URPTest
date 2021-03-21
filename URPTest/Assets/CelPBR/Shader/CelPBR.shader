@@ -32,6 +32,7 @@ Shader "CelPBR/CelPBR"
         _ThicknessScale("Thickness Scale", Range(0, 1)) = 1
         
         [Space(50)]
+        [Toggle(ENABLE_SCREEN_SPACE_REFLECTION)] _EnableScreenSpaceReflection("Enable Screen Space Reflection", Float) = 0
         [Toggle(ENABLE_PLANAR_REFLECTION)] _EnablePlanarReflection("Enable Planar Reflection", Float) = 0
         _ReflectionTexture("Reflection Texture", 2D) = "white" {}
         
@@ -145,6 +146,8 @@ Shader "CelPBR/CelPBR"
             #pragma multi_compile_local_fragment _ ENABLE_PLANAR_REFLECTION
             #pragma multi_compile_local_fragment _ KK_HIGHLIGHT
             #pragma multi_compile_local_fragment _ ENABLE_KK_HIGHLIGHT_ANISO_MAP
+            #pragma multi_compile_fragment _ ENABLE_SCREEN_SPACE_REFLECTION
+            #pragma multi_compile_fragment _ SCREEN_SPACE_REFLECTION
 
             // custom defined debug keywords
             // #pragma multi_compile_local _ TEMP_DEBUG
@@ -299,21 +302,17 @@ Shader "CelPBR/CelPBR"
         
         Pass
         {
-            Name "SSRObject"
-            Tags{"LightMode" = "SSRObject"}
-
-            Cull Front
-            ZWrite Off
+            Name "SSRObjectData"
+            Tags{"LightMode" = "SSRObjectData"}
+            
+            ZWrite[_ZWrite]
+            Cull[_Cull]
             
             HLSLPROGRAM
+            #pragma vertex SSRObjectDataVert
+            #pragma fragment SSRObjectDataFrag
 
-            // custom defined keywords
-            #pragma shader_feature_local _ DEBUG_DISABLE_OUTLINE
-            
-            #pragma vertex OutlineVert
-            #pragma fragment OutlineFrag
-
-            #include "OutlinePass.hlsl"
+            #include "SSRObjectData.hlsl"
             ENDHLSL    
         }
     }

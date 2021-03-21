@@ -1,32 +1,45 @@
-#ifndef CEL_PBR_SSR_OBJECT_PASS_INCLUDED
-#define CEL_PBR_SSR_OBJECT_PASS_INCLUDED
+#ifndef CEL_PBR_SSR_OBJECT_DATA_PASS_INCLUDED
+#define CEL_PBR_SSR_OBJECT_DATA_PASS_INCLUDED
 
 // todo !!!!
-#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl" 
+// #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl" 
 
 struct Attributes
 {
-    float3 positionOS : POSITION;
+    float4 positionOS : POSITION;
     float3 normalOS : NORMAL;
+    float4 tangentOS : TANGENT;
     float2 baseUV : TEXCOORD0;
+    float2 lightmapUV : TEXCOORD1;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 struct Varyings
 {
     float4 positionCS : SV_POSITION;
-    float2 baseUV : VAR_UV;
+    float3 positionWS : VAR_POSITION;
+    float4 positionSS : VAR_SCREEN_POSITION;
+    float3 normalWS : VAR_NORMAL;
+    float3 tangentWS : VAR_TANGENT;
+    float3 bitangentWS : VAR_BITANGENT;
+    float2 baseUV : VAR_BASE_UV;
+    float2 kkHighlightUV : VAR_KK_HIGHLIGHT_UV;
+    DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 1);
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
+#include "Common.hlsl"
 #include "Input.hlsl"
+#include "ParallaxMapping.hlsl"
 #include "Light.hlsl"
 #include "Surface.hlsl"
 #include "TempData.hlsl"
 #include "BRDF.hlsl"
 #include "GI.hlsl"
+#include "Lighting.hlsl"
 
-Varyings OutlineVert(Attributes input)
+Varyings SSRObjectDataVert(Attributes input)
 {
     Varyings output;
     UNITY_SETUP_INSTANCE_ID(input);
@@ -36,7 +49,7 @@ Varyings OutlineVert(Attributes input)
     return output;
 }
 
-real4 OutlineFrag(Varyings input) : SV_TARGET
+real4 SSRObjectDataFrag(Varyings input) : SV_TARGET
 {
     UNITY_SETUP_INSTANCE_ID(input);
     LightData_CelPBR mainLightData = GetMainLightData(input);

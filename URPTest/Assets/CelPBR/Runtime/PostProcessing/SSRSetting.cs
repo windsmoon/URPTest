@@ -5,6 +5,10 @@ namespace CelPBR.Runtime.PostProcessing
 {
     public class SSRSetting : PostProcessingSetting 
     {
+        #region constants
+        public const string ScreenSpaceRelfectionKeyword = "SCREEN_SPACE_REFLECTION";
+        #endregion
+        
         #region fields
         [SerializeField, Min(1)] 
         private int maxRayMarchingStep = 16;
@@ -56,9 +60,16 @@ namespace CelPBR.Runtime.PostProcessing
         #endregion
 
         #region methods
-        public override bool IsEnabled()
+        public override void OnEnabled()
         {
-            return base.IsEnabled();
+            base.OnEnabled();
+            Shader.EnableKeyword(ScreenSpaceRelfectionKeyword);
+        }
+
+        public override void OnDisabled()
+        {
+            base.OnDisabled();
+            Shader.DisableKeyword(ScreenSpaceRelfectionKeyword);
         }
         #endregion
     }

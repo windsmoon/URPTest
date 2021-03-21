@@ -16,6 +16,7 @@
 // 1 palnar reflection
 // 1 ssr
 // 1 optimize the SSROBJECT shader
+// 1 ssr sample skybox
 // 1 fft water
 // 1 water reflection
 // 1 water refraction

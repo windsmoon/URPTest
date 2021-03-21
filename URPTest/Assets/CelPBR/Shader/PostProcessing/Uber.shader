@@ -14,7 +14,7 @@ Shader "CelPBR/PostProcessing/Uber"
             #pragma vertex Vert
             #pragma fragment UberFragment
 
-            #pragma multi_compile_local _ SCREEN_SPACE_REFLECTION
+            #pragma multi_compile_fragment _ SCREEN_SPACE_REFLECTION
 
             #include "Common.hlsl"
             #include "Uber.hlsl"

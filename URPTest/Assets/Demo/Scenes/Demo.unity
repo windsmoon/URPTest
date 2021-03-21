@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 39f2f077ca7905844b97904dab8742f5, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.3510163, g: 0.28662404, b: 0.27341685, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -41551,10 +41551,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEditorFoldout: 1
-  maxRayMarchingStep: 256
-  maxRayMarchingDistance: 500
-  rayMarchingStepDistance: 0.5
-  depthThickness: 0.1
+  maxRayMarchingStep: 54
+  maxRayMarchingDistance: 15.96
+  rayMarchingStepDistance: 0.1
+  depthThickness: 0.8
+  ssrObjectLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1217178316 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3511543862585525959, guid: ce2ecbd04daed4e4b93dbf7811153167, type: 3}
@@ -58137,7 +58140,7 @@ GameObject:
   - component: {fileID: 1758127488}
   - component: {fileID: 1758127487}
   - component: {fileID: 1758127491}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58228,7 +58231,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758127486}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e156201b7a8046ec870a8204da1a967b, type: 3}
   m_Name: 

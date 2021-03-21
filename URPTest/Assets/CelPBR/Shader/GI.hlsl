@@ -23,7 +23,9 @@ GI_CelPBR GetGI(Varyings input, BRDF_CelPBR brdf, Surface_CelPBR surface, LightD
     
     real3 indirectDiffuse = surface.occlusion * gi.bakedGI;
 
-    #if defined(ENABLE_PLANAR_REFLECTION)
+    #if defined(ENABLE_SCREEN_SPACE_REFLECTION) && defined(SCREEN_SPACE_REFLECTION)
+        real3 indirectSpecular = 0;
+    #elif defined(ENABLE_PLANAR_REFLECTION)
         real3 indirectSpecular = GetReflectionColor(input.positionSS.xy / input.positionSS.w, PerceptualRoughnessToMipmapLevel(brdf.perceptualRoughness));
     #else
         real3 indirectSpecular = GlossyEnvironmentReflection(tempData.viewReflectionDirection, brdf.perceptualRoughness, surface.occlusion);

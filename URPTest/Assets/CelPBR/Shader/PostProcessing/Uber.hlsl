@@ -4,30 +4,35 @@
 #include "SSR.hlsl"
 
 TEXTURE2D(_CameraOpaqueTexture);
-SAMPLER(sampler_CameraOpaqueTexture);
+TEXTURE2D(_SSR_ObjectDataTexture);
 
-real4 UberFragment(Varyings input) : SV_TARGET
+SAMPLER(sampler_CameraOpaqueTexture);
+SAMPLER(sampler_SSR_ObjectDataTexture);
+
+float4 UberFragment(Varyings input) : SV_TARGET
 {
-    real4 color = SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, input.uv);
+    real3 color = SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, input.uv);
 
     #if defined(SCREEN_SPACE_REFLECTION)
-        float3 posVS = GetPosVS(input.uv);
-        float3 viewDirectionVS = normalize(posVS);
-        float3 normalVS = GetNormalVS(input.uv);
-        float3 reflectDirectionVS = reflect(viewDirectionVS, normalVS);
-        float2 screenUV;
+        float4 ssrObjecetData = SAMPLE_TEXTURE2D(_SSR_ObjectDataTexture, sampler_SSR_ObjectDataTexture, input.uv);
 
-        if (viewSpaceRayMarching(posVS, reflectDirectionVS, screenUV))
+        if (ssrObjecetData.a > 0)
         {
-            // return SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, screenUV);
-            color += SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, screenUV);
-        }
+            float3 posVS = GetPosVS(input.uv);
+            float3 viewDirectionVS = normalize(posVS);
+            float3 normalVS = GetNormalVS(input.uv);
+            float3 reflectDirectionVS = reflect(viewDirectionVS, normalVS);
+            float2 screenUV;
 
-        // return 0;
+            if (viewSpaceRayMarching(posVS, reflectDirectionVS, screenUV))
+            {
+                color = color + ssrObjecetData.rgb * SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, screenUV).rgb;
+            }
+        }
     #endif
 
     // return _SSRColor;
-    return color;
+    return float4(color, 1);
 }
 
 #endif

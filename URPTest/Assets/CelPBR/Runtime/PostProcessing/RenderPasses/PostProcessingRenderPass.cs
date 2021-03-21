@@ -55,6 +55,7 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         public void Init()
         { 
             material = new Material(Shader.Find(ShaderName));
+            // commandBuffer.name = ShaderName;
         }
 
         public void SetData(UberAgent ubaerAgent, PostProcessingSetting postProcessingSetting)

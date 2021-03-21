@@ -35,6 +35,14 @@ namespace CelPBR.Runtime.PostProcessing
         {
             return enabled;
         }
+
+        public virtual void OnEnabled()
+        {
+        }
+
+        public virtual void OnDisabled()
+        {
+        }
         // protected methtod, dont need try get
         // protected static Type GetPostProcessingSettingType(PostProcessingType type)
         // {
@@ -47,7 +55,7 @@ namespace CelPBR.Runtime.PostProcessing
         // {
         //     return postProcessingTypeDict[typeof(T)];
         // }
-
+        
         #endregion
     }
 }

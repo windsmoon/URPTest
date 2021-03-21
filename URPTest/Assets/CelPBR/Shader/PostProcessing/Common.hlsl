@@ -25,6 +25,7 @@ Varyings Vert(Attributes input)
     // Therefore, we can just output vertex position
     output.positionCS = float4(input.positionHCS.xyz, 1.0);
 
+    // ??
     #if UNITY_UV_STARTS_AT_TOP
         output.positionCS.y *= -1;
     #endif

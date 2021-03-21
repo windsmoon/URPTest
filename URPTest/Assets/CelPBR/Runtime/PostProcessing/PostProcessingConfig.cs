@@ -32,13 +32,23 @@ namespace CelPBR.Runtime.PostProcessing
         #endregion
         
         #region unity methods
-        private void Awake()
+        private void OnEnable()
         {
             foreach (var pair in postProcessingSettingDict)
             {
                 pair.Value.hideFlags = HideFlags.HideInInspector;
+                pair.Value.OnEnabled();
             }
         }
+
+        private void OnDisable()
+        {
+            foreach (var pair in postProcessingSettingDict)
+            {
+                pair.Value.OnDisabled();
+            }
+        }
+
         #endregion
 
         #region interface impls
@@ -80,6 +90,7 @@ namespace CelPBR.Runtime.PostProcessing
             postProcessingSetting = gameObject.AddComponent(classType) as PostProcessingSetting;
             postProcessingSetting.hideFlags = HideFlags.HideInInspector;
             postProcessingSettingDict.Add(typeInt, postProcessingSetting);
+            postProcessingSetting.OnEnabled();
             return true;
         }
 
@@ -99,6 +110,7 @@ namespace CelPBR.Runtime.PostProcessing
             UnityEngine.Object.Destroy(postProcessingSetting);
 #endif
 
+            postProcessingSetting.OnDisabled();
             postProcessingSettingDict.Remove(typeInt);
             return true;
         }
@@ -119,6 +131,7 @@ namespace CelPBR.Runtime.PostProcessing
              }
 
              postProcessingSetting.enabled = true;
+             postProcessingSetting.OnEnabled();
              return true;
          }
 
@@ -138,6 +151,7 @@ namespace CelPBR.Runtime.PostProcessing
              }
 
              postProcessingSetting.enabled = false;
+             postProcessingSetting.OnDisabled();
              return true;
          }
 
