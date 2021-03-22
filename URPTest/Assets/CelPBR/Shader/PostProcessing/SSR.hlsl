@@ -13,6 +13,11 @@ bool CheckDepthCollision(float3 posVS, out float2 screenPos)
     float4 posHCS = TransformWViewToHClip(realPosVS);
     float4 posCS = posHCS / posHCS.w;
     screenPos = posCS * 0.5 + 0.5;
+
+    #if UNITY_UV_STARTS_AT_TOP
+        screenPos.y = 1 - screenPos.y;
+    #endif
+    
     float depthToPosVS = GetEyeDepth(screenPos);
     return screenPos.x > 0 && screenPos.y > 0 && screenPos.x < 1.0 && screenPos.y < 1.0 && depthToPosVS < posVS.z && (depthToPosVS + _SSR_DepthThickness) > posVS.z;
 }

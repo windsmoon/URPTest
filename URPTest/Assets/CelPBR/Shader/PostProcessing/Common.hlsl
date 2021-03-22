@@ -24,13 +24,14 @@ Varyings Vert(Attributes input)
     // Note: The pass is setup with a mesh already in CS
     // Therefore, we can just output vertex position
     output.positionCS = float4(input.positionHCS.xyz, 1.0);
-
+    output.uv = input.uv;
     // ??
     #if UNITY_UV_STARTS_AT_TOP
-        output.positionCS.y *= -1;
+        // output.positionCS.y *= -1;
+        output.uv.y = 1 - input.uv.y;
     #endif
 
-    output.uv = input.uv;
+    // output.uv = input.uv;
     return output;
 }
 
