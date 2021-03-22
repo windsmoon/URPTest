@@ -19,6 +19,7 @@ struct Varyings
 {
     float4 positionCS : SV_POSITION;
     float3 positionWS : VAR_POSITION;
+    float3 positionVS : VAR_POSTION_VS;
     float4 positionSS : VAR_SCREEN_POSITION;
     float3 normalWS : VAR_NORMAL;
     float3 tangentWS : VAR_TANGENT;
@@ -45,6 +46,7 @@ Varyings SSRObjectDataVert(Attributes input)
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_TRANSFER_INSTANCE_ID(input, output);
     output.positionCS = TransformObjectToHClip(input.positionOS);
+    output.positionVS = TransformWorldToView(TransformObjectToWorld(input.positionOS));
     output.baseUV = TRANSFORM_UV(input.baseUV, _BaseMap);
     return output;
 }

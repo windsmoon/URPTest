@@ -32,15 +32,15 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
             int width = renderingData.cameraData.cameraTargetDescriptor.width;
             int height = renderingData.cameraData.cameraTargetDescriptor.height;
             int depth = renderingData.cameraData.cameraTargetDescriptor.depthBufferBits;
-            // commandBuffer.GetTemporaryRT(objectDataTextureID, renderingData.cameraData.cameraTargetDescriptor, FilterMode.Point);
-            commandBuffer.GetTemporaryRT(objectDataTextureID, width, height, depth, FilterMode.Point, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
-            
-            commandBuffer.SetRenderTarget(objectDataTextureIdentifier, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store, 
-                objectDataTextureIdentifier, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.DontCare);
-            
-            commandBuffer.ClearRenderTarget(true, true, new Color(0, 0, 0, 0));
-            context.ExecuteCommandBuffer(commandBuffer);
-            context.Submit();
+            // // commandBuffer.GetTemporaryRT(objectDataTextureID, renderingData.cameraData.cameraTargetDescriptor, FilterMode.Point);
+            // commandBuffer.GetTemporaryRT(objectDataTextureID, width, height, depth, FilterMode.Point, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+            //
+            // commandBuffer.SetRenderTarget(objectDataTextureIdentifier, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store, 
+            //     objectDataTextureIdentifier, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.DontCare);
+            //
+            // commandBuffer.ClearRenderTarget(true, true, new Color(0, 0, 0, 0));
+            // context.ExecuteCommandBuffer(commandBuffer);
+            // context.Submit();
             RenderSSRObject(ssrSetting, context, ref renderingData);
             commandBuffer.Clear();
             // todo
@@ -48,7 +48,7 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
             context.ExecuteCommandBuffer(commandBuffer);
             context.Submit();
             commandBuffer.Clear();
-            uberAgent.RegistRT(objectDataTextureID);
+            // uberAgent.RegistRT(objectDataTextureID);
             ConfigureInput(ScriptableRenderPassInput.Normal);
             uberAgent.SetInt(maxRayMarchingStepID, ssrSetting.MaxRayMarchingStep);
             uberAgent.SetFloat(maxRayMarchingDistanceID, ssrSetting.MaxRayMarchingDistance);

@@ -305,8 +305,10 @@ Shader "CelPBR/CelPBR"
             Name "SSRObjectData"
             Tags{"LightMode" = "SSRObjectData"}
             
-            ZWrite[_ZWrite]
+            ZWrite Off
+//            ZWrite[_ZWrite]
             Cull[_Cull]
+            blend One One
             
             HLSLPROGRAM
             #pragma vertex SSRObjectDataVert
