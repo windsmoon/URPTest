@@ -286,7 +286,7 @@ Shader "CelPBR/CelPBR"
             Tags{"LightMode" = "Outline"}
 
             Cull Front
-            ZWrite Off
+            ZWrite On
             
             HLSLPROGRAM
 
@@ -305,10 +305,11 @@ Shader "CelPBR/CelPBR"
             Name "SSRObjectData"
             Tags{"LightMode" = "SSRObjectData"}
             
-            ZWrite Off
+//            ZWrite Off
 //            ZWrite[_ZWrite]
             Cull[_Cull]
-            blend One One
+//            blend One One
+//            ZTest LEqual
             
             HLSLPROGRAM
             #pragma vertex SSRObjectDataVert
