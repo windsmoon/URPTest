@@ -27,6 +27,7 @@ namespace CelPBR.Editor
         
         private PostProcessingConfig postProcessingConfig;
         private UnityEditor.Editor screenSpaceReflectionEditor;
+        private UnityEditor.Editor outlineEditor;
         private new PostProcessingConfig taraget;
         private Dictionary<PostProcessingType, UnityEditor.Editor> unityEditorDict;
         #endregion
@@ -44,6 +45,7 @@ namespace CelPBR.Editor
             // Undo.RecordObject(postProcessingConfig.gameObject, "Post Processing Config");
             unityEditorDict = new Dictionary<PostProcessingType, UnityEditor.Editor>();
             unityEditorDict.Add(PostProcessingType.ScreenSpaceRelfection, screenSpaceReflectionEditor);
+            unityEditorDict.Add(PostProcessingType.Outline, outlineEditor);
         }
 
         private void OnDisable()
@@ -106,19 +108,21 @@ namespace CelPBR.Editor
         private void AddPostProcessing(PostProcessingType type)
         {
             PostProcessingSetting postProcessingSetting;
-            postProcessingConfig.AddPostProcessing(PostProcessingType.ScreenSpaceRelfection, out  postProcessingSetting);
+            postProcessingConfig.AddPostProcessing(type, out postProcessingSetting);
         }
 
         private void RemovePostProcessing(PostProcessingType type)
         {
             PostProcessingSetting postProcessingSetting;
-            postProcessingConfig.RemovePostProcessing(PostProcessingType.ScreenSpaceRelfection);
+            postProcessingConfig.RemovePostProcessing(type);
         }
         
         private void OnAddPostProcessingButtonClicked()
         {
+            // todo
             var menu = new GenericMenu();
             menu.AddItem(EditorGUIUtility.TrTextContent("SSR"), false, () => AddPostProcessing(PostProcessingType.ScreenSpaceRelfection));
+            menu.AddItem(EditorGUIUtility.TrTextContent("Outline"), false, () => AddPostProcessing(PostProcessingType.Outline));
             menu.ShowAsContext();
         }
 

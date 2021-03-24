@@ -72,21 +72,21 @@ namespace CelPBR.Runtime.PostProcessing
                 uberMaterial.SetInt(pair.Key, pair.Value);
             }
 
-            foreach (string keyword in enabledKeywordSet)
-            {
-                if (uberMaterial.IsKeywordEnabled(keyword) == false)
-                {
-                    uberMaterial.EnableKeyword(keyword);
-                }
-            }
-
-            foreach (string keyword in disabledKeywordSet)
-            {
-                if (uberMaterial.IsKeywordEnabled(keyword))
-                {
-                    uberMaterial.DisableKeyword(keyword);
-                }
-            }
+            // foreach (string keyword in enabledKeywordSet)
+            // {
+            //     if (uberMaterial.IsKeywordEnabled(keyword) == false)
+            //     {
+            //         uberMaterial.EnableKeyword(keyword);
+            //     }
+            // }
+            //
+            // foreach (string keyword in disabledKeywordSet)
+            // {
+            //     if (uberMaterial.IsKeywordEnabled(keyword))
+            //     {
+            //         uberMaterial.DisableKeyword(keyword);
+            //     }
+            // }
         }
 
         public void Clear(CommandBuffer commandBuffer)
@@ -123,7 +123,7 @@ namespace CelPBR.Runtime.PostProcessing
             floatDict[id] = value;
         }
         
-        public void SeColor(int id, Color value)
+        public void SetColor(int id, Color value)
         {
             colorDict[id] = value;
         }
@@ -143,17 +143,17 @@ namespace CelPBR.Runtime.PostProcessing
             matrixDict[id] = value;
         }
 
-        public void EnableKeyword(string keyword)
-        {
-            disabledKeywordSet.Remove(keyword);
-            enabledKeywordSet.Add(keyword);
-        }
-
-        public void DisableKeyword(string keyword)
-        {
-            enabledKeywordSet.Remove(keyword);
-            disabledKeywordSet.Add(keyword);
-        }
+        // public void EnableKeyword(string keyword)
+        // {
+        //     disabledKeywordSet.Remove(keyword);
+        //     enabledKeywordSet.Add(keyword);
+        // }
+        //
+        // public void DisableKeyword(string keyword)
+        // {
+        //     enabledKeywordSet.Remove(keyword);
+        //     disabledKeywordSet.Add(keyword);
+        // }
         #endregion
     }
 }

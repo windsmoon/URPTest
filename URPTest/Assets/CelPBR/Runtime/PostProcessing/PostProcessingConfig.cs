@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CelPBR.Runtime.PostProcessing.Settings;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ namespace CelPBR.Runtime.PostProcessing
         {
             postProcessingSettingTypeDict = new Dictionary<int, Type>();
             postProcessingSettingTypeDict.Add((int)PostProcessingType.ScreenSpaceRelfection, typeof(SSRSetting));
+            postProcessingSettingTypeDict.Add((int)PostProcessingType.Outline, typeof(OutlineSetting));
             // postProcessingTypeDict = new Dictionary<Type, PostProcessingType>();
             // postProcessingTypeDict.Add(typeof(ScreenSpaceReflectionSetting), PostProcessingType.ScreenSpaceRelfection);
         }

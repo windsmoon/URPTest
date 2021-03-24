@@ -49,6 +49,7 @@ namespace CelPBR.Runtime.PostProcessing
             
             postProcessingRenderPassDict = new Dictionary<int, PostProcessingRenderPass>();
             postProcessingRenderPassDict[(int)PostProcessingType.ScreenSpaceRelfection] = new ScreenSpaceRelfectionRenderPass();
+            postProcessingRenderPassDict[(int)PostProcessingType.Outline] = new OutlineRenderPass();
             uberRenderPass = new UberRenderPass(uberCommandBuffer, uberMaterial);
             uberAgent = new UberAgent(uberRenderPass);
             existPostProcessingTypeList = new List<PostProcessingType>();

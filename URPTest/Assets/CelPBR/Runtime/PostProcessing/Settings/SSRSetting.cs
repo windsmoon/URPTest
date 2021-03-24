@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace CelPBR.Runtime.PostProcessing
+namespace CelPBR.Runtime.PostProcessing.Settings
 {
     public class SSRSetting : PostProcessingSetting 
     {
         #region constants
-        public const string ScreenSpaceRelfectionKeyword = "SCREEN_SPACE_REFLECTION";
+        public const string ScreenSpaceRelfectionKeyword = "POST_PROCESSING_SCREEN_SPACE_REFLECTION";
         #endregion
         
         #region fields

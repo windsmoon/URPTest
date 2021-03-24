@@ -296,6 +296,14 @@ Shader "CelPBR/CelPBR"
             Cull Front
             ZWrite On
             
+            Stencil 
+            {
+                Ref 1
+                Comp Always
+                Pass Replace 
+                ZFail keep
+            }
+            
             HLSLPROGRAM
 
             // custom defined keywords

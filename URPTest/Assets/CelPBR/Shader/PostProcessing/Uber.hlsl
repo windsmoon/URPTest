@@ -13,7 +13,7 @@ float4 UberFragment(Varyings input) : SV_TARGET
 {
     real3 color = SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, input.uv);
 
-    #if defined(SCREEN_SPACE_REFLECTION)
+    #if defined(POST_PROCESSING_SCREEN_SPACE_REFLECTION)
         float4 ssrObjecetData = SAMPLE_TEXTURE2D(_SSR_ObjectDataTexture, sampler_SSR_ObjectDataTexture, input.uv);
 
         if (ssrObjecetData.a > 0)
