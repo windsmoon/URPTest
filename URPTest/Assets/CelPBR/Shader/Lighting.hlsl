@@ -57,12 +57,8 @@ real3 GetLighting(LightData_CelPBR lightData, Surface_CelPBR surface, BRDF_CelPB
 }
 // #endif
 
-real3 GetCelLighting(LightData_CelPBR lightData, CelData_CelPBR celData)
+real3 GetCelLighting(LightData_CelPBR lightData, Surface_CelPBR surface, CelData_CelPBR celData)
 {
-    // return celData.rim.rrr;
-    // return (celData.rim) * lightData.color * lightData.distanceAttenuation * lightData.shadowAttenuation;
-    // return (celData.specular) * lightData.color * lightData.distanceAttenuation * lightData.shadowAttenuation;
-    // return (celData.diffuse) * lightData.color * lightData.distanceAttenuation * lightData.shadowAttenuation;
     return (celData.diffuse + celData.specular + celData.rim) * lightData.color * lightData.distanceAttenuation;//* =lightData.shadowAttenuation;
 }
 #endif

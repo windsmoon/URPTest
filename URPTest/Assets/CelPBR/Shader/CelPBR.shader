@@ -59,6 +59,7 @@ Shader "CelPBR/CelPBR"
         [Toggle(ENABLE_RAMP_TEXTURE)] _EnableRampTexture("Enable Ramp Texture", Float) = 0.0
         _OutlineWidth("Outline Width", Range(0.01, 2)) = 0.24
         _OutlineColor("Outline Color", Color) = (0, 0, 0, 0)
+//        _OutlineThreshold("Outline Threshold", Float) = 0.9
         _RampMap("Ramp Texture", 2D) = "gray" {}
         _CelShadeColor("Cel Shade Color", Color) = (1, 1, 1)
     	_CelShadowColor("Cel Shadow Color", Color) = (0, 0, 0)

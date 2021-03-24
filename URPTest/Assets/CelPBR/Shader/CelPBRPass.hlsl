@@ -115,7 +115,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
     
     real3 color = gi.color;
     color += surface.emission;
-    real3 celColor = GetCelLighting(mainLightData, GetCelData(surface, brdf, mainLightData, mainTempData));
+    real3 celColor = GetCelLighting(mainLightData, surface, GetCelData(surface, brdf, mainLightData, mainTempData));
     real3 pbrColor = GetLighting(mainLightData, surface, brdf, mainTempData);
 
     int otherLightCount = GetOtherLightCount();
@@ -126,7 +126,7 @@ real4 CelPBRFrag(Varyings input) : SV_TARGET
         TempData_CelPBR tempData = GetTempData(input, surface, lightData);
         BRDF_CelPBR lightBRDF = GetBRDF(surface, lightData, tempData, surface.alpha);
 
-        celColor += GetCelLighting(lightData, GetCelData(surface, lightBRDF, lightData, tempData));
+        celColor += GetCelLighting(lightData, surface, GetCelData(surface, lightBRDF, lightData, tempData));
         pbrColor += GetLighting(lightData, surface, lightBRDF, tempData);
     }
 

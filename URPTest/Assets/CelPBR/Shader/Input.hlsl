@@ -45,6 +45,7 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     // cel shading
     UNITY_DEFINE_INSTANCED_PROP(real, _OutlineWidth)
     UNITY_DEFINE_INSTANCED_PROP(real4, _OutlineColor)
+    // UNITY_DEFINE_INSTANCED_PROP(real, _OutlineThreshold)
     UNITY_DEFINE_INSTANCED_PROP(real4, _CelShadeColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _CelShadowColor)
     UNITY_DEFINE_INSTANCED_PROP(real, _CelThreshold)
@@ -229,6 +230,11 @@ real4 GetOutline()
 {
     return real4(INPUT_PROP(_OutlineColor).rgb, INPUT_PROP(_OutlineWidth));
 }
+
+// real GetOutlineThreshold()
+// {
+//     return INPUT_PROP(_OutlineThreshold);
+// }
 
 float GetRamp(float rampUV)
 {

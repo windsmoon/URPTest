@@ -172,6 +172,7 @@ struct CelData_CelPBR
     real3 diffuse;
     real3 specular;
     real3 rim;
+    // real outlineStrength;
 
     // real oneMinusReflectivity;
     // real reflectivity;
@@ -179,8 +180,6 @@ struct CelData_CelPBR
 
 CelData_CelPBR GetCelData(Surface_CelPBR surface, BRDF_CelPBR brdf, LightData_CelPBR lightData, TempData_CelPBR tempData)
 {
-
-
     CelData_CelPBR celData;
     real halfLambert = tempData.nDotL * 0.5 + 0.5;
 
@@ -196,22 +195,18 @@ CelData_CelPBR GetCelData(Surface_CelPBR surface, BRDF_CelPBR brdf, LightData_Ce
     real specular = pow(tempData.nDotH, surface.celSpecularGlossiness);
     specular = smoothstep(GetCelSpecularThreshold() - 0.5 * GetCelSmoothness(), GetCelSpecularThreshold() + 0.5 * GetCelSmoothness(), specular);
     // celData.specular = specular < surface.celSpecularThreshold ? 0 : 1;
-    celData.specular = specular * surface.metallic * surface.smoothness;
+    celData.specular = specular * surface.metallic;// * surface.smoothness;
 
     float rimStrength = 1 - tempData.nDotV;
     rimStrength = smoothstep(surface.rimThreshold - 0.5 * surface.rimSmoothness, surface.rimThreshold + 0.5 * surface.rimSmoothness, rimStrength);
-    // celData.rim = rimStrength;
-    // return celData;
+
     #if defined(ENABLE_SINGLE_SIDE_RIM_LIGHT)
         rimStrength = rimStrength * max(tempData.rawNDotL, 0);
         // rimStrength = rimStrength * (tempData.rawNDotL > 0 ? 1 : 0);
     #endif
-    // celData.rim = tempData.rawNDotL > 0 ? 1 : 0;
-    // return celData;
-    
-    celData.rim = rimStrength * surface.rimColor;
-    // celData.rim = 1 - tempData.nDotV;
 
+    celData.rim = rimStrength * surface.rimColor;
+    // celData.outlineStrength = 1 - tempData.nDotV;
 
 
     // f = f * tempData.nDotL;

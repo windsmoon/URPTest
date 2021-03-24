@@ -22,6 +22,7 @@ struct Surface_CelPBR
     real3 kkHighlightAnisoDirection;
 
     // cel shading
+    // real outlineThreshold;
     real3 celShadeColor;
     real3 celShadowColor;
     real celSmoothness;
@@ -72,6 +73,7 @@ Surface_CelPBR GetSurface(Varyings input)
     surface.kkHighlightAnisoDirection = GetWorldKKGHighlightAnisoDirection(input);
 
     // cel shading
+    // surface.outlineThreshold = GetOutlineThreshold();
     surface.celShadeColor = GetCelShadeColor();
     surface.celShadowColor = GetCelShadowColor();
     surface.celThreshold = GetCelThreshold();
