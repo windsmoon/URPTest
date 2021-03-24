@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: 8.eye_outter_and_mouth
   m_Shader: {fileID: 4800000, guid: b63e0de9e7a43794ca1211615572261a, type: 3}
-  m_ShaderKeywords: DEBUG_DISABLE_Diffuse DEBUG_DISABLE_GI DEBUG_DISABLE_Specular
+  m_ShaderKeywords: DEBUG_DISABLE_Diffuse DEBUG_DISABLE_Specular ENABLE_SINGLE_SIDE_RIM_LIGHT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -135,7 +135,7 @@ Material:
     - _CelPBR: 0
     - _CelShading: 0
     - _CelShadowRange: 0
-    - _CelSmoothness: 0.084
+    - _CelSmoothness: 0.099
     - _CelSpecularGlossiness: 128
     - _CelSpecularThreshold: 0.38
     - _CelThreshold: 0.549
@@ -147,7 +147,7 @@ Material:
     - _Debug_: 1
     - _Debug_Diffuse: 1
     - _Debug_Disable_Diffuse: 0
-    - _Debug_Disable_GI: 1
+    - _Debug_Disable_GI: 0
     - _Debug_Disable_Outline: 0
     - _Debug_Disable_RIM: 0
     - _Debug_Disable_RIM_LIGHT: 0
@@ -164,6 +164,7 @@ Material:
     - _EnablePlanarReflection: 0
     - _EnableRampTexture: 0
     - _EnableScreenSpaceReflection: 0
+    - _EnableSingleSideRimLight: 1
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -187,8 +188,8 @@ Material:
     - _ReceiveShadows: 1
     - _RevertHeight: 0
     - _Revision: 2
-    - _RimSmoothness: 0.315
-    - _RimThreshold: 0.8
+    - _RimSmoothness: 0.354
+    - _RimThreshold: 0.933
     - _SSS: 0
     - _SSSDistort: 0
     - _SSSPower: 2

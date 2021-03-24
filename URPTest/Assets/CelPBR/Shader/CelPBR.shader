@@ -67,6 +67,7 @@ Shader "CelPBR/CelPBR"
 		_CelShadowRange("Cel Shadow Range", Range(0, 1)) = 0.2
     	_CelSpecularThreshold("Cel Specular Threshold", Range(0, 1)) = 0.8
         _CelSpecularGlossiness("Cel Specular Glossiness", Float) = 128
+        [Toggle(ENABLE_SINGLE_SIDE_RIM_LIGHT)] _EnableSingleSideRimLight("Enable Single Side Rim Light", Float) = 0
         _RimThreshold("Rim Threshold", Range(0.5, 1)) = 0.8
         _RimSmoothness("Rim Smothness", Range(0, 1)) = 0.3
         _RimColor("Rim Color", Color) = (1, 1, 1, 1)
@@ -142,7 +143,6 @@ Shader "CelPBR/CelPBR"
 
             // custom defined keywords
             #pragma multi_compile_local _ PERSPECTIVE_CORRECTION
-            #pragma multi_compile_local_fragment _ ENABLE_RAMP_TEXTURE
             #pragma multi_compile_local _ REVERT_HEIGHT
             #pragma multi_compile_local_fragment _ PARALLAX_SELF_SHADOW
             #pragma multi_compile_local_fragment _ SSS
@@ -151,14 +151,18 @@ Shader "CelPBR/CelPBR"
             #pragma multi_compile_local_fragment _ ENABLE_KK_HIGHLIGHT_ANISO_MAP
             #pragma multi_compile_fragment _ ENABLE_SCREEN_SPACE_REFLECTION
             #pragma multi_compile_fragment _ SCREEN_SPACE_REFLECTION
+            // cel shading
+            #pragma multi_compile_local_fragment _ ENABLE_RAMP_TEXTURE
+            #pragma multi_compile_local_fragment _ ENABLE_SINGLE_SIDE_RIM_LIGHT
+
 
             // custom defined debug keywords
             #pragma multi_compile_local _ TEMP_DEBUG
-            #pragma multi_compile_local _ DEBUG_UNLIT
-            #pragma multi_compile_local _ DEBUG_DISABLE_DIFFUSE
-            #pragma multi_compile_local _ DEBUG_DISABLE_SPECULAR
-            #pragma multi_compile_local _ DEBUG_DISABLE_RIM
-            #pragma multi_compile_local _ DEBUG_DISABLE_GI
+            #pragma multi_compile_local_fragment _ DEBUG_UNLIT
+            #pragma multi_compile_local_fragment _ DEBUG_DISABLE_DIFFUSE
+            #pragma multi_compile_local_fragment _ DEBUG_DISABLE_SPECULAR
+            #pragma multi_compile_local_fragment _ DEBUG_DISABLE_RIM
+            #pragma multi_compile_local_fragment _ DEBUG_DISABLE_GI
 
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag

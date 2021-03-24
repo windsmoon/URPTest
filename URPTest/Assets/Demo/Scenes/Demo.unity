@@ -14266,7 +14266,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 2.02
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -14323,13 +14323,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526894225}
-  m_LocalRotation: {x: -0.35629967, y: -0.3371021, z: 0.13963225, w: -0.86018354}
+  m_LocalRotation: {x: -0.16380657, y: 0.526601, z: -0.60491306, w: 0.5744032}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 45, y: 402.8, z: 0}
+  m_LocalEulerAnglesHint: {x: 26.674, y: 64, z: -76.111}
 --- !u!1 &528317792 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3845414520630735529, guid: ce2ecbd04daed4e4b93dbf7811153167, type: 3}
@@ -41467,8 +41467,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216918875}
-  m_LocalRotation: {x: 0.06355438, y: -0, z: -0, w: 0.9979784}
-  m_LocalPosition: {x: -0.56, y: 1.16, z: -1.76}
+  m_LocalRotation: {x: 0.06355695, y: 0, z: 0, w: 0.9979782}
+  m_LocalPosition: {x: 0, y: 1.37, z: -1.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -41491,7 +41491,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -41518,7 +41518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGlobal: 0
+  isGlobal: 1
   priority: 0
   blendDistance: 0
   weight: 1
@@ -53732,7 +53732,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1574000828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.3, y: 0.9, z: 1.18}
+  m_LocalPosition: {x: 0, y: 0.9, z: 1.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

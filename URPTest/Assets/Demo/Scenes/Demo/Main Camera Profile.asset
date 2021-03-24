@@ -79,11 +79,11 @@ MonoBehaviour:
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 4.33
     min: 0
   scatter:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.774
     min: 0
     max: 1
   clamp:
@@ -210,7 +210,7 @@ MonoBehaviour:
     max: 32
   focalLength:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 14
     min: 1
     max: 300
   bladeCount:

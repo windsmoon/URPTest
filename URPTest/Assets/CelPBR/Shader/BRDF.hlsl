@@ -197,10 +197,22 @@ CelData_CelPBR GetCelData(Surface_CelPBR surface, BRDF_CelPBR brdf, LightData_Ce
     specular = smoothstep(GetCelSpecularThreshold() - 0.5 * GetCelSmoothness(), GetCelSpecularThreshold() + 0.5 * GetCelSmoothness(), specular);
     // celData.specular = specular < surface.celSpecularThreshold ? 0 : 1;
     celData.specular = specular * surface.metallic * surface.smoothness;
+
     float rimStrength = 1 - tempData.nDotV;
-    // double side rim light
     rimStrength = smoothstep(surface.rimThreshold - 0.5 * surface.rimSmoothness, surface.rimThreshold + 0.5 * surface.rimSmoothness, rimStrength);
+    // celData.rim = rimStrength;
+    // return celData;
+    #if defined(ENABLE_SINGLE_SIDE_RIM_LIGHT)
+        rimStrength = rimStrength * (tempData.rawNDotL > 0 ? 1 : 0);
+    #endif
+    celData.rim = rimStrength;
+    return celData;
+    
     celData.rim = rimStrength * surface.rimColor;
+    // celData.rim = 1 - tempData.nDotV;
+
+
+
     // f = f * tempData.nDotL;
     // real2 rimRange = surface.rimRange;
     // real3 rimColor = surface.rimColor;

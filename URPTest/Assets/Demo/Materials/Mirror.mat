@@ -158,6 +158,7 @@ Material:
     - _EnableRampTexture: 0
     - _EnableScreemSpaceReflection: 0
     - _EnableScreenSpaceReflection: 0
+    - _EnableSingleSideRimLight: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
