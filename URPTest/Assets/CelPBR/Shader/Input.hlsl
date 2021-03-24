@@ -47,11 +47,14 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(real4, _OutlineColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _CelShadeColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _CelShadowColor)
+    UNITY_DEFINE_INSTANCED_PROP(real, _CelThreshold)
+    UNITY_DEFINE_INSTANCED_PROP(real, _CelSmoothness)
     UNITY_DEFINE_INSTANCED_PROP(real, _CelShadowRange)
     UNITY_DEFINE_INSTANCED_PROP(real, _CelSpecularThreshold)
     UNITY_DEFINE_INSTANCED_PROP(real, _CelSpecularGlossiness)
+    UNITY_DEFINE_INSTANCED_PROP(real, _RimThreshold)
+    UNITY_DEFINE_INSTANCED_PROP(real, _RimSmoothness)
     UNITY_DEFINE_INSTANCED_PROP(real4, _RimColor)
-    UNITY_DEFINE_INSTANCED_PROP(real4, _RimRange)
 UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 #define INPUT_PROP(name) UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, name)
@@ -242,6 +245,16 @@ float3 GetCelShadowColor()
     return INPUT_PROP(_CelShadowColor).rgb;
 }
 
+float GetCelThreshold()
+{
+    return INPUT_PROP(_CelThreshold);   
+}
+
+float GetCelSmoothness()
+{
+    return INPUT_PROP(_CelSmoothness);    
+}
+
 float GetCelShadowRange()
 {
     return INPUT_PROP(_CelShadowRange);
@@ -258,15 +271,18 @@ real GetCelSpecularGlossiness()
     return INPUT_PROP(_CelSpecularGlossiness);
 }
 
+float GetRimThreshold()
+{
+    return INPUT_PROP(_RimThreshold); 
+}
+
+float GetRimSmoothness()
+{
+    return INPUT_PROP(_RimSmoothness);  
+}
+
 float4 GetRimColor()
 {
     return INPUT_PROP(_RimColor);
 }
-
-// x min, y max
-float2 GetRimRange()
-{
-    return INPUT_PROP(_RimRange); 
-}
-
 #endif

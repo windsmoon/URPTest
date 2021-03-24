@@ -179,52 +179,34 @@ struct CelData_CelPBR
 
 CelData_CelPBR GetCelData(Surface_CelPBR surface, BRDF_CelPBR brdf, LightData_CelPBR lightData, TempData_CelPBR tempData)
 {
-    #if defined(CEL_SHADING)
-        // CelData_CelPBR celData;
-        // real halfLambert = tempData.nDotL * 0.5 + 0.5;
-        // real diffuseRampUV = halfLambert - surface.celShadowRange;
-        // celData.diffuse = GetRamp(diffuseRampUV) * surface.color;
-        // real specular = pow(tempData.nDotH, surface.celSpecularGlossiness);
-        // celData.specular = specular < surface.celSpecularThreshold ? 0 : 1;
-        // celData.specular *= surface.metallic;
-        // float f = 1 - tempData.nDotV;
-        // f = f * tempData.nDotL;
-        // real2 rimRange = surface.rimRange;
-        // real3 rimColor = surface.rimColor;
-        // f = smoothstep(rimRange.x, rimRange.y, f);
-        // float3 rim = f * rimColor.rgb;
-        // celData.rim = rim;
-        // return celData;
-    #else
-        // CelData_CelPBR celData;
-        // real halfLambert = tempData.halfNDotL;
-        // real diffuseRampUV = halfLambert - surface.celShadowRange;
-        // celData.diffuse = GetRamp(diffuseRampUV) * brdf.diffuse;
-        // celData.specular = brdf.specular < surface.celSpecularThreshold ? 0 : 1;
-        // float f = 1 - tempData.nDotV;
-        // f = f * tempData.nDotL;
-        // real2 rimRange = surface.rimRange;
-        // real3 rimColor = surface.rimColor;
-        // f = smoothstep(rimRange.x, rimRange.y, f);
-        // float3 rim = f * rimColor.rgb;
-        // celData.rim = rim;
-        // return celData;
-    #endif
+
 
     CelData_CelPBR celData;
     real halfLambert = tempData.nDotL * 0.5 + 0.5;
-    real diffuseRampUV = halfLambert - surface.celShadowRange;
-    celData.diffuse = GetRamp(diffuseRampUV) * surface.color;
+
+    #if defined(ENABLE_RAMP_TEXTURE)
+        real diffuseRampUV = halfLambert - surface.celShadowRange;
+        celData.diffuse = GetRamp(diffuseRampUV) * surface.color;
+    #else
+        float t = smoothstep(GetCelThreshold() - 0.5 * GetCelSmoothness(), GetCelThreshold() + 0.5 * GetCelSmoothness(), halfLambert - surface.celShadowRange);
+        real3 celColor = lerp(surface.celShadowColor, surface.celShadeColor, t);
+        celData.diffuse = surface.color * celColor; 
+    #endif
+    
     real specular = pow(tempData.nDotH, surface.celSpecularGlossiness);
-    celData.specular = specular < surface.celSpecularThreshold ? 0 : 1;
-    celData.specular *= surface.metallic * surface.smoothness;
-    float f = 1 - tempData.nDotV;
-    f = f * tempData.nDotL;
-    real2 rimRange = surface.rimRange;
-    real3 rimColor = surface.rimColor;
-    f = smoothstep(rimRange.x, rimRange.y, f);
-    float3 rim = f * rimColor.rgb;
-    celData.rim = rim * surface.color;
+    specular = smoothstep(GetCelSpecularThreshold() - 0.5 * GetCelSmoothness(), GetCelSpecularThreshold() + 0.5 * GetCelSmoothness(), specular);
+    // celData.specular = specular < surface.celSpecularThreshold ? 0 : 1;
+    celData.specular = specular * surface.metallic * surface.smoothness;
+    float rimStrength = 1 - tempData.nDotV;
+    // double side rim light
+    rimStrength = smoothstep(surface.rimThreshold - 0.5 * surface.rimSmoothness, surface.rimThreshold + 0.5 * surface.rimSmoothness, rimStrength);
+    celData.rim = rimStrength * surface.rimColor;
+    // f = f * tempData.nDotL;
+    // real2 rimRange = surface.rimRange;
+    // real3 rimColor = surface.rimColor;
+    // f = smoothstep(rimRange.x, rimRange.y, f);
+    // float3 rim = f * rimColor.rgb;
+    // celData.rim = rim * surface.color;
 
     //debug
     #if defined(DEBUG_DISABLE_DIFFUSE)

@@ -56,17 +56,20 @@ Shader "CelPBR/CelPBR"
         
         // cel shading
         [Space(50)]
-        [Toggle(CEL_SHADING)] _CelShading("Cel Shading", Float) = 0.0
+        [Toggle(ENABLE_RAMP_TEXTURE)] _EnableRampTexture("Enable Ramp Texture", Float) = 0.0
         _OutlineWidth("Outline Width", Range(0.01, 2)) = 0.24
         _OutlineColor("Outline Color", Color) = (0, 0, 0, 0)
         _RampMap("Ramp Texture", 2D) = "gray" {}
         _CelShadeColor("Cel Shade Color", Color) = (1, 1, 1)
     	_CelShadowColor("Cel Shadow Color", Color) = (0, 0, 0)
+        _CelThreshold("Cel Threshold", Range(0, 1)) = 0.5
+        _CelSmoothness("Cel Smoothness", Range(0, 0.5)) = 0.1
 		_CelShadowRange("Cel Shadow Range", Range(0, 1)) = 0.2
     	_CelSpecularThreshold("Cel Specular Threshold", Range(0, 1)) = 0.8
         _CelSpecularGlossiness("Cel Specular Glossiness", Float) = 128
+        _RimThreshold("Rim Threshold", Range(0.5, 1)) = 0.8
+        _RimSmoothness("Rim Smothness", Range(0, 1)) = 0.3
         _RimColor("Rim Color", Color) = (1, 1, 1, 1)
-    	_RimRange("Rim Range (Min and Max, 0 ~ 1)", Vector) = (0.8, 1, 0, 0) 
         
         // debug
         [Toggle(TEMP_DEBUG)] _Temp_Debug("Temp Debug", Float) = 0
@@ -139,7 +142,7 @@ Shader "CelPBR/CelPBR"
 
             // custom defined keywords
             #pragma multi_compile_local _ PERSPECTIVE_CORRECTION
-            #pragma multi_compile_local_fragment _ CEL_SHADING
+            #pragma multi_compile_local_fragment _ ENABLE_RAMP_TEXTURE
             #pragma multi_compile_local _ REVERT_HEIGHT
             #pragma multi_compile_local_fragment _ PARALLAX_SELF_SHADOW
             #pragma multi_compile_local_fragment _ SSS
@@ -150,12 +153,12 @@ Shader "CelPBR/CelPBR"
             #pragma multi_compile_fragment _ SCREEN_SPACE_REFLECTION
 
             // custom defined debug keywords
-            // #pragma multi_compile_local _ TEMP_DEBUG
-            // #pragma multi_compile_local _ DEBUG_UNLIT
-            // #pragma multi_compile_local _ DEBUG_DISABLE_DIFFUSE
-            // #pragma multi_compile_local _ DEBUG_DISABLE_SPECULAR
-            // #pragma multi_compile_local _ DEBUG_DISABLE_RIM
-            // #pragma multi_compile_local _ DEBUG_DISABLE_GI
+            #pragma multi_compile_local _ TEMP_DEBUG
+            #pragma multi_compile_local _ DEBUG_UNLIT
+            #pragma multi_compile_local _ DEBUG_DISABLE_DIFFUSE
+            #pragma multi_compile_local _ DEBUG_DISABLE_SPECULAR
+            #pragma multi_compile_local _ DEBUG_DISABLE_RIM
+            #pragma multi_compile_local _ DEBUG_DISABLE_GI
 
             #pragma vertex CelPBRVert
             #pragma fragment CelPBRFrag

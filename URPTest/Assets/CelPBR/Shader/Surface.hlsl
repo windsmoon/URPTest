@@ -24,11 +24,14 @@ struct Surface_CelPBR
     // cel shading
     real3 celShadeColor;
     real3 celShadowColor;
+    real celSmoothness;
+    real celThreshold;
     real celShadowRange;
     real celSpecularThreshold;
     real celSpecularGlossiness;
+    real rimThreshold;
+    real rimSmoothness;
     real3 rimColor;
-    real2 rimRange;
 };
 
 float3 GetWorldNormal(Varyings input, float3 normalTS)
@@ -71,11 +74,14 @@ Surface_CelPBR GetSurface(Varyings input)
     // cel shading
     surface.celShadeColor = GetCelShadeColor();
     surface.celShadowColor = GetCelShadowColor();
+    surface.celThreshold = GetCelThreshold();
+    surface.celSmoothness = GetCelSmoothness();
     surface.celShadowRange = GetCelShadowRange();
     surface.celSpecularThreshold = GetCelSpecularThreshold();
     surface.celSpecularGlossiness = GetCelSpecularGlossiness();
+    surface.rimThreshold = GetRimThreshold();
+    surface.rimSmoothness = GetRimSmoothness();
     surface.rimColor = GetRimColor();
-    surface.rimRange = GetRimRange();
     return surface;
 }
 
