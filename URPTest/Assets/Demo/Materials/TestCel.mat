@@ -163,8 +163,8 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 0
-    - _RimSmoothness: 0.345
-    - _RimThreshold: 0.867
+    - _RimSmoothness: 0.336
+    - _RimThreshold: 0.853
     - _SSS: 0
     - _SSSDistort: 0
     - _SSSPower: 2

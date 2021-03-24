@@ -203,10 +203,11 @@ CelData_CelPBR GetCelData(Surface_CelPBR surface, BRDF_CelPBR brdf, LightData_Ce
     // celData.rim = rimStrength;
     // return celData;
     #if defined(ENABLE_SINGLE_SIDE_RIM_LIGHT)
-        rimStrength = rimStrength * (tempData.rawNDotL > 0 ? 1 : 0);
+        rimStrength = rimStrength * max(tempData.rawNDotL, 0);
+        // rimStrength = rimStrength * (tempData.rawNDotL > 0 ? 1 : 0);
     #endif
-    celData.rim = rimStrength;
-    return celData;
+    // celData.rim = tempData.rawNDotL > 0 ? 1 : 0;
+    // return celData;
     
     celData.rim = rimStrength * surface.rimColor;
     // celData.rim = 1 - tempData.nDotV;
