@@ -18,20 +18,11 @@ namespace CelPBR.Runtime.PostProcessing
         private UberAgent uberAgent;
         private List<PostProcessingType> existPostProcessingTypeList;
         private Dictionary<int, PostProcessingRenderPass> postProcessingRenderPassDict;
-        private bool needInit = true;
         #endregion
 
         #region methods
         public override void Create()
         {
-            if (needInit = false)
-            {
-                Debug.Log("2222");
-                return;
-            }
-            
-            Debug.Log("111111");
-            
             if (uberShader == null)
             {
                 uberShader = Shader.Find("CelPBR/PostProcessing/Uber");
@@ -59,7 +50,6 @@ namespace CelPBR.Runtime.PostProcessing
                 pair.Value.Init();
             }
             
-            needInit = false;
             uberRenderPass.BeforeUberRenderPassExecute += BeforeUberRenderPassExecute;
             uberRenderPass.OnUberRenderPassExecuted += OnUberRenderPassExecuted;
         }

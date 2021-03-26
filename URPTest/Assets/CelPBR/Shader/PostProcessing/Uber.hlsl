@@ -31,6 +31,10 @@ float4 UberFragment(Varyings input) : SV_TARGET
         }
     #endif
 
+    #if defined(POST_PROCESSING_OUTLINE)
+        color = 1;
+    #endif
+
     // return _SSRColor;
     return float4(color, 1);
 }

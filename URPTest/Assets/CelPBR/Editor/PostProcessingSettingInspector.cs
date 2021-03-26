@@ -167,9 +167,24 @@ namespace CelPBR.Editor
             
             // foldoutStateDict[type] = CoreEditorUtils.DrawHeaderFoldout(postProcessingSetting.PostProcessingName, state, false);
             bool isEnabled = postProcessingSetting.enabled;
+            bool oldEnabled = isEnabled;
             postProcessingSetting.IsEditorFoldout = DrawHeaderToggle(postProcessingSetting.PostProcessingName, postProcessingSetting.IsEditorFoldout, ref isEnabled, null, null, null, null);
             // foldoutStateDict[type] = foldoutState;
-            postProcessingSetting.enabled = isEnabled;
+
+            if (oldEnabled != isEnabled)
+            {
+                if (isEnabled)
+                {
+                    postProcessingConfig.EnablePostProcessing(type);
+                }
+
+                else
+                {
+                    postProcessingConfig.DisablePostProcessing(type);
+                }
+            }
+            
+            // postProcessingSetting.enabled = isEnabled;
             
             if (postProcessingSetting.IsEditorFoldout)
             {
