@@ -3,15 +3,18 @@
 
 #include "SSR.hlsl"
 
-TEXTURE2D(_CameraOpaqueTexture);
+TEXTURE2D(_PostProcessing_ColorTexture);
 TEXTURE2D(_SSR_ObjectDataTexture);
+TEXTURE2D(_PostProcessing_ColorTarget);
 
-SAMPLER(sampler_CameraOpaqueTexture);
+SAMPLER(sampler_PostProcessing_ColorTexture);
 SAMPLER(sampler_SSR_ObjectDataTexture);
+SAMPLER(sampler_PostProcessing_ColorTarget);
 
 float4 UberFragment(Varyings input) : SV_TARGET
 {
-    real3 color = SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, input.uv);
+    return float4(SAMPLE_TEXTURE2D(_PostProcessing_ColorTarget, sampler_PostProcessing_ColorTarget, input.uv));
+    real3 color = SAMPLE_TEXTURE2D(_PostProcessing_ColorTexture, sampler_PostProcessing_ColorTexture, input.uv);
 
     #if defined(POST_PROCESSING_SCREEN_SPACE_REFLECTION)
         float4 ssrObjecetData = SAMPLE_TEXTURE2D(_SSR_ObjectDataTexture, sampler_SSR_ObjectDataTexture, input.uv);
@@ -26,14 +29,14 @@ float4 UberFragment(Varyings input) : SV_TARGET
 
             if (viewSpaceRayMarching(posVS, reflectDirectionVS, screenUV))
             {
-                color = color + ssrObjecetData.rgb * SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, screenUV).rgb;
+                color = color + ssrObjecetData.rgb * SAMPLE_TEXTURE2D(_PostProcessing_ColorTexture, sampler_PostProcessing_ColorTexture, screenUV).rgb;
             }
         }
     #endif
 
-    #if defined(POST_PROCESSING_OUTLINE)
-        color = 1;
-    #endif
+    // #if defined(POST_PROCESSING_OUTLINE)
+    //     color = 1;
+    // #endif
 
     // return _SSRColor;
     return float4(color, 1);

@@ -25,3 +25,5 @@
 // 2 post processing support opaque texture and depth texture
 // 2 post processing need opaque and depth texutre
 // 2 post processing need uber render pass 
+// 2 post processing context.submit
+// 2 post processing need pre post processing render pass 

@@ -9,6 +9,12 @@ Shader "CelPBR/PostProcessing/Outline"
             ZTest Always
             ZWrite Off
             Cull Off
+            
+            Stencil 
+            {
+                Ref 1
+                Comp Equal
+            }
 
             HLSLPROGRAM
             #pragma vertex Vert

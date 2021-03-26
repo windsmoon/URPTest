@@ -301,7 +301,7 @@ Shader "CelPBR/CelPBR"
                 Ref 1
                 Comp Always
                 Pass Replace 
-                ZFail keep
+                ZFail Replace
             }
             
             HLSLPROGRAM

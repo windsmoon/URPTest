@@ -15,6 +15,7 @@ namespace CelPBR.Runtime.PostProcessing
         private Material uberMaterial;
         private CommandBuffer uberCommandBuffer;
         private UberRenderPass uberRenderPass;
+        private PrePostProcessingRenderPass prePostProcessingRenderPass;
         private UberAgent uberAgent;
         private List<PostProcessingType> existPostProcessingTypeList;
         private Dictionary<int, PostProcessingRenderPass> postProcessingRenderPassDict;
@@ -42,6 +43,7 @@ namespace CelPBR.Runtime.PostProcessing
             postProcessingRenderPassDict[(int)PostProcessingType.ScreenSpaceRelfection] = new ScreenSpaceRelfectionRenderPass();
             postProcessingRenderPassDict[(int)PostProcessingType.Outline] = new OutlineRenderPass();
             uberRenderPass = new UberRenderPass(uberCommandBuffer, uberMaterial);
+            // prePostProcessingRenderPass = new PrePostProcessingRenderPass();
             uberAgent = new UberAgent(uberRenderPass);
             existPostProcessingTypeList = new List<PostProcessingType>();
 
@@ -102,6 +104,8 @@ namespace CelPBR.Runtime.PostProcessing
 
             if (enabledCount > 0)
             {
+                prePostProcessingRenderPass = new PrePostProcessingRenderPass(renderer);
+                renderer.EnqueuePass(prePostProcessingRenderPass);
                 renderer.EnqueuePass(uberRenderPass);
             }
         }

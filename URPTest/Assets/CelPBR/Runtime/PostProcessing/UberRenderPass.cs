@@ -69,6 +69,7 @@ namespace CelPBR.Runtime.PostProcessing
             }
             
             // material.SetTexture("ss", commandBuffer.get);
+            commandBuffer.SetRenderTarget(new RenderTargetIdentifier("_CameraColorTexture"));
             commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);
 
             // this step is essential or the rts will be leak in memory
