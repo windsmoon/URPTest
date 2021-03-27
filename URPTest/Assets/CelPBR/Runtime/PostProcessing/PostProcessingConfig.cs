@@ -16,7 +16,6 @@ namespace CelPBR.Runtime.PostProcessing
         private List<int> postProcessingSettingDictKeyList = new List<int>();
         [HideInInspector, SerializeField]
         private List<PostProcessingSetting> postProcessingSettingDictValueList = new List<PostProcessingSetting>();
-        
         private Dictionary<int, PostProcessingSetting> postProcessingSettingDict = new Dictionary<int, PostProcessingSetting>();
         // private static Dictionary<Type, PostProcessingType> postProcessingTypeDict;
         private static Dictionary<int, Type> postProcessingSettingTypeDict;

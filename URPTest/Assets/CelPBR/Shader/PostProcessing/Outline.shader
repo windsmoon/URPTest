@@ -9,16 +9,16 @@ Shader "CelPBR/PostProcessing/Outline"
             ZTest Always
             ZWrite Off
             Cull Off
-            
-            Stencil 
-            {
-                Ref 1
-                Comp Equal
-            }
+//            
+//            Stencil 
+//            {
+//                Ref 1
+//                Comp Equal
+//            }
 
             HLSLPROGRAM
-            #pragma vertex Vert
-            #pragma fragment OutlineFragment
+            #pragma vertex Vertex_Outline
+            #pragma fragment Fragment_Outline
 
             #include "Outline.hlsl"
             ENDHLSL

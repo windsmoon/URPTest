@@ -23,6 +23,14 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         {
             get => "CelPBR/PostProcessing/Screen Space Reflection";
         }
+        
+        public override string CommandBufferName
+        {
+            get
+            {
+                return "Post Processing SSR";
+            }
+        }
         #endregion
         
         #region methods

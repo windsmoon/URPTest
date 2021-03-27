@@ -11,38 +11,46 @@ namespace CelPBR.Runtime.PostProcessing
     public class PostProcessingRenderFeature : ScriptableRendererFeature
     {
         #region fields
-        private Shader uberShader;
-        private Material uberMaterial;
-        private CommandBuffer uberCommandBuffer;
+        // private Shader uberShader;
+        // private Material uberMaterial;
+        // private CommandBuffer uberCommandBuffer;
         private UberRenderPass uberRenderPass;
         private PrePostProcessingRenderPass prePostProcessingRenderPass;
         private UberAgent uberAgent;
         private List<PostProcessingType> existPostProcessingTypeList;
         private Dictionary<int, PostProcessingRenderPass> postProcessingRenderPassDict;
+        private static RenderTargetIdentifier cameraColorIdentifier = new RenderTargetIdentifier("_CameraColorTexture");
+        #endregion
+
+        #region properties
+        public static RenderTargetIdentifier CameraColorIdentifier
+        {
+            get { return cameraColorIdentifier; }
+        }
         #endregion
 
         #region methods
         public override void Create()
         {
-            if (uberShader == null)
-            {
-                uberShader = Shader.Find("CelPBR/PostProcessing/Uber");
-            }
-            
-            if (uberMaterial == null)
-            {
-                uberMaterial = new Material(uberShader);
-            }
+            // if (uberShader == null)
+            // {
+            //     uberShader = Shader.Find("CelPBR/PostProcessing/Uber");
+            // }
+            //
+            // if (uberMaterial == null)
+            // {
+            //     uberMaterial = new Material(uberShader);
+            // }
 
-            if (uberCommandBuffer == null)
-            {
-                uberCommandBuffer = new CommandBuffer();
-            }
-            
+            // if (uberCommandBuffer == null)
+            // {
+            //     uberCommandBuffer = new CommandBuffer();
+            // }
+
             postProcessingRenderPassDict = new Dictionary<int, PostProcessingRenderPass>();
             postProcessingRenderPassDict[(int)PostProcessingType.ScreenSpaceRelfection] = new ScreenSpaceRelfectionRenderPass();
             postProcessingRenderPassDict[(int)PostProcessingType.Outline] = new OutlineRenderPass();
-            uberRenderPass = new UberRenderPass(uberCommandBuffer, uberMaterial);
+            uberRenderPass = new UberRenderPass();
             // prePostProcessingRenderPass = new PrePostProcessingRenderPass();
             uberAgent = new UberAgent(uberRenderPass);
             existPostProcessingTypeList = new List<PostProcessingType>();
@@ -110,7 +118,7 @@ namespace CelPBR.Runtime.PostProcessing
             }
         }
         
-        protected override void Dispose(bool disposing)
+        /*protected override void Dispose(bool disposing)
         {
             if (uberMaterial != null)
             {
@@ -123,7 +131,7 @@ namespace CelPBR.Runtime.PostProcessing
                 UnityObject.Destroy(obj);
 #endif
             }
-        }
+        }*/
 
         private void EnqueuePass(ScriptableRenderer renderer, PostProcessingType type, PostProcessingSetting postProcessingSetting)
         {

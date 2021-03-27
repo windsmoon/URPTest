@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -12,9 +13,9 @@ namespace CelPBR.Runtime.PostProcessing
         private CommandBuffer commandBuffer;
         private RenderTexture colorTexture;
         private static int colorTextureID = Shader.PropertyToID("_PostProcessing_ColorTexture");
-        private static int colorTargetID = Shader.PropertyToID("_PostProcessing_ColorTarget");
+        // private static int colorTargetID = Shader.PropertyToID("_PostProcessing_ColorTarget");
         private RenderTargetIdentifier colorTextureIdentifier = new RenderTargetIdentifier(colorTextureID, 0, CubemapFace.Unknown, -1);
-        private RenderTargetIdentifier colorTargetIdentifier = new RenderTargetIdentifier(colorTargetID, 0, CubemapFace.Unknown, -1);
+        // private RenderTargetIdentifier colorTargetIdentifier = new RenderTargetIdentifier(colorTargetID, 0, CubemapFace.Unknown, -1);
         private ScriptableRenderer scriptableRenderer;
         #endregion
 
@@ -39,13 +40,13 @@ namespace CelPBR.Runtime.PostProcessing
         {
             // todo : depth
             commandBuffer.GetTemporaryRT(colorTextureID, renderingData.cameraData.cameraTargetDescriptor);
-            commandBuffer.GetTemporaryRT(colorTargetID, renderingData.cameraData.cameraTargetDescriptor);
-            // commandBuffer.Blit(new RenderTargetIdentifier("_CameraColorTexture"), colorTextureIdentifier);
-            // commandBuffer.SetRenderTarget(colorTargetIdentifier, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store);
-            commandBuffer.SetRenderTarget(colorTargetIdentifier, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store,
-                scriptableRenderer.cameraDepthTarget, RenderBufferLoadAction.Load, RenderBufferStoreAction.Store);
+            // commandBuffer.GetTemporaryRT(colorTargetID, renderingData.cameraData.cameraTargetDescriptor);
+            commandBuffer.Blit(PostProcessingRenderFeature.CameraColorIdentifier, colorTextureIdentifier);
+            // commandBuffer.SetRenderTarget(colorTextureIdentifier, RenderBufferLoadAction.Load, RenderBufferStoreAction.DontCare);
+            // commandBuffer.SetRenderTarget(colorTargetIdentifier, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store,
+                // scriptableRenderer.cameraDepthTarget, RenderBufferLoadAction.Load, RenderBufferStoreAction.Store);
             context.ExecuteCommandBuffer(commandBuffer);
-            context.Submit();
+            context.Submit();   
             commandBuffer.Clear();
         }
 
@@ -53,7 +54,7 @@ namespace CelPBR.Runtime.PostProcessing
         {
             base.OnCameraCleanup(cmd);
             commandBuffer.ReleaseTemporaryRT(colorTextureID);
-            commandBuffer.ReleaseTemporaryRT(colorTargetID);
+            // commandBuffer.ReleaseTemporaryRT(colorTargetID);
         }
 
         #endregion

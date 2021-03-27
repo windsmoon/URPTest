@@ -27,6 +27,14 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         {
             get;
         }
+
+        public virtual string CommandBufferName
+        {
+            get
+            {
+                return null;
+            }
+        }
         #endregion
 
         #region interface impls
@@ -55,7 +63,7 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         public void Init()
         { 
             material = new Material(Shader.Find(ShaderName));
-            // commandBuffer.name = ShaderName;
+            commandBuffer.name = CommandBufferName;
         }
 
         public void SetData(UberAgent ubaerAgent, PostProcessingSetting postProcessingSetting)

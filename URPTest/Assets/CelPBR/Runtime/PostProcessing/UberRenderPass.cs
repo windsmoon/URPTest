@@ -21,17 +21,17 @@ namespace CelPBR.Runtime.PostProcessing
         #endregion
 
         #region constructors
-        public UberRenderPass(CommandBuffer commandBuffer, Material material)
+        public UberRenderPass()
         {
-            this.commandBuffer = commandBuffer;
-            this.material = material;
+            this.commandBuffer = new CommandBuffer();
+            this.commandBuffer.name = "Postprocessing Uber";
+            this.material = new Material(Shader.Find("CelPBR/PostProcessing/Uber"));;
             // this.material = new Material(Shader.Find("CelPBR/PostProcessing/Uber"));
             renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
         }
         #endregion
         
         #region Properties
-
         public Material Material
         {
             get => material;
@@ -68,8 +68,7 @@ namespace CelPBR.Runtime.PostProcessing
                 BeforeUberRenderPassExecute();
             }
             
-            // material.SetTexture("ss", commandBuffer.get);
-            commandBuffer.SetRenderTarget(new RenderTargetIdentifier("_CameraColorTexture"));
+            commandBuffer.SetRenderTarget(PostProcessingRenderFeature.CameraColorIdentifier);
             commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);
 
             // this step is essential or the rts will be leak in memory
