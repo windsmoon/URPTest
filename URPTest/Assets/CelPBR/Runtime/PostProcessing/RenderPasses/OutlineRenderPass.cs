@@ -36,17 +36,18 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
         #region methods
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            RenderTextureDescriptor renderTextureDescriptor = renderingData.cameraData.cameraTargetDescriptor;
-            // todo RenderTextureFormat.R8
-            commandBuffer.GetTemporaryRT(outlineTextureID, renderTextureDescriptor.width, renderTextureDescriptor.height, 0, FilterMode.Point, RenderTextureFormat.R8);
-            commandBuffer.SetRenderTarget(outlineTextureIdentifier, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store);
+            // RenderTextureDescriptor renderTextureDescriptor = renderingData.cameraData.cameraTargetDescriptor;
+            // // todo RenderTextureFormat.R8
+            // commandBuffer.GetTemporaryRT(outlineTextureID, renderTextureDescriptor.width, renderTextureDescriptor.height, 0, FilterMode.Point, RenderTextureFormat.R8);
+            // commandBuffer.SetRenderTarget(outlineTextureIdentifier, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store);
+            // commandBuffer.ClearRenderTarget(true, true, new Color(0, 0, 0, 0));
             OutlineSetting outlineSetting = postProcessingSetting as OutlineSetting;
             uberAgent.SetColor(colorID, outlineSetting.Color);
-            commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, 0);
-            context.ExecuteCommandBuffer(commandBuffer);
-            context.Submit();
-            commandBuffer.Clear();
-            uberAgent.RegistRT(outlineTextureID);
+            // commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, 0);
+            // context.ExecuteCommandBuffer(commandBuffer);
+            // context.Submit();
+            // commandBuffer.Clear();
+            // uberAgent.RegistRT(outlineTextureID);
         }
         #endregion
     }

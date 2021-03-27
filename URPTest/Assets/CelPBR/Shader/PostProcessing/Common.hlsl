@@ -5,6 +5,12 @@
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareNormalsTexture.hlsl"
 
+TEXTURE2D(_PostProcessing_ColorTexture);
+
+SAMPLER(sampler_PostProcessing_ColorTexture);
+
+real4 _PostProcessing_ColorTexture_TexelSize;
+
 struct Attributes
 {
     float4 positionHCS : POSITION;
@@ -33,6 +39,21 @@ Varyings Vert(Attributes input)
 
     // output.uv = input.uv;
     return output;
+}
+
+real3 GetCameraColor(float2 uv)
+{
+    return SAMPLE_TEXTURE2D(_PostProcessing_ColorTexture, sampler_PostProcessing_ColorTexture, uv).rgb;
+}
+
+real4 GetCameraColorTexelSize()
+{
+    return _PostProcessing_ColorTexture_TexelSize;
+}
+
+float GetRawDepth(float2 uv)
+{
+    return SampleSceneDepth(uv);
 }
 
 float RawToEyeDepth(float rawDepth)

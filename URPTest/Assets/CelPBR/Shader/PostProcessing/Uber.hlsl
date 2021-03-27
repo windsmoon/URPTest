@@ -4,11 +4,9 @@
 #include "SSR.hlsl"
 #include "Outline.hlsl"
 
-TEXTURE2D(_PostProcessing_ColorTexture);
 TEXTURE2D(_PostProcessing_OutlineTexture);
 TEXTURE2D(_SSR_ObjectDataTexture);
 
-SAMPLER(sampler_PostProcessing_ColorTexture);
 // SAMPLER(sampler_SSR_ObjectDataTexture);
 
 float4 UberFragment(Varyings input) : SV_TARGET
@@ -35,10 +33,12 @@ float4 UberFragment(Varyings input) : SV_TARGET
     #endif
 
     #if defined(POST_PROCESSING_OUTLINE)
-        color = lerp(color, _Outline_Color.rgb, SAMPLE_TEXTURE2D(_PostProcessing_OutlineTexture, sampler_PostProcessing_ColorTexture, input.uv).r);
+        real edge = Sobel(input.uv);
+    // return float4(edge.rrr, color.r);
+        color = lerp(color, _Outline_Color.rgb * color, edge);
     #endif
 
-    return float4(color, SAMPLE_TEXTURE2D(_PostProcessing_ColorTexture, sampler_PostProcessing_ColorTexture, input.uv).r);
+    return float4(color, 1);
 }
 
 #endif

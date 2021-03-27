@@ -27,3 +27,4 @@
 // 2 post processing need uber render pass 
 // 2 post processing context.submit
 // 2 post processing need pre post processing render pass 
+// 1 post processing outline optimal (use depth and normal)
