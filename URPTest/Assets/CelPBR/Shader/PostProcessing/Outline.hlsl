@@ -108,8 +108,9 @@ real Sobel(float2 uv)
         // edgeY += depth * Gy[it];
     }
 
-    float edge = 1-(abs(edgeX)+abs(edgeY));
-    return 1 - edge;
+    float edge = sqrt(edgeX * edgeX + edgeY * edgeY);
+    // float edge = 1-(abs(edgeX)+abs(edgeY));
+    return edge;
 }
 
 real4 Fragment_Outline(Varyings_Outline input) : SV_TARGET
