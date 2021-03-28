@@ -8,7 +8,8 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
     public class OutlineRenderPass : PostProcessingRenderPass
     {
         #region fields
-        private int colorID = Shader.PropertyToID("_Outline_Color");
+        private static int colorID = Shader.PropertyToID("_Outline_Color");
+        private static int dataID = Shader.PropertyToID("_Outline_Data"); 
         private static int outlineTextureID = Shader.PropertyToID("_PostProcessing_OutlineTexture");
         private RenderTargetIdentifier outlineTextureIdentifier = new RenderTargetIdentifier(outlineTextureID, 0, CubemapFace.Unknown, -1);
         // private static int maskTextureID = Shader.PropertyToID("_Outline_MaskTexture"); 
@@ -43,6 +44,7 @@ namespace CelPBR.Runtime.PostProcessing.RenderPasses
             // commandBuffer.ClearRenderTarget(true, true, new Color(0, 0, 0, 0));
             OutlineSetting outlineSetting = postProcessingSetting as OutlineSetting;
             uberAgent.SetColor(colorID, outlineSetting.Color);
+            uberAgent.SetVector(dataID, new Vector4(outlineSetting.SampleDistance, outlineSetting.DepthThreshold, outlineSetting.NormalThreshold));
             // commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, 0);
             // context.ExecuteCommandBuffer(commandBuffer);
             // context.Submit();

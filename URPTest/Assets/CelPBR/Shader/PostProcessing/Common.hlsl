@@ -33,8 +33,8 @@ Varyings Vert(Attributes input)
     output.uv = input.uv;
     // ??
     #if UNITY_UV_STARTS_AT_TOP
-        // output.positionCS.y *= -1;
-        output.uv.y = 1 - input.uv.y;
+        output.positionCS.y *= -1;
+        // output.uv.y = 1 - input.uv.y;
     #endif
 
     // output.uv = input.uv;

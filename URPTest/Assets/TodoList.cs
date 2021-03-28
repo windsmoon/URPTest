@@ -8,7 +8,7 @@
 // clear : add the cel shading
 // clear : add simple sss effect
 
-// 0 : post processing system
+// clear : post processing system
 // 1 : support pre depth for alpha test performance
 // 1 doing : make a demo
 // 1 doing add kk highlight
@@ -27,4 +27,5 @@
 // 2 post processing need uber render pass 
 // 2 post processing context.submit
 // 2 post processing need pre post processing render pass 
-// 1 post processing outline optimal (use depth and normal)
+// clear : post processing outline optimal (use depth and normal)
+// 2 post processing outline depth threshold use near and far clip plane

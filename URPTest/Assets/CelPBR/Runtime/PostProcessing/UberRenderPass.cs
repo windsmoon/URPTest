@@ -68,6 +68,7 @@ namespace CelPBR.Runtime.PostProcessing
                 BeforeUberRenderPassExecute();
             }
             
+            ConfigureInput(ScriptableRenderPassInput.Normal);
             commandBuffer.SetRenderTarget(PostProcessingRenderFeature.CameraColorIdentifier);
             commandBuffer.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, material, 0, (int) 0);
 

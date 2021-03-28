@@ -57,6 +57,11 @@ namespace CelPBR.Runtime.PostProcessing
                 uberMaterial.SetColor(pair.Key, pair.Value);
             }
             
+            foreach (var pair in vectorDict)
+            {
+                uberMaterial.SetVector(pair.Key, pair.Value);
+            }
+            
             foreach (var pair in textureDict)
             {
                 uberMaterial.SetTexture(pair.Key, pair.Value);
@@ -65,11 +70,6 @@ namespace CelPBR.Runtime.PostProcessing
             foreach (var pair in matrixDict)
             {
                 uberMaterial.SetMatrix(pair.Key, pair.Value);
-            }
-            
-            foreach (var pair in intDict)
-            {
-                uberMaterial.SetInt(pair.Key, pair.Value);
             }
 
             // foreach (string keyword in enabledKeywordSet)

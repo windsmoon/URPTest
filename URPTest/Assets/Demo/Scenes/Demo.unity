@@ -41668,7 +41668,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEditorFoldout: 1
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 0.3207547, g: 0.14676042, b: 0.14676042, a: 1}
+  sampleDistance: 1
+  depthThreshold: 0.00177
+  normalThreshold: 0.267
 --- !u!1 &1217178316 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3511543862585525959, guid: ce2ecbd04daed4e4b93dbf7811153167, type: 3}

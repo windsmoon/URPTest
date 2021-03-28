@@ -9,8 +9,14 @@ namespace CelPBR.Runtime.PostProcessing.Settings
         #endregion
         
         #region fields
-        [SerializeField]
-        private Color color;
+        [SerializeField] 
+        private Color color = UnityEngine.Color.black;
+        [SerializeField, Range(1, 10)]
+        private int sampleDistance = 1;
+        [SerializeField, Range(0, 0.01f)]
+        private float depthThreshold = 0.001f;
+        [SerializeField, Range(0, 0.3f)]
+        private float normalThreshold = 0.2f;
         #endregion
         
         #region properties
@@ -24,10 +30,26 @@ namespace CelPBR.Runtime.PostProcessing.Settings
 
         public Color Color
         {
-            get
-            {
-                return color;
-            }
+            get { return color; }
+            set { color = value; }
+        }
+
+        public int SampleDistance
+        {
+            get { return sampleDistance; }
+            set { sampleDistance = value; }
+        }
+
+        public float DepthThreshold
+        {
+            get { return depthThreshold; }
+            set { depthThreshold = value; }
+        }
+
+        public float NormalThreshold
+        {
+            get { return normalThreshold; }
+            set { normalThreshold = value; }
         }
         #endregion
 

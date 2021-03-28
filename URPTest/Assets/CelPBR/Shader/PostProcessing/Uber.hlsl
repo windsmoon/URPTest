@@ -33,9 +33,10 @@ float4 UberFragment(Varyings input) : SV_TARGET
     #endif
 
     #if defined(POST_PROCESSING_OUTLINE)
-        real edge = Sobel(input.uv);
+        // real edge = Sobel(input.uv);
+        real edgeStrength = GetEdgeStrength(input.uv);
     // return float4(edge.rrr, color.r);
-        color = lerp(color, _Outline_Color.rgb * color, edge);
+        color = lerp(color, _Outline_Color.rgb * color, edgeStrength);
     #endif
 
     return float4(color, 1);
