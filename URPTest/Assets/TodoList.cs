@@ -29,3 +29,4 @@
 // 2 post processing need pre post processing render pass 
 // clear : post processing outline optimal (use depth and normal)
 // 2 post processing outline depth threshold use near and far clip plane
+// 2 cel shading double layer kk high light
