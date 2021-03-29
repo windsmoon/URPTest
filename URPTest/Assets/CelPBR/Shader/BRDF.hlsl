@@ -141,7 +141,7 @@ BRDF_CelPBR GetBRDF(Surface_CelPBR surface, LightData_CelPBR lightData, TempData
     brdf.ks = lerp(kDieletricSpec.rgb, surface.color, surface.metallic);
 
     #if defined(KK_HIGHLIGHT)
-        brdf.specular = brdf.ks * pow(tempData.kkTSinH, GetKKHighlightShiness());
+        brdf.specular = brdf.ks * pow(tempData.kkTSinH, GetKKHighlightShiness()) * tempData.kkAtten;
     #else
         brdf.specular = brdf.ks * UnityDirectBRDFSpecular(brdf, surface, lightData, tempData);
     #endif

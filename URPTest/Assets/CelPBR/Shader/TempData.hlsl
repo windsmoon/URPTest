@@ -17,6 +17,7 @@ struct TempData_CelPBR
     real sssFactor;
     real kkTDotH;
     real kkTSinH;
+    real kkAtten;
 };
 
 TempData_CelPBR GetTempData(Varyings input, Surface_CelPBR surface, LightData_CelPBR lightData)
@@ -50,6 +51,7 @@ TempData_CelPBR GetTempData(Varyings input, Surface_CelPBR surface, LightData_Ce
     real3 direction = normalize(usedTangent + surface.normal * surface.kkHighlightOffset);
     tempData.kkTDotH = dot(direction, tempData.halfDirection);
     tempData.kkTSinH = sqrt(1 - tempData.kkTDotH * tempData.kkTDotH);
+    tempData.kkAtten = smoothstep(-1, 0, tempData.kkTDotH);
     return tempData;
 }
 

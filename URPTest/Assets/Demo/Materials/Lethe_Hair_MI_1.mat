@@ -104,6 +104,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9e912bf6db3487c4f98522b7a1a36ff8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ReflectionTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SSSLut:
         m_Texture: {fileID: 2800000, guid: 32679f547a496c14bbf72bacb7d0eab3, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -140,8 +144,10 @@ Material:
     - _CelPBR: 1
     - _CelShading: 1
     - _CelShadowRange: 0.133
+    - _CelSmoothness: 0.1
     - _CelSpecularGlossiness: 128
     - _CelSpecularThreshold: 0.807
+    - _CelThreshold: 0.5
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -155,6 +161,10 @@ Material:
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EnablePlanarReflection: 0
+    - _EnableRampTexture: 0
+    - _EnableScreenSpaceReflection: 0
+    - _EnableSingleSideRimLight: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -177,6 +187,8 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RevertHeight: 0
+    - _RimSmoothness: 0.3
+    - _RimThreshold: 0.8
     - _SSS: 1
     - _SSSDistort: 0
     - _SSSPower: 2
