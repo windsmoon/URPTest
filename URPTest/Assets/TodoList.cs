@@ -30,3 +30,5 @@
 // clear : post processing outline optimal (use depth and normal)
 // 2 post processing outline depth threshold use near and far clip plane
 // 2 cel shading double layer kk high light
+// 0 : supprot screen space shadow map in urp 11
+// 1 : support point light shadow in urp 11
