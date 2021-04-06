@@ -23,10 +23,10 @@
 // 1 : add character self shadow
 // 2 : cel shading double layer kk high light
 
-// environment
+// water
 // 1 : fft water
 // 1 : water reflection
-// 1 : water refraction
+// 2 : water refraction
 
 // post processing
 // clear : post processing system
