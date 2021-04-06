@@ -11,10 +11,11 @@
 // 1 doing : make a demo
 
 // common render
-// 1 : support pre depth for alpha test performance
 // clear : sample environment indirect light
 // clear : support depth and normals texture
 // clear : support alpha test
+// 1 : support pre depth for alpha test performance
+
 
 // character shading
 // clear : add the cel shading
