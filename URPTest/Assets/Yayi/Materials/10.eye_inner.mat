@@ -123,6 +123,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - EnableKKHighlightAnisoMap: 0
     - _ALPower: 0
@@ -189,8 +190,8 @@ Material:
     - _ReceiveShadows: 1
     - _RevertHeight: 0
     - _Revision: 2
-    - _RimSmoothness: 0.354
-    - _RimThreshold: 0.933
+    - _RimSmoothness: 0.359
+    - _RimThreshold: 0.764
     - _SSS: 0
     - _SSSDistort: 0
     - _SSSPower: 2
@@ -222,8 +223,8 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emissive: {r: 0, g: 0, b: 0, a: 0}
     - _KKHighlightData: {r: 0, g: 1, b: 128, a: 1}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
-    - _RimColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimRange: {r: 0.18, g: 1, b: 0, a: 0}
     - _RimThreshold: {r: 0.8, g: 1, b: 0, a: 0}
     - _SSSLutOffset: {r: 0, g: 0, b: 1, a: 0}

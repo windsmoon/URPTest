@@ -205,7 +205,7 @@ CelData_CelPBR GetCelData(Surface_CelPBR surface, BRDF_CelPBR brdf, LightData_Ce
         // rimStrength = rimStrength * (tempData.rawNDotL > 0 ? 1 : 0);
     #endif
 
-    celData.rim = rimStrength * surface.rimColor;
+    celData.rim = rimStrength * surface.rimColor * surface.color;
     // celData.outlineStrength = 1 - tempData.nDotV;
 
 
