@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace CelPBR.Runtime
@@ -32,11 +33,12 @@ namespace CelPBR.Runtime
         private Vector4 WindAndSeed = new Vector4(0.1f, 0.2f, 0, 0);// xy is wind direcction, zw is random seed
         [SerializeField]
         private ComputeShader computeShader;
-        [SerializeField]
-        private Material fftWaveMaterial;
         [SerializeField, Range(0, 12)]
         private int controlStage = 12;
+        [SerializeField]
         private bool isControlHorizontal = true;  //是否控制横向FFT，否则控制纵向FFT
+        [SerializeField]
+        private RawImage debugRawImage;
         
         private int fftTextureSize;
         private float time = 0;
@@ -46,6 +48,7 @@ namespace CelPBR.Runtime
         private Mesh mesh;
         private MeshFilter meshFilter;
         private MeshRenderer meshRenderer;
+        private Material fftWaveMaterial;
 
         private int kernelComputeGaussianRandom;
         private int kernelComputeHeightFrequencySpectrum;
@@ -126,7 +129,9 @@ namespace CelPBR.Runtime
             }
 
             meshFilter.mesh = CreateMesh();
+            fftWaveMaterial = new Material(Shader.Find("CelPBR/Water/FFTWave"));
             meshRenderer.sharedMaterial = fftWaveMaterial;
+            
             InitCSData();
         }
 
@@ -145,6 +150,7 @@ namespace CelPBR.Runtime
         private void Update()
         {
             time += Time.deltaTime;
+            ComputeWaterData();
         }
         #endregion
 
@@ -201,14 +207,14 @@ namespace CelPBR.Runtime
             bubbleRT = CreateRT(fftTextureSize);
             
             kernelComputeGaussianRandom = computeShader.FindKernel("ComputeGaussianRandom");
-            kernelComputeHeightFrequencySpectrum = computeShader.FindKernel("kernelComputeHeightFrequencySpectrum");
+            kernelComputeHeightFrequencySpectrum = computeShader.FindKernel("ComputeHeightFrequencySpectrum");
             kernelComputeDisplaceFrequencySpectrum = computeShader.FindKernel("ComputeDisplaceFrequencySpectrum");
             kernelFFTHorizontal = computeShader.FindKernel("FFTHorizontal");
             kernelFFTHorizontalEnd = computeShader.FindKernel("FFTHorizontalEnd");
             kernelFFTVertical = computeShader.FindKernel("FFTVertical");
             kernelFFTVerticalEnd = computeShader.FindKernel("FFTVerticalEnd");
             kernelComputeDisplace = computeShader.FindKernel("ComputeDisplace");
-            kernelComputeNormalAndBubble = computeShader.FindKernel("ComputeNormalBubble");
+            kernelComputeNormalAndBubble = computeShader.FindKernel("ComputeNormalAndBubble");
             
             computeShader.SetInt(nID, fftTextureSize);
             computeShader.SetFloat(waterSizeID, meshSize);
@@ -304,21 +310,23 @@ namespace CelPBR.Runtime
                     return;
                 }
             }
-    
+
+            // debugRawImage.texture = heightFrequencySpectrumRT;
+            
             // compute displace texture
             computeShader.SetTexture(kernelComputeDisplace, heightFrequencySpectrumRTID, heightFrequencySpectrumRT);
             computeShader.SetTexture(kernelComputeDisplace, displaceXFrequencySpectrumRTID, displaceXFrequencySpectrumRT);
             computeShader.SetTexture(kernelComputeDisplace, displaceZFrequencySpectrumRTID, displaceZFrequencySpectrumRT);
             computeShader.SetTexture(kernelComputeDisplace, displaceRTID, displaceRT);
-            computeShader.Dispatch(kernelComputeDisplace, fftTextureSize / 8, fftTextureSize / 8, 1);
-    
-            // compute normal and bubble
-            computeShader.SetTexture(kernelComputeNormalAndBubble, displaceRTID, displaceRT);
-            computeShader.SetTexture(kernelComputeNormalAndBubble, normalRTID, normalRT);
-            computeShader.SetTexture(kernelComputeNormalAndBubble, bubbleRTID, bubbleRT);
-            computeShader.Dispatch(kernelComputeNormalAndBubble, fftTextureSize / 8, fftTextureSize / 8, 1);
-    
-            SetMaterialTex();
+            // computeShader.Dispatch(kernelComputeDisplace, fftTextureSize / 8, fftTextureSize / 8, 1);
+            //
+            // // compute normal and bubble
+            // computeShader.SetTexture(kernelComputeNormalAndBubble, displaceRTID, displaceRT);
+            // computeShader.SetTexture(kernelComputeNormalAndBubble, normalRTID, normalRT);
+            // computeShader.SetTexture(kernelComputeNormalAndBubble, bubbleRTID, bubbleRT);
+            // computeShader.Dispatch(kernelComputeNormalAndBubble, fftTextureSize / 8, fftTextureSize / 8, 1);
+            //
+            // SetMaterialTex();
         }
         
         private RenderTexture CreateRT(int size)
@@ -335,7 +343,6 @@ namespace CelPBR.Runtime
             computeShader.SetTexture(kernel, outputRTID, outputRT);
             computeShader.Dispatch(kernel, fftTextureSize / 8, fftTextureSize / 8, 1);
 
-            //交换输入输出纹理
             RenderTexture rt = input;
             input = outputRT;
             outputRT = rt;
@@ -343,12 +350,10 @@ namespace CelPBR.Runtime
         
         private void SetMaterialTex()
         {
-            //设置海洋材质纹理
             fftWaveMaterial.SetTexture(displaceRTID, displaceRT);
             fftWaveMaterial.SetTexture(normalRTID, normalRT);
             fftWaveMaterial.SetTexture(bubbleRTID, bubbleRT);
 
-            //设置显示纹理
             // DisplaceXMat.SetTexture("_MainTex", DisplaceXSpectrumRT);
             // DisplaceYMat.SetTexture("_MainTex", HeightSpectrumRT);
             // DisplaceZMat.SetTexture("_MainTex", DisplaceZSpectrumRT);

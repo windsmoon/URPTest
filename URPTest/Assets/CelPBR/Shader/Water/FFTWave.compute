@@ -27,7 +27,7 @@ float BubbleThreshold;
 RWTexture2D<float4> GaussianRandomRT; // gaussian random rt
 RWTexture2D<float4> HeightFrequencySpectrumRT;
 RWTexture2D<float4> DisplaceXFrequencySpectrumRT;
-RWTexture2D<float4> DisplaceZFrequencyuSpectrumRT;
+RWTexture2D<float4> DisplaceZFrequencySpectrumRT;
 RWTexture2D<float4> DisplaceRT;
 RWTexture2D<float4> InputRT;
 RWTexture2D<float4> OutputRT;
@@ -126,7 +126,7 @@ float Phillips(float2 k)
     float damping = 0.001f;
     float L2 = l2 * damping * damping;
 
-    //phillips谱
+    //phillips spectrum
     return  A * exp(-1.0f / (kLength2 * l2)) / kLength4 * exp(-kLength2 * L2);
 }
 
@@ -177,7 +177,7 @@ void ComputeDisplaceFrequencySpectrum(uint3 id: SV_DispatchThreadID)
     float2 kzHTilde = ComplexMultiply(float2(0, -k.y), HTilde);
 
     DisplaceXFrequencySpectrumRT[id.xy] = float4(KxHTilde, 0, 0);
-    DisplaceZFrequencyuSpectrumRT[id.xy] = float4(kzHTilde, 0, 0);
+    DisplaceZFrequencySpectrumRT[id.xy] = float4(kzHTilde, 0, 0);
 }
 
 // horizontal FFT, only for 0 to m-1 stage
@@ -257,13 +257,13 @@ void FFTVerticalEnd(uint3 id: SV_DispatchThreadID)
 [numthreads(8, 8, 1)]
 void ComputeDisplace(uint3 id: SV_DispatchThreadID)
 {
-    float y = length(HeightFrequencySpectrumRT[id.xy].xy) / (N * N) * HeightScale;//高度
-    float x = length(DisplaceXFrequencySpectrumRT[id.xy].xy) / (N * N) * Lambda;//x轴偏移
-    float z = length(DisplaceZFrequencyuSpectrumRT[id.xy].xy) / (N * N) * Lambda;//z轴偏移
+    float y = length(HeightFrequencySpectrumRT[id.xy].xy) / (N * N) * HeightScale;
+    float x = length(DisplaceXFrequencySpectrumRT[id.xy].xy) / (N * N) * Lambda;
+    float z = length(DisplaceZFrequencySpectrumRT[id.xy].xy) / (N * N) * Lambda;
     
     HeightFrequencySpectrumRT[id.xy] = float4(y, y, y, 0);
     DisplaceXFrequencySpectrumRT[id.xy] = float4(x, x, x, 0);
-    DisplaceZFrequencyuSpectrumRT[id.xy] = float4(z, z, z, 0);
+    DisplaceZFrequencySpectrumRT[id.xy] = float4(z, z, z, 0);
     DisplaceRT[id.xy] = float4(x, y, z, 0);
 }
 
