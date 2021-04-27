@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace CelPBR.Runtime
 {
@@ -28,12 +29,14 @@ namespace CelPBR.Runtime
         private float bubbleThreshold = 1;
         [SerializeField]
         private float windsScale = 2;
+        private Vector4 WindAndSeed = new Vector4(0.1f, 0.2f, 0, 0);// xy is wind direcction, zw is random seed
         [SerializeField]
         private ComputeShader computeShader;
         [SerializeField]
         private Material fftWaveMaterial;
         [SerializeField, Range(0, 12)]
         private int controlStage = 12;
+        private bool isControlHorizontal = true;  //是否控制横向FFT，否则控制纵向FFT
         
         private int fftTextureSize;
         private float time = 0;
@@ -52,7 +55,48 @@ namespace CelPBR.Runtime
         private int kernelFFTVertical;
         private int kernelFFTVerticalEnd;
         private int kernelComputeDisplace;
-        private int kernelComputeNormalBubble;
+        private int kernelComputeNormalAndBubble;
+        
+        // int N; // fft texture size
+        // float WaterSize;
+        // float A; //phillips spectrum parameter, influence the wave height
+        // float4 WindAndSeed; // xy is wind, zw is two random seed
+        // float Time;
+        // int Ns;	//Ns = pow(2,m-1); m is stage number
+        // float Lambda; // influence offset
+        // float HeightScale;
+        // float BubbleScale;
+        // float BubbleThreshold;
+        //
+        // RWTexture2D<float4> GaussianRandomRT; // gaussian random rt
+        // RWTexture2D<float4> HeightFrequencySpectrumRT;
+        // RWTexture2D<float4> DisplaceXSpectrumRT;
+        // RWTexture2D<float4> DisplaceZSpectrumRT;
+        // RWTexture2D<float4> DisplaceRT;
+        // RWTexture2D<float4> InputRT;
+        // RWTexture2D<float4> OutputRT;
+        // RWTexture2D<float4> NormalRT;
+        // RWTexture2D<float4> BubbleRT;
+        private int nID = Shader.PropertyToID("N");
+        private int waterSizeID = Shader.PropertyToID("WaterSize");
+        private int aID = Shader.PropertyToID("A");
+        private int windAndSeedID = Shader.PropertyToID("WindAndSeed");
+        private int timeID = Shader.PropertyToID("Time");
+        private int nsID = Shader.PropertyToID("Ns");
+        private int lambdaID = Shader.PropertyToID("Lambda");
+        private int heightScaleID = Shader.PropertyToID("HeightScale");
+        private int bubbleScaleID = Shader.PropertyToID("BubbleScale");
+        private int bubbleThresholdID = Shader.PropertyToID("BubbleThreshold");
+
+        private int gaussianRandomRTID = Shader.PropertyToID("GaussianRandomRT");
+        private int heightFrequencySpectrumRTID = Shader.PropertyToID("HeightFrequencySpectrumRT");
+        private int displaceXFrequencySpectrumRTID = Shader.PropertyToID("DisplaceXFrequencySpectrumRT");
+        private int displaceZFrequencySpectrumRTID = Shader.PropertyToID("DisplaceZFrequencySpectrumRT");
+        private int displaceRTID = Shader.PropertyToID("DisplaceRT");
+        private int inputRTID = Shader.PropertyToID("InputRT");
+        private int outputRTID = Shader.PropertyToID("OutputRT");
+        private int normalRTID = Shader.PropertyToID("NormalRT");
+        private int bubbleRTID = Shader.PropertyToID("BubbleRT");
         
         private RenderTexture gaussianRandomRT;  
         private RenderTexture heightFrequencySpectrumRT;
@@ -164,13 +208,117 @@ namespace CelPBR.Runtime
             kernelFFTVertical = computeShader.FindKernel("FFTVertical");
             kernelFFTVerticalEnd = computeShader.FindKernel("FFTVerticalEnd");
             kernelComputeDisplace = computeShader.FindKernel("ComputeDisplace");
-            kernelComputeNormalBubble = computeShader.FindKernel("ComputeNormalBubble");
+            kernelComputeNormalAndBubble = computeShader.FindKernel("ComputeNormalBubble");
             
-            computeShader.SetInt("N", fftTextureSize);
-            computeShader.SetFloat("WaterSize", meshSize);
+            computeShader.SetInt(nID, fftTextureSize);
+            computeShader.SetFloat(waterSizeID, meshSize);
             
-            computeShader.SetTexture(kernelComputeGaussianRandom, "GaussianRandomRT", gaussianRandomRT);
+            computeShader.SetTexture(kernelComputeGaussianRandom, gaussianRandomRTID, gaussianRandomRT);
             computeShader.Dispatch(kernelComputeGaussianRandom, fftTextureSize / 8, fftTextureSize / 8, 1);
+        }
+
+        private void ComputeWaterData()
+        {
+            computeShader.SetFloat(aID, phillipsParameter);
+            WindAndSeed.z = Random.Range(1, 10f);
+            WindAndSeed.w = Random.Range(1, 10f);
+            Vector2 wind = new Vector2(WindAndSeed.x, WindAndSeed.y);
+            wind.Normalize();
+            wind *= windsScale;
+            computeShader.SetVector(windAndSeedID, new Vector4(wind.x, wind.y, WindAndSeed.z, WindAndSeed.w));
+            computeShader.SetFloat(timeID, time);
+            computeShader.SetFloat(lambdaID, lambda);
+            computeShader.SetFloat(heightScaleID, heightScale);
+            computeShader.SetFloat(bubbleScaleID, bubbleScale);
+            computeShader.SetFloat(bubbleThresholdID,bubbleThreshold);
+    
+            // generate height frequency spectrum
+            computeShader.SetTexture(kernelComputeHeightFrequencySpectrum, gaussianRandomRTID, gaussianRandomRT);
+            computeShader.SetTexture(kernelComputeHeightFrequencySpectrum, heightFrequencySpectrumRTID, heightFrequencySpectrumRT);
+            computeShader.Dispatch(kernelComputeHeightFrequencySpectrum, fftTextureSize / 8, fftTextureSize / 8, 1);
+    
+            // generate displace spectrum
+            computeShader.SetTexture(kernelComputeDisplaceFrequencySpectrum, heightFrequencySpectrumRTID, heightFrequencySpectrumRT);
+            computeShader.SetTexture(kernelComputeDisplaceFrequencySpectrum, displaceXFrequencySpectrumRTID, displaceXFrequencySpectrumRT);
+            computeShader.SetTexture(kernelComputeDisplaceFrequencySpectrum, displaceZFrequencySpectrumRTID, displaceZFrequencySpectrumRT);
+            computeShader.Dispatch(kernelComputeDisplaceFrequencySpectrum, fftTextureSize / 8, fftTextureSize / 8, 1);
+    
+    
+            if (controlStage == 0)
+            {
+                SetMaterialTex();
+                return;
+            }
+    
+            // horizontal fft
+            for (int m = 1; m <= fftPower; m++)
+            {
+                int ns = (int)Mathf.Pow(2, m - 1);
+                computeShader.SetInt(nsID, ns);
+                
+                // todo
+                // final stage is special
+                if (m != fftPower)
+                {
+                    ComputeFFT(kernelFFTHorizontal, ref heightFrequencySpectrumRT);
+                    ComputeFFT(kernelFFTHorizontal, ref displaceXFrequencySpectrumRT);
+                    ComputeFFT(kernelFFTHorizontal, ref displaceZFrequencySpectrumRT);
+                }
+                else
+                {
+                    ComputeFFT(kernelFFTHorizontalEnd, ref heightFrequencySpectrumRT);
+                    ComputeFFT(kernelFFTHorizontalEnd, ref displaceXFrequencySpectrumRT);
+                    ComputeFFT(kernelFFTHorizontalEnd, ref displaceZFrequencySpectrumRT);
+                }
+                
+                if (isControlHorizontal && controlStage == m)
+                {
+                    SetMaterialTex();
+                    return;
+                }
+            }
+            
+            // vertical fft
+            for (int m = 1; m <= fftPower; m++)
+            {
+                int ns = (int)Mathf.Pow(2, m - 1);
+                computeShader.SetInt(nsID, ns);
+                
+                // todo
+                // final stage is special
+                if (m != fftPower)
+                {
+                    ComputeFFT(kernelFFTVertical, ref heightFrequencySpectrumRT);
+                    ComputeFFT(kernelFFTVertical, ref displaceXFrequencySpectrumRT);
+                    ComputeFFT(kernelFFTVertical, ref displaceZFrequencySpectrumRT);
+                }
+                else
+                {
+                    ComputeFFT(kernelFFTVerticalEnd, ref heightFrequencySpectrumRT);
+                    ComputeFFT(kernelFFTVerticalEnd, ref displaceXFrequencySpectrumRT);
+                    ComputeFFT(kernelFFTVerticalEnd, ref displaceZFrequencySpectrumRT);
+                }
+                if (!isControlHorizontal && controlStage == m)
+                {
+                    SetMaterialTex();
+                    return;
+                }
+            }
+    
+            // compute displace texture
+            computeShader.SetTexture(kernelComputeDisplace, heightFrequencySpectrumRTID, heightFrequencySpectrumRT);
+            computeShader.SetTexture(kernelComputeDisplace, displaceXFrequencySpectrumRTID, displaceXFrequencySpectrumRT);
+            computeShader.SetTexture(kernelComputeDisplace, displaceZFrequencySpectrumRTID, displaceZFrequencySpectrumRT);
+            computeShader.SetTexture(kernelComputeDisplace, displaceRTID, displaceRT);
+            computeShader.Dispatch(kernelComputeDisplace, fftTextureSize / 8, fftTextureSize / 8, 1);
+    
+            // compute normal and bubble
+            computeShader.SetTexture(kernelComputeNormalAndBubble, displaceRTID, displaceRT);
+            computeShader.SetTexture(kernelComputeNormalAndBubble, normalRTID, normalRT);
+            computeShader.SetTexture(kernelComputeNormalAndBubble, bubbleRTID, bubbleRT);
+            computeShader.Dispatch(kernelComputeNormalAndBubble, fftTextureSize / 8, fftTextureSize / 8, 1);
+    
+            SetMaterialTex();
         }
         
         private RenderTexture CreateRT(int size)
@@ -179,6 +327,34 @@ namespace CelPBR.Runtime
             rt.enableRandomWrite = true;
             rt.Create();
             return rt;
+        }
+        
+        private void ComputeFFT(int kernel, ref RenderTexture input)
+        {
+            computeShader.SetTexture(kernel, inputRTID, input);
+            computeShader.SetTexture(kernel, outputRTID, outputRT);
+            computeShader.Dispatch(kernel, fftTextureSize / 8, fftTextureSize / 8, 1);
+
+            //交换输入输出纹理
+            RenderTexture rt = input;
+            input = outputRT;
+            outputRT = rt;
+        }
+        
+        private void SetMaterialTex()
+        {
+            //设置海洋材质纹理
+            fftWaveMaterial.SetTexture(displaceRTID, displaceRT);
+            fftWaveMaterial.SetTexture(normalRTID, normalRT);
+            fftWaveMaterial.SetTexture(bubbleRTID, bubbleRT);
+
+            //设置显示纹理
+            // DisplaceXMat.SetTexture("_MainTex", DisplaceXSpectrumRT);
+            // DisplaceYMat.SetTexture("_MainTex", HeightSpectrumRT);
+            // DisplaceZMat.SetTexture("_MainTex", DisplaceZSpectrumRT);
+            // DisplaceMat.SetTexture("_MainTex", DisplaceRT);
+            // NormalMat.SetTexture("_MainTex", NormalRT);
+            // BubblesMat.SetTexture("_MainTex", BubblesRT);
         }
         #endregion
     }

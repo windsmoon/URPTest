@@ -8,7 +8,7 @@
 #pragma kernel FFTVertical
 #pragma kernel FFTVerticalEnd
 #pragma kernel ComputeDisplace
-#pragma kernel ComputeNormalBubble
+#pragma kernel ComputeNormalAndBubble
 
 #define PI 3.14159274f
 #define G 9.81f
@@ -21,20 +21,20 @@ float Time;
 int Ns;	//Ns = pow(2,m-1); m is stage number
 float Lambda; // influence offset
 float HeightScale;
-float BubblesScale;
-float BubblesThreshold;
-
-uint rngState; //random
+float BubbleScale;
+float BubbleThreshold;
 
 RWTexture2D<float4> GaussianRandomRT; // gaussian random rt
 RWTexture2D<float4> HeightFrequencySpectrumRT;
-RWTexture2D<float4> DisplaceXSpectrumRT;
-RWTexture2D<float4> DisplaceZSpectrumRT;
+RWTexture2D<float4> DisplaceXFrequencySpectrumRT;
+RWTexture2D<float4> DisplaceZFrequencyuSpectrumRT;
 RWTexture2D<float4> DisplaceRT;
 RWTexture2D<float4> InputRT;
 RWTexture2D<float4> OutputRT;
 RWTexture2D<float4> NormalRT;
-RWTexture2D<float4> BubblesRT;
+RWTexture2D<float4> BubbleRT;
+
+uint rngState; //random
 
 // random seed
 uint WangHash(uint seed)
@@ -176,8 +176,8 @@ void ComputeDisplaceFrequencySpectrum(uint3 id: SV_DispatchThreadID)
     float2 KxHTilde = ComplexMultiply(float2(0, -k.x), HTilde);
     float2 kzHTilde = ComplexMultiply(float2(0, -k.y), HTilde);
 
-    DisplaceXSpectrumRT[id.xy] = float4(KxHTilde, 0, 0);
-    DisplaceZSpectrumRT[id.xy] = float4(kzHTilde, 0, 0);
+    DisplaceXFrequencySpectrumRT[id.xy] = float4(KxHTilde, 0, 0);
+    DisplaceZFrequencyuSpectrumRT[id.xy] = float4(kzHTilde, 0, 0);
 }
 
 // horizontal FFT, only for 0 to m-1 stage
@@ -258,18 +258,18 @@ void FFTVerticalEnd(uint3 id: SV_DispatchThreadID)
 void ComputeDisplace(uint3 id: SV_DispatchThreadID)
 {
     float y = length(HeightFrequencySpectrumRT[id.xy].xy) / (N * N) * HeightScale;//高度
-    float x = length(DisplaceXSpectrumRT[id.xy].xy) / (N * N) * Lambda;//x轴偏移
-    float z = length(DisplaceZSpectrumRT[id.xy].xy) / (N * N) * Lambda;//z轴偏移
+    float x = length(DisplaceXFrequencySpectrumRT[id.xy].xy) / (N * N) * Lambda;//x轴偏移
+    float z = length(DisplaceZFrequencyuSpectrumRT[id.xy].xy) / (N * N) * Lambda;//z轴偏移
     
     HeightFrequencySpectrumRT[id.xy] = float4(y, y, y, 0);
-    DisplaceXSpectrumRT[id.xy] = float4(x, x, x, 0);
-    DisplaceZSpectrumRT[id.xy] = float4(z, z, z, 0);
+    DisplaceXFrequencySpectrumRT[id.xy] = float4(x, x, x, 0);
+    DisplaceZFrequencyuSpectrumRT[id.xy] = float4(z, z, z, 0);
     DisplaceRT[id.xy] = float4(x, y, z, 0);
 }
 
 // generate normal and bubbles
 [numthreads(8, 8, 1)]
-void ComputeNormalBubble(uint3 id: SV_DispatchThreadID)
+void ComputeNormalAndBubble(uint3 id: SV_DispatchThreadID)
 {
     float uintLength = WaterSize / (N - 1.0f);
     uint2 uvX1 = uint2((id.x - 1.0f + N) % N, id.y);
@@ -296,8 +296,8 @@ void ComputeNormalBubble(uint3 id: SV_DispatchThreadID)
     float3 ddz = z2D - z1D;
     float jacobian = (1.0f + ddx.x) * (1.0f + ddz.z) - ddx.z * ddz.x;
 
-    jacobian = saturate(max(0, BubblesThreshold - saturate(jacobian)) * BubblesScale);
+    jacobian = saturate(max(0, BubbleThreshold - saturate(jacobian)) * BubbleScale);
 
     NormalRT[id.xy] = float4(normal, 0);
-    BubblesRT[id.xy] = float4(jacobian, jacobian, jacobian, 0);
+    BubbleRT[id.xy] = float4(jacobian, jacobian, jacobian, 0);
 }
