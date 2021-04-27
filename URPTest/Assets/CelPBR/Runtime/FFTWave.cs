@@ -30,7 +30,8 @@ namespace CelPBR.Runtime
         private float bubbleThreshold = 1;
         [SerializeField]
         private float windsScale = 2;
-        private Vector4 WindAndSeed = new Vector4(0.1f, 0.2f, 0, 0);// xy is wind direcction, zw is random seed
+        [SerializeField]
+        private Vector4 WindAndSeed = new Vector4(1f, 1f, 0.6f, 0.8f);// xy is wind direcction, zw is random seed
         [SerializeField]
         private ComputeShader computeShader;
         [SerializeField, Range(0, 12)]
@@ -318,15 +319,15 @@ namespace CelPBR.Runtime
             computeShader.SetTexture(kernelComputeDisplace, displaceXFrequencySpectrumRTID, displaceXFrequencySpectrumRT);
             computeShader.SetTexture(kernelComputeDisplace, displaceZFrequencySpectrumRTID, displaceZFrequencySpectrumRT);
             computeShader.SetTexture(kernelComputeDisplace, displaceRTID, displaceRT);
-            // computeShader.Dispatch(kernelComputeDisplace, fftTextureSize / 8, fftTextureSize / 8, 1);
-            //
-            // // compute normal and bubble
-            // computeShader.SetTexture(kernelComputeNormalAndBubble, displaceRTID, displaceRT);
-            // computeShader.SetTexture(kernelComputeNormalAndBubble, normalRTID, normalRT);
-            // computeShader.SetTexture(kernelComputeNormalAndBubble, bubbleRTID, bubbleRT);
-            // computeShader.Dispatch(kernelComputeNormalAndBubble, fftTextureSize / 8, fftTextureSize / 8, 1);
-            //
-            // SetMaterialTex();
+            computeShader.Dispatch(kernelComputeDisplace, fftTextureSize / 8, fftTextureSize / 8, 1);
+            
+            // compute normal and bubble
+            computeShader.SetTexture(kernelComputeNormalAndBubble, displaceRTID, displaceRT);
+            computeShader.SetTexture(kernelComputeNormalAndBubble, normalRTID, normalRT);
+            computeShader.SetTexture(kernelComputeNormalAndBubble, bubbleRTID, bubbleRT);
+            computeShader.Dispatch(kernelComputeNormalAndBubble, fftTextureSize / 8, fftTextureSize / 8, 1);
+
+            SetMaterialTex();
         }
         
         private RenderTexture CreateRT(int size)

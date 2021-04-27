@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 39f2f077ca7905844b97904dab8742f5, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 24e37d9b5c3e0be4fab3e1defb323693, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -42216,7 +42216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1231409016
 RectTransform:
   m_ObjectHideFlags: 0
@@ -67037,7 +67037,7 @@ Transform:
   m_GameObject: {fileID: 1994939829}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 1, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 23
@@ -67054,15 +67054,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f83dfa9b60256c4ca59c48fbb4718a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fftPower: 10
-  meshVertexCount: 250
-  meshSize: 10
-  phillipsParameter: 10
-  lambda: -1
-  heightScale: 1
+  fftPower: 9
+  meshVertexCount: 100
+  meshSize: 512
+  phillipsParameter: 73
+  lambda: 8
+  heightScale: 28.8
   bubbleScale: 1
-  bubbleThreshold: 1
-  windsScale: 2
+  bubbleThreshold: 0.86
+  windsScale: 30
+  WindAndSeed: {x: 1, y: 1, z: 0, w: 0}
   computeShader: {fileID: 7200000, guid: 451ad250dd93b6540a30060c2adc1409, type: 3}
   controlStage: 12
   isControlHorizontal: 1
