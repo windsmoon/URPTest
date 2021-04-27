@@ -14268,7 +14268,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2.02
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -66816,9 +66816,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f83dfa9b60256c4ca59c48fbb4718a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  texture: {fileID: 2800000, guid: 8ec3073f45e462644bb8184982c90f6d, type: 3}
-  rt: {fileID: 0}
+  fftPower: 10
+  meshVertexCount: 250
+  meshLength: 10
+  phillipsParameter: 10
+  lambda: -1
+  heightScale: 1
+  bubbleScale: 1
+  bubbleThreshold: 1
+  windsScale: 2
+  timeScale: 1
   computeShader: {fileID: 7200000, guid: 451ad250dd93b6540a30060c2adc1409, type: 3}
+  fftWaveMaterial: {fileID: 0}
+  controlStage: 12
 --- !u!1 &1996958979 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8394620547584531775, guid: ee1df7d45c67d8f479a1c6539ff5b4fb, type: 3}
