@@ -24,15 +24,15 @@ float HeightScale;
 float BubbleScale;
 float BubbleThreshold;
 
-RWTexture2D<float4> GaussianRandomRT; // gaussian random rt
-RWTexture2D<float4> HeightFrequencySpectrumRT;
-RWTexture2D<float4> DisplaceXFrequencySpectrumRT;
-RWTexture2D<float4> DisplaceZFrequencySpectrumRT;
-RWTexture2D<float4> DisplaceRT;
-RWTexture2D<float4> InputRT;
-RWTexture2D<float4> OutputRT;
-RWTexture2D<float4> NormalRT;
-RWTexture2D<float4> BubbleRT;
+RWTexture2D<float4> _GaussianRandomRT; // gaussian random rt
+RWTexture2D<float4> _HeightFrequencySpectrumRT;
+RWTexture2D<float4> _DisplaceXFrequencySpectrumRT;
+RWTexture2D<float4> _DisplaceZFrequencySpectrumRT;
+RWTexture2D<float4> _DisplaceRT;
+RWTexture2D<float4> _InputRT;
+RWTexture2D<float4> _OutputRT;
+RWTexture2D<float4> _NormalRT;
+RWTexture2D<float4> _BubbleRT;
 
 uint rngState; //random
 
@@ -141,7 +141,7 @@ float2 ComplexMultiply(float2 c1, float2 c2)
 void ComputeGaussianRandom(uint3 id : SV_DispatchThreadID)
 {
     float2 gaussian = Gaussian(id.xy);
-    GaussianRandomRT[id.xy] = float4(gaussian, 0, 0);
+    _GaussianRandomRT[id.xy] = float4(gaussian, 0, 0);
 }
 
 [numthreads(8, 8, 1)]
@@ -149,7 +149,7 @@ void ComputeHeightFrequencySpectrum(uint3 id : SV_DispatchThreadID)
 {
     float2 k = float2(2.0f * PI * id.x / N - PI, 2.0f * PI * id.y / N - PI);
 
-    float2 gaussian = GaussianRandomRT[id.xy].xy;
+    float2 gaussian = _GaussianRandomRT[id.xy].xy;
 
     float2 hTilde0 = gaussian * sqrt(abs(Phillips(k) * DonelanBannerDirectionalSpreading(k)) / 2.0f);
     float2 hTilde0Conj = gaussian * sqrt(abs(Phillips(-k) * DonelanBannerDirectionalSpreading(-k)) / 2.0f);
@@ -164,7 +164,7 @@ void ComputeHeightFrequencySpectrum(uint3 id : SV_DispatchThreadID)
 
     float2 HTilde = h1 + h2;
 
-    HeightFrequencySpectrumRT[id.xy] = float4(HTilde, 0, 0);
+    _HeightFrequencySpectrumRT[id.xy] = float4(HTilde, 0, 0);
 }
 
 [numthreads(8, 8, 1)]
@@ -172,13 +172,13 @@ void ComputeDisplaceFrequencySpectrum(uint3 id: SV_DispatchThreadID)
 {
     float2 k = float2(2 * PI * id.x / N - PI, 2 * PI * id.y / N - PI);
     k /= max(0.001f, length(k));
-    float2 HTilde = HeightFrequencySpectrumRT[id.xy].xy;
+    float2 HTilde = _HeightFrequencySpectrumRT[id.xy].xy;
 
     float2 KxHTilde = ComplexMultiply(float2(0, -k.x), HTilde);
     float2 kzHTilde = ComplexMultiply(float2(0, -k.y), HTilde);
 
-    DisplaceXFrequencySpectrumRT[id.xy] = float4(KxHTilde, 0, 0);
-    DisplaceZFrequencySpectrumRT[id.xy] = float4(kzHTilde, 0, 0);
+    _DisplaceXFrequencySpectrumRT[id.xy] = float4(KxHTilde, 0, 0);
+    _DisplaceZFrequencySpectrumRT[id.xy] = float4(kzHTilde, 0, 0);
 }
 
 // horizontal FFT, only for 0 to m-1 stage
@@ -190,11 +190,11 @@ void FFTHorizontal(uint3 id: SV_DispatchThreadID)
     float angle = 2.0f * PI * (id.x / (Ns * 2.0f));
     float2 w = float2(cos(angle), sin(angle));
 
-    float2 x0 = InputRT[idxs].xy;
-    float2 x1 = InputRT[int2(idxs.x + N * 0.5f, idxs.y)].xy;
+    float2 x0 = _InputRT[idxs].xy;
+    float2 x1 = _InputRT[int2(idxs.x + N * 0.5f, idxs.y)].xy;
 
     float2 output = x0 + float2(w.x * x1.x - w.y * x1.y, w.x * x1.y + w.y * x1.x);
-    OutputRT[id.xy] = float4(output, 0, 0);
+    _OutputRT[id.xy] = float4(output, 0, 0);
 }
 // horizontal fft final stage
 [numthreads(8, 8, 1)]
@@ -207,15 +207,15 @@ void FFTHorizontalEnd(uint3 id: SV_DispatchThreadID)
 
     w *= -1;
 
-    float2 x0 = InputRT[idxs].xy;
-    float2 x1 = InputRT[int2(idxs.x + N * 0.5f, idxs.y)].xy;
+    float2 x0 = _InputRT[idxs].xy;
+    float2 x1 = _InputRT[int2(idxs.x + N * 0.5f, idxs.y)].xy;
 
     float2 output = x0 + float2(w.x * x1.x - w.y * x1.y, w.x * x1.y + w.y * x1.x);
 
     int x = id.x - N * 0.5f;
     output *= ((x + 1) % 2.0f) * 1 + (x % 2.0f) * (-1);
 
-    OutputRT[id.xy] = float4(output, 0, 0);
+    _OutputRT[id.xy] = float4(output, 0, 0);
 }
 
 // vertical FFT, only for 0 to m-1 stage
@@ -227,11 +227,11 @@ void FFTVertical(uint3 id: SV_DispatchThreadID)
     float angle = 2.0f * PI * (id.y / (Ns * 2.0f));
     float2 w = float2(cos(angle), sin(angle));
 
-    float2 x0 = InputRT[idxs].xy;
-    float2 x1 = InputRT[int2(idxs.x, idxs.y + N * 0.5f)].xy;
+    float2 x0 = _InputRT[idxs].xy;
+    float2 x1 = _InputRT[int2(idxs.x, idxs.y + N * 0.5f)].xy;
 
     float2 output = x0 + float2(w.x * x1.x - w.y * x1.y, w.x * x1.y + w.y * x1.x);
-    OutputRT[id.xy] = float4(output, 0, 0);
+    _OutputRT[id.xy] = float4(output, 0, 0);
 }
 
 // vertical fft final stage
@@ -245,27 +245,27 @@ void FFTVerticalEnd(uint3 id: SV_DispatchThreadID)
 
     w *= -1;
 
-    float2 x0 = InputRT[idxs].xy;
-    float2 x1 = InputRT[int2(idxs.x, idxs.y + N * 0.5f)].xy;
+    float2 x0 = _InputRT[idxs].xy;
+    float2 x1 = _InputRT[int2(idxs.x, idxs.y + N * 0.5f)].xy;
 
     float2 output = x0 + float2(w.x * x1.x - w.y * x1.y, w.x * x1.y + w.y * x1.x);
     int x = id.y - N * 0.5f;
     output *= ((x + 1) % 2.0f) * 1 + (x % 2.0f) * (-1);
-    OutputRT[id.xy] = float4(output, 0, 0);
+    _OutputRT[id.xy] = float4(output, 0, 0);
 }
 
 //生成偏移纹理
 [numthreads(8, 8, 1)]
 void ComputeDisplace(uint3 id: SV_DispatchThreadID)
 {
-    float y = length(HeightFrequencySpectrumRT[id.xy].xy) / (N * N) * HeightScale;
-    float x = length(DisplaceXFrequencySpectrumRT[id.xy].xy) / (N * N) * Lambda;
-    float z = length(DisplaceZFrequencySpectrumRT[id.xy].xy) / (N * N) * Lambda;
+    float y = length(_HeightFrequencySpectrumRT[id.xy].xy) / (N * N) * HeightScale;
+    float x = length(_DisplaceXFrequencySpectrumRT[id.xy].xy) / (N * N) * Lambda;
+    float z = length(_DisplaceZFrequencySpectrumRT[id.xy].xy) / (N * N) * Lambda;
     
-    HeightFrequencySpectrumRT[id.xy] = float4(y, y, y, 0);
-    DisplaceXFrequencySpectrumRT[id.xy] = float4(x, x, x, 0);
-    DisplaceZFrequencySpectrumRT[id.xy] = float4(z, z, z, 0);
-    DisplaceRT[id.xy] = float4(x, y, z, 0);
+    _HeightFrequencySpectrumRT[id.xy] = float4(y, y, y, 0);
+    _DisplaceXFrequencySpectrumRT[id.xy] = float4(x, x, x, 0);
+    _DisplaceZFrequencySpectrumRT[id.xy] = float4(z, z, z, 0);
+    _DisplaceRT[id.xy] = float4(x, y, z, 0);
 }
 
 // generate normal and bubbles
@@ -278,10 +278,10 @@ void ComputeNormalAndBubble(uint3 id: SV_DispatchThreadID)
     uint2 uvZ1 = uint2(id.x, (id.y - 1.0f + N) % N);
     uint2 uvZ2 = uint2(id.x, (id.y + 1.0f + N) % N);
 
-    float3 x1D = DisplaceRT[uvX1].xyz;
-    float3 x2D = DisplaceRT[uvX2].xyz;
-    float3 z1D = DisplaceRT[uvZ1].xyz;
-    float3 z2D = DisplaceRT[uvZ2].xyz;
+    float3 x1D = _DisplaceRT[uvX1].xyz;
+    float3 x2D = _DisplaceRT[uvX2].xyz;
+    float3 z1D = _DisplaceRT[uvZ1].xyz;
+    float3 z2D = _DisplaceRT[uvZ2].xyz;
 
     float3 x1 = float3(x1D.x - uintLength, x1D.yz);
     float3 x2 = float3(x2D.x + uintLength, x2D.yz);
@@ -299,6 +299,6 @@ void ComputeNormalAndBubble(uint3 id: SV_DispatchThreadID)
 
     jacobian = saturate(max(0, BubbleThreshold - saturate(jacobian)) * BubbleScale);
 
-    NormalRT[id.xy] = float4(normal, 0);
-    BubbleRT[id.xy] = float4(jacobian, jacobian, jacobian, 0);
+    _NormalRT[id.xy] = float4(normal, 0);
+    _BubbleRT[id.xy] = float4(jacobian, jacobian, jacobian, 0);
 }

@@ -17,9 +17,6 @@ SAMPLER(sampler_BaseMap);
 SAMPLER(sampler_SSSLut);
 SAMPLER(sampler_KKHighlightOffsetMap);
 
-TEXTURE2D(DisplaceRT);
-SAMPLER(samplerDisplaceRT);
-
 TEXTURE2D(_RampMap);
 // TEXTURE2D(_CelSpecularRamp);
 SAMPLER(sampler_RampMap);
@@ -293,10 +290,5 @@ float GetRimSmoothness()
 float4 GetRimColor()
 {
     return INPUT_PROP(_RimColor);
-}
-
-float3 GetDisplace(float2 uv)
-{
-    return SAMPLE_TEXTURE2D_LOD(DisplaceRT, samplerDisplaceRT, uv, 0);
 }
 #endif

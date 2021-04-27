@@ -92,15 +92,15 @@ namespace CelPBR.Runtime
         private int bubbleScaleID = Shader.PropertyToID("BubbleScale");
         private int bubbleThresholdID = Shader.PropertyToID("BubbleThreshold");
 
-        private int gaussianRandomRTID = Shader.PropertyToID("GaussianRandomRT");
-        private int heightFrequencySpectrumRTID = Shader.PropertyToID("HeightFrequencySpectrumRT");
-        private int displaceXFrequencySpectrumRTID = Shader.PropertyToID("DisplaceXFrequencySpectrumRT");
-        private int displaceZFrequencySpectrumRTID = Shader.PropertyToID("DisplaceZFrequencySpectrumRT");
-        private int displaceRTID = Shader.PropertyToID("DisplaceRT");
-        private int inputRTID = Shader.PropertyToID("InputRT");
-        private int outputRTID = Shader.PropertyToID("OutputRT");
-        private int normalRTID = Shader.PropertyToID("NormalRT");
-        private int bubbleRTID = Shader.PropertyToID("BubbleRT");
+        private int gaussianRandomRTID = Shader.PropertyToID("_GaussianRandomRT");
+        private int heightFrequencySpectrumRTID = Shader.PropertyToID("_HeightFrequencySpectrumRT");
+        private int displaceXFrequencySpectrumRTID = Shader.PropertyToID("_DisplaceXFrequencySpectrumRT");
+        private int displaceZFrequencySpectrumRTID = Shader.PropertyToID("_DisplaceZFrequencySpectrumRT");
+        private int displaceRTID = Shader.PropertyToID("_DisplaceRT");
+        private int inputRTID = Shader.PropertyToID("_InputRT");
+        private int outputRTID = Shader.PropertyToID("_OutputRT");
+        private int normalRTID = Shader.PropertyToID("_NormalRT");
+        private int bubbleRTID = Shader.PropertyToID("_BubbleRT");
         
         private RenderTexture gaussianRandomRT;  
         private RenderTexture heightFrequencySpectrumRT;
