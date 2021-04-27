@@ -35,7 +35,12 @@ Varyings FFTWaterVert(Attributes input)
 
 real4 FFTWaterFrag(Varyings input) : SV_TARGET
 {
-    return 1;
+    real3 color;
+    real3 normalWS = GetNormalWS(input.uv);
+    real bubble = GetBubble(input.uv);
+    
+    Light light = GetMainLight(TransformWorldToShadowCoord(input.positionWS));
+    return real4(color, GetDisplacement(input.uv).r);
 }
 
 
