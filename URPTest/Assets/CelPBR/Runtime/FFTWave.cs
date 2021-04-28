@@ -207,7 +207,7 @@ namespace CelPBR.Runtime
             displaceRT = CreateRT(fftTextureSize);
             outputRT = CreateRT(fftTextureSize);
             normalRT = CreateRT(fftTextureSize);
-            bubbleRT = CreateRT(fftTextureSize);
+            bubbleRT = CreateRT(fftTextureSize, RenderTextureFormat.ARGB32);
             
             kernelComputeGaussianRandom = computeShader.FindKernel("ComputeGaussianRandom");
             kernelComputeHeightFrequencySpectrum = computeShader.FindKernel("ComputeHeightFrequencySpectrum");
@@ -332,7 +332,7 @@ namespace CelPBR.Runtime
             SetMaterialTex();
         }
         
-        private RenderTexture CreateRT(int size)
+        private RenderTexture CreateRT(int size, RenderTextureFormat renderTextureFormat = RenderTextureFormat.ARGBFloat)
         {
             RenderTexture rt = new RenderTexture(size, size, 0, RenderTextureFormat.ARGBFloat);
             rt.enableRandomWrite = true;

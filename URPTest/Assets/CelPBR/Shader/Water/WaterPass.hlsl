@@ -59,7 +59,7 @@ real4 FFTWaterFrag(Varyings input) : SV_TARGET
     real3 specular = GetSpecular() * pow(nDotH, GetGlossy());
     
     color = lerp(light.color * nDotL * (specular + diffuse), gi, fresnel);
-    // color = normalWS.yyy;
+    // color = normalWS.xyz * 0.5 + 0.5;
     return real4(color, 1);
 }
 

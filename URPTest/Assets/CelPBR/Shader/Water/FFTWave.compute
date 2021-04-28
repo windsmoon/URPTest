@@ -287,9 +287,14 @@ void ComputeNormalAndBubble(uint3 id: SV_DispatchThreadID)
     float3 x2 = float3(x2D.x + uintLength, x2D.yz);
     float3 z1 = float3(z1D.xy, z1D.z - uintLength);
     float3 z2 = float3(z1D.xy, z1D.z + uintLength);
-
+    
     float3 tangentX = x2 - x1;
     float3 tangentZ = z2 - z1;
+
+
+    // float3 tangentX = float3(1, x2D.y - x1D.y, 0);
+    // float3 tangentZ = float3(0, z2D.y - z1D.y, 1);
+    
     float3 normal = normalize(cross(tangentZ, tangentX));
     // normal = normal * 0.5 + 0.5;
 
