@@ -28,8 +28,8 @@ Varyings FFTWaterVert(Attributes input)
     output.positionWS = TransformObjectToWorld(input.positionOS);
     output.positionCS = TransformWorldToHClip(output.positionWS);
 
-    // output.uv = Tilling(input.uv);
-    output.uv = input.uv;
+    output.uv = Tilling(input.uv);
+    // output.uv = input.uv;
 
     // OUTPUT_LIGHTMAP_UV(input.lightmapUV, unity_LightmapST, output.lightmapUV)
     return output;

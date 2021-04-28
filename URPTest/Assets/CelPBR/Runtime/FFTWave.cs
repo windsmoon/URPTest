@@ -35,6 +35,11 @@ namespace CelPBR.Runtime
         [SerializeField]
         private float timeScale = 1;
         [SerializeField]
+        private bool enableSizeScale = true;
+        [SerializeField]
+        private float sizeScale = 1;
+
+        [SerializeField]
         private ComputeShader computeShader;
         [SerializeField, Range(0, 12)]
         private int controlStage = 12;
@@ -155,6 +160,23 @@ namespace CelPBR.Runtime
             time += Time.deltaTime * timeScale;
             ComputeWaterData();
         }
+
+        private void OnValidate()
+        {
+            if (enableSizeScale == false)
+            {
+                computeShader.SetFloat(waterSizeID, meshSize);
+            }
+
+            else
+            {
+                computeShader.SetFloat(waterSizeID, meshSize * sizeScale);
+            }
+            
+            transform.localScale = new Vector3(sizeScale, 1, sizeScale);
+            fftWaveMaterial.SetVector("_Tilling", new Vector4(sizeScale, sizeScale, sizeScale, sizeScale));
+        }
+
         #endregion
 
         #region methods
