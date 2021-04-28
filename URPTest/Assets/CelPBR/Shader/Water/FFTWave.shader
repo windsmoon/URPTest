@@ -4,8 +4,11 @@
     {
         _ShallowWaterColor ("Shallow Water Color", Color) = (1, 1, 1, 1)
         _DeepWaterColor ("Deep Water Color", Color) = (1, 1, 1, 1)
-        _BubblesColor ("Bubble Color", Color) = (1, 1, 1, 1)
+        _BubbleColor ("Bubble Color", Color) = (1, 1, 1, 1)
         _Specular ("Specular", Color) = (1, 1, 1, 1)
+        _FresnelScale ("Fresnel Scale", Range(0, 1)) = 0.5 
+        _Glossy ("Glossy", Float) = 128
+        _Tilling ("Tilling", Vector) = (1, 1, 1, 1)
     }
     
     SubShader

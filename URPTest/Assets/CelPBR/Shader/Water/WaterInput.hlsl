@@ -14,6 +14,10 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(real4, _DeepWaterColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _BubbleColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _Specular)
+    UNITY_DEFINE_INSTANCED_PROP(real, _FresnelScale)
+    UNITY_DEFINE_INSTANCED_PROP(real, _Glossy)
+    UNITY_DEFINE_INSTANCED_PROP(real4, _Tilling)
+
 UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 #define INPUT_PROP(name) UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, name)
@@ -28,7 +32,12 @@ real3 GetDisplacement(float2 uv)
 real3 GetNormalWS(float2 uv)
 {
     real3 normalOS = SAMPLE_TEXTURE2D(_NormalRT, sampler_NormalRT, uv).xyz;
-    return TransformObjectToWorldNormal(normalOS);
+    return TransformObjectToWorldNormal(normalOS, false);
+}
+
+real3 GetBubbleColor()
+{
+    return INPUT_PROP(_BubbleColor);
 }
 
 real GetBubbleStrength(float2 uv)
@@ -44,6 +53,21 @@ real3 GetWaterColor(float deep)
 real3 GetSpecular()
 {
     return INPUT_PROP(_Specular).rgb;
+}
+
+real GetFresnelScale()
+{
+    return INPUT_PROP(_FresnelScale);
+}
+
+real GetGlossy()
+{
+    return INPUT_PROP(_Glossy);
+}
+
+real2 Tilling(float2 uv)
+{
+    return uv * INPUT_PROP(_Tilling).xy;
 }
 
 #endif

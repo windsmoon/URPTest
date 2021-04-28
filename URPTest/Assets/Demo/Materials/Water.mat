@@ -88,8 +88,10 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _FresnelScale: 0.146
     - _GlossMapScale: 0
     - _Glossiness: 0
+    - _Glossy: 128
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -105,13 +107,16 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BubbleColor: {r: 1, g: 1, b: 1, a: 1}
     - _BubblesColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DeepWaterColor: {r: 0.1715023, g: 0.4423287, b: 0.7735849, a: 1}
+    - _DeepWaterColor: {r: 0.094562136, g: 0.10430605, b: 0.23584908, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShallowWaterColor: {r: 0.3247597, g: 0.70246035, b: 0.7735849, a: 1}
+    - _ShallowWaterColor: {r: 0.4219918, g: 0.7556506, b: 0.8207547, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Specular: {r: 0.24528301, g: 0.11222855, b: 0.11222855, a: 1}
+    - _Specular: {r: 0.9716981, g: 0.9716981, b: 0.9716981, a: 1}
+    - _SpecularLength: {r: 1, g: 1, b: 1, a: 1}
+    - _Tilling: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &5543973978826295861
 MonoBehaviour:

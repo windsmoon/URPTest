@@ -28,7 +28,9 @@ Varyings FFTWaterVert(Attributes input)
     output.positionWS = TransformObjectToWorld(input.positionOS);
     output.positionCS = TransformWorldToHClip(output.positionWS);
 
+    // output.uv = Tilling(input.uv);
     output.uv = input.uv;
+
     // OUTPUT_LIGHTMAP_UV(input.lightmapUV, unity_LightmapST, output.lightmapUV)
     return output;
 }
@@ -36,29 +38,28 @@ Varyings FFTWaterVert(Attributes input)
 real4 FFTWaterFrag(Varyings input) : SV_TARGET
 {
     real3 color;
+    
     Light light = GetMainLight(TransformWorldToShadowCoord(input.positionWS));
-    real3 normalWS = GetNormalWS(input.uv);
-    real bubble = GetBubbleStrength(input.uv);
 
+    real3 normalWS = GetNormalWS(input.uv);
     real3 viewWS = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
     real nDotL = saturate(dot(normalWS, light.direction));
     real3 halfDirectionWS = SafeNormalize(viewWS + light.direction);
     real nDotH = saturate(dot(normalWS, halfDirectionWS));
-    real lDotH = saturate(dot(light.direction, halfDirectionWS));
 
-    real reflectance = 0.02;
-    real kd = 1 - reflectance;
-    real diffuse = kd * GetWaterColor(saturate(dot(viewWS, normalWS)));
-    real ks = lerp(reflectance, GetWaterColor(saturate(dot(viewWS, normalWS))), 0.6);
-
-    real d = nDotH * nDotH * (HALF_MIN - 1) + 1.00001h;
-    real lDotH2 = lDotH * lDotH;
-    real specularTerm = HALF_MIN / ((d * d) * max(0.1h, lDotH2) * (HALF_MIN_SQRT * 4 + 2));
-    real3 specular = ks * specularTerm;
-
+    real fresnelScale = GetFresnelScale();
     real3 gi = GlossyEnvironmentReflection(reflect(-viewWS, normalWS), 0, 1);
+    real fresnel = saturate(fresnelScale + (1 - fresnelScale) * pow(1 - dot(normalWS, viewWS), 5));
+
+    real3 waterColor = GetWaterColor(saturate(dot(viewWS, normalWS)));
+    real3 bubbleColor = GetBubbleColor();
+    real bubbleStrength = GetBubbleStrength(input.uv);
+    real3 diffuse = lerp(waterColor, bubbleColor, bubbleStrength);
+
+    real3 specular = GetSpecular() * pow(nDotH, GetGlossy());
     
-    color = light.color * nDotL * (specular + diffuse) + gi;
+    color = lerp(light.color * nDotL * (specular + diffuse), gi, fresnel);
+    // color = normalWS.yyy;
     return real4(color, 1);
 }
 

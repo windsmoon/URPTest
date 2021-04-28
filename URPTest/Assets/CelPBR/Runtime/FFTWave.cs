@@ -33,6 +33,8 @@ namespace CelPBR.Runtime
         [SerializeField]
         private Vector4 WindAndSeed = new Vector4(1f, 1f, 0.6f, 0.8f);// xy is wind direcction, zw is random seed
         [SerializeField]
+        private float timeScale = 1;
+        [SerializeField]
         private ComputeShader computeShader;
         [SerializeField, Range(0, 12)]
         private int controlStage = 12;
@@ -150,7 +152,7 @@ namespace CelPBR.Runtime
 
         private void Update()
         {
-            time += Time.deltaTime;
+            time += Time.deltaTime * timeScale;
             ComputeWaterData();
         }
         #endregion
@@ -334,6 +336,7 @@ namespace CelPBR.Runtime
         {
             RenderTexture rt = new RenderTexture(size, size, 0, RenderTextureFormat.ARGBFloat);
             rt.enableRandomWrite = true;
+            rt.wrapMode = TextureWrapMode.Repeat;
             rt.Create();
             return rt;
         }
