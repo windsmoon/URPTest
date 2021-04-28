@@ -40,6 +40,8 @@ namespace CelPBR.Runtime
         private bool isControlHorizontal = true;  //是否控制横向FFT，否则控制纵向FFT
         [SerializeField]
         private RawImage debugRawImage;
+        [SerializeField]
+        private Material fftWaveMaterial;
         
         private int fftTextureSize;
         private float time = 0;
@@ -49,7 +51,6 @@ namespace CelPBR.Runtime
         private Mesh mesh;
         private MeshFilter meshFilter;
         private MeshRenderer meshRenderer;
-        private Material fftWaveMaterial;
 
         private int kernelComputeGaussianRandom;
         private int kernelComputeHeightFrequencySpectrum;
@@ -130,7 +131,6 @@ namespace CelPBR.Runtime
             }
 
             meshFilter.mesh = CreateMesh();
-            fftWaveMaterial = new Material(Shader.Find("CelPBR/Water/FFTWave"));
             meshRenderer.sharedMaterial = fftWaveMaterial;
             
             InitCSData();

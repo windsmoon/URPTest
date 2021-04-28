@@ -36,11 +36,30 @@ Varyings FFTWaterVert(Attributes input)
 real4 FFTWaterFrag(Varyings input) : SV_TARGET
 {
     real3 color;
-    real3 normalWS = GetNormalWS(input.uv);
-    real bubble = GetBubble(input.uv);
-    
     Light light = GetMainLight(TransformWorldToShadowCoord(input.positionWS));
-    return real4(color, GetDisplacement(input.uv).r);
+    real3 normalWS = GetNormalWS(input.uv);
+    real bubble = GetBubbleStrength(input.uv);
+
+    real3 viewWS = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
+    real nDotL = saturate(dot(normalWS, light.direction));
+    real3 halfDirectionWS = SafeNormalize(viewWS + light.direction);
+    real nDotH = saturate(dot(normalWS, halfDirectionWS));
+    real lDotH = saturate(dot(light.direction, halfDirectionWS));
+
+    real reflectance = 0.02;
+    real kd = 1 - reflectance;
+    real diffuse = kd * GetWaterColor(saturate(dot(viewWS, normalWS)));
+    real ks = lerp(reflectance, GetWaterColor(saturate(dot(viewWS, normalWS))), 0.6);
+
+    real d = nDotH * nDotH * (HALF_MIN - 1) + 1.00001h;
+    real lDotH2 = lDotH * lDotH;
+    real specularTerm = HALF_MIN / ((d * d) * max(0.1h, lDotH2) * (HALF_MIN_SQRT * 4 + 2));
+    real3 specular = ks * specularTerm;
+
+    real3 gi = GlossyEnvironmentReflection(reflect(-viewWS, normalWS), 0, 1);
+    
+    color = light.color * nDotL * (specular + diffuse) + gi;
+    return real4(color, 1);
 }
 
 

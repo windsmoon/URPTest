@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 24e37d9b5c3e0be4fab3e1defb323693, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: b6f304179ee1b114db59a40bfab9b168, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.035270214, g: 0.088559054, b: 0.21929239, a: 1}
+  m_IndirectSpecularColor: {r: 0.11290033, g: 0.10164082, b: 0.111203186, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -41636,13 +41636,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216918875}
-  m_LocalRotation: {x: 0.3725052, y: -0, z: -0, w: 0.9280302}
+  m_LocalRotation: {x: 0.017365113, y: 0, z: 0, w: 0.99984926}
   m_LocalPosition: {x: 0, y: 6.69, z: -7.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 43.74, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 1.99, y: 0, z: 0}
 --- !u!114 &1216918879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66988,7 +66988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fftPower: 9
-  meshVertexCount: 100
+  meshVertexCount: 200
   meshSize: 512
   phillipsParameter: 73
   lambda: 8
@@ -67001,6 +67001,7 @@ MonoBehaviour:
   controlStage: 12
   isControlHorizontal: 1
   debugRawImage: {fileID: 1231409017}
+  fftWaveMaterial: {fileID: 2100000, guid: 30a15fc02f21f8045a3f384640738765, type: 2}
 --- !u!1 &1996958979 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8394620547584531775, guid: ee1df7d45c67d8f479a1c6539ff5b4fb, type: 3}
