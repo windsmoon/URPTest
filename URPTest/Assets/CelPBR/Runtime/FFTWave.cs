@@ -109,7 +109,9 @@ namespace CelPBR.Runtime
         private int outputRTID = Shader.PropertyToID("_OutputRT");
         private int normalRTID = Shader.PropertyToID("_NormalRT");
         private int bubbleRTID = Shader.PropertyToID("_BubbleRT");
-        
+        private int tangentRTID = Shader.PropertyToID("_TangentRT");
+        private int bitangentRTID = Shader.PropertyToID("_BitangentRT");
+
         private RenderTexture gaussianRandomRT;  
         private RenderTexture heightFrequencySpectrumRT;
         private RenderTexture displaceXFrequencySpectrumRT;
@@ -117,7 +119,9 @@ namespace CelPBR.Runtime
         private RenderTexture displaceRT;        
         private RenderTexture outputRT;          
         private RenderTexture normalRT;          
-        private RenderTexture bubbleRT;         
+        private RenderTexture bubbleRT;
+        private RenderTexture tangentRT;
+        private RenderTexture bitangentRT;
         #endregion
 
         #region unity methods
@@ -153,6 +157,8 @@ namespace CelPBR.Runtime
             outputRT.Release();
             normalRT.Release();
             bubbleRT.Release();
+            tangentRT.Release();
+            bitangentRT.Release();
         }
 
         private void Update()
@@ -230,6 +236,8 @@ namespace CelPBR.Runtime
             outputRT = CreateRT(fftTextureSize);
             normalRT = CreateRT(fftTextureSize);
             bubbleRT = CreateRT(fftTextureSize, RenderTextureFormat.ARGB32);
+            tangentRT = CreateRT(fftTextureSize);
+            bitangentRT = CreateRT(fftTextureSize);
             
             kernelComputeGaussianRandom = computeShader.FindKernel("ComputeGaussianRandom");
             kernelComputeHeightFrequencySpectrum = computeShader.FindKernel("ComputeHeightFrequencySpectrum");
@@ -349,6 +357,8 @@ namespace CelPBR.Runtime
             computeShader.SetTexture(kernelComputeNormalAndBubble, displaceRTID, displaceRT);
             computeShader.SetTexture(kernelComputeNormalAndBubble, normalRTID, normalRT);
             computeShader.SetTexture(kernelComputeNormalAndBubble, bubbleRTID, bubbleRT);
+            computeShader.SetTexture(kernelComputeNormalAndBubble, tangentRTID, tangentRT);
+            computeShader.SetTexture(kernelComputeNormalAndBubble, bitangentRTID, bitangentRT);
             computeShader.Dispatch(kernelComputeNormalAndBubble, fftTextureSize / 8, fftTextureSize / 8, 1);
 
             SetMaterialTex();

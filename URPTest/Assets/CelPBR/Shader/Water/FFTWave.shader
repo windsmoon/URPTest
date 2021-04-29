@@ -2,6 +2,7 @@
 {
     Properties
     {
+        _NormalMap("Normal Map", 2D) = "bump"{}
         _ShallowWaterColor ("Shallow Water Color", Color) = (1, 1, 1, 1)
         _DeepWaterColor ("Deep Water Color", Color) = (1, 1, 1, 1)
         _BubbleColor ("Bubble Color", Color) = (1, 1, 1, 1)

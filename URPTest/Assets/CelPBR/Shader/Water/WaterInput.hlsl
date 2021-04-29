@@ -4,12 +4,16 @@
 TEXTURE2D(_DisplaceRT);
 TEXTURE2D(_NormalRT);
 TEXTURE2D(_BubbleRT);
+TEXTURE2D(_TangentRT);
+TEXTURE2D(_BiangentRT);
+TEXTURE2D(_NormalMap);
 
 SAMPLER(sampler_DisplaceRT);
 SAMPLER(sampler_NormalRT);
-
+SAMPLER(sampler_NormalMap);
 
 UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
+    UNITY_DEFINE_INSTANCED_PROP(real4, _NormalMap_ST)
     UNITY_DEFINE_INSTANCED_PROP(real4, _ShallowWaterColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _DeepWaterColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _BubbleColor)
@@ -17,7 +21,6 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(real, _FresnelScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _Glossy)
     UNITY_DEFINE_INSTANCED_PROP(real4, _Tilling)
-
 UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 #define INPUT_PROP(name) UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, name)
@@ -27,6 +30,12 @@ UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 real3 GetDisplacement(float2 uv)
 {
     return SAMPLE_TEXTURE2D_LOD(_DisplaceRT, sampler_DisplaceRT, uv, 0).xyz;
+}
+
+
+real3 GetTBN(float2 uv)
+{
+    
 }
 
 real3 GetNormalWS(float2 uv)

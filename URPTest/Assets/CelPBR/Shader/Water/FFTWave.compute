@@ -33,6 +33,8 @@ RWTexture2D<float4> _InputRT;
 RWTexture2D<float4> _OutputRT;
 RWTexture2D<float4> _NormalRT;
 RWTexture2D<float4> _BubbleRT;
+RWTexture2D<float4> _TangentRT;
+RWTexture2D<float4> _BitangentRT;
 
 uint rngState; //random
 
@@ -286,7 +288,7 @@ void ComputeNormalAndBubble(uint3 id: SV_DispatchThreadID)
     float3 x1 = float3(x1D.x - uintLength, x1D.yz);
     float3 x2 = float3(x2D.x + uintLength, x2D.yz);
     float3 z1 = float3(z1D.xy, z1D.z - uintLength);
-    float3 z2 = float3(z1D.xy, z1D.z + uintLength);
+    float3 z2 = float3(z2D.xy, z2D.z + uintLength);
     
     float3 tangentX = x2 - x1;
     float3 tangentZ = z2 - z1;
@@ -306,5 +308,8 @@ void ComputeNormalAndBubble(uint3 id: SV_DispatchThreadID)
     jacobian = saturate(max(0, BubbleThreshold - saturate(jacobian)) * BubbleScale);
 
     _NormalRT[id.xy] = float4(normal, 0);
+    _TangentRT[id.xy] = float4(tangentX, 0);
+    _BitangentRT[id.xy] = float4(tangentZ, 0);
+
     _BubbleRT[id.xy] = float4(jacobian, jacobian, jacobian, 0);
 }
