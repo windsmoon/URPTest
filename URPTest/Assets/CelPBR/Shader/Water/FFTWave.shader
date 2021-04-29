@@ -2,17 +2,20 @@
 {
     Properties
     {
-        _WaterDeepMap("Water Deep Map", 2D) = "gary"{}
+        _WaterDepthMap("Water Deep Map", 2D) = "gary"{}
+        _WaterDepthRange01("x Min, y Max (01)", Vector) = (0, 1, 0 ,1)
         _ShallowWaterColor ("Shallow Water Color", Color) = (1, 1, 1, 1)
         _DeepWaterColor ("Deep Water Color", Color) = (1, 1, 1, 1)
         _BubbleColor ("Bubble Color", Color) = (1, 1, 1, 1)
         _Specular ("Specular", Color) = (1, 1, 1, 1)
         _FresnelScale ("Fresnel Scale", Range(0, 1)) = 0.5 
         _Glossy ("Glossy", Float) = 128
-        _WaterDeepScale("Water Deep Scale", Float) = 10 
+        _WaterDeepScale("Water Deep Scale", Float) = 30 
         _SSSScale("SSS Scale", Float) = 1 
-        _SSSPower("SSS Power", Float) = 1 
+        _SSSPower("SSS Power", Float) = 2 
+        _SSSAmbient("SSS Ambient", Range(0, 1)) = 0.2
         _Tilling ("Tilling", Vector) = (1, 1, 1, 1)
+        [Toggle(SSS_ON)] _SSS_On("SSS On", Float) = 1
     }
     
     SubShader
@@ -38,6 +41,9 @@
             // -------------------------------------
             // Unity defined keywords
             #pragma multi_compile_fog
+
+            // custom keyword
+            #pragma multi_compile_fragment _ SSS_ON
 
             #pragma vertex FFTWaterVert
             #pragma fragment FFTWaterFrag

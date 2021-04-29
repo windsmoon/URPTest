@@ -6,16 +6,17 @@ TEXTURE2D(_NormalRT);
 TEXTURE2D(_BubbleRT);
 TEXTURE2D(_TangentRT);
 TEXTURE2D(_BiangentRT);
-TEXTURE2D(_WaterDeepMap);
+TEXTURE2D(_WaterDepthMap);
 
 SAMPLER(sampler_DisplaceRT);
 SAMPLER(sampler_NormalRT);
-SAMPLER(sampler_WaterDeepMap);
+SAMPLER(sampler_WaterDepthMap);
 
 UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(real4, _NormalMap_ST)
     UNITY_DEFINE_INSTANCED_PROP(real4, _ShallowWaterColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _DeepWaterColor)
+    UNITY_DEFINE_INSTANCED_PROP(real4, _WaterDepthRange01)
     UNITY_DEFINE_INSTANCED_PROP(real4, _BubbleColor)
     UNITY_DEFINE_INSTANCED_PROP(real4, _Specular)
     UNITY_DEFINE_INSTANCED_PROP(real, _FresnelScale)
@@ -24,6 +25,7 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(real4, _Tilling)
     UNITY_DEFINE_INSTANCED_PROP(real, _SSSScale)
     UNITY_DEFINE_INSTANCED_PROP(real, _SSSPower)
+    UNITY_DEFINE_INSTANCED_PROP(real, _SSSAmbient)
 UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 #define INPUT_PROP(name) UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, name)
@@ -71,10 +73,17 @@ real GetGlossy()
     return INPUT_PROP(_Glossy);
 }
 
-real GetWaterDeep(float2 uv)
+real GetMaxWaterDepth()
 {
-    float2 deep = INPUT_PROP(_WaterDeepScale) * SAMPLE_TEXTURE2D(_WaterDeepMap, sampler_WaterDeepMap, uv).x;;
-    return deep;
+    return INPUT_PROP(_WaterDeepScale);
+}
+
+real GetWaterDepth(float2 uv, float y)
+{
+    // real2 depthRange01 = INPUT_PROP(_WaterDepthRange01);
+    float deep = INPUT_PROP(_WaterDeepScale) * SAMPLE_TEXTURE2D(_WaterDepthMap, sampler_WaterDepthMap, uv).x;;
+    // deep = smoothstep(depthRange01.x, depthRange01.y, deep)
+    return deep + y;
 }
 
 real2 Tilling(float2 uv)
@@ -90,6 +99,11 @@ real GetSSSScale()
 real GetSSSPower()
 {
     return INPUT_PROP(_SSSPower);
+}
+
+real GetSSSAmbient()
+{
+    return INPUT_PROP(_SSSAmbient);
 }
 
 #endif

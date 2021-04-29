@@ -23,10 +23,11 @@ struct Varyings
 
 real3 CaculateSSS(Varyings input, float3 lightDirectionWS, float3 viewDirectionWS, float3 normalWS)
 {
-    real waterDeep = GetWaterDeep(input.uv);
-    real3 lightNormal = lightDirectionWS + normalWS * Random(input.uv * 100) * 10;
-    // real3 sss = pow(saturate(dot(viewDirectionWS, -lightNormal)), GetSSSPower()) * GetSSSScale() * waterDeep;
-    real3 sss = pow(saturate(dot(viewDirectionWS, lightDirectionWS) + dot(normalWS, -lightDirectionWS)), GetSSSPower()) * GetSSSScale() * waterDeep;
+    // from https://zhuanlan.zhihu.com/p/82778692
+    real waterDeep = GetWaterDepth(input.uv, input.positionWS.y);
+    real3 distortionLightDirectionWS = lightDirectionWS + normalWS * Random01(input.uv * 100); // distort the light direction, more distortion factor, more scatter 
+    real3 back = saturate(dot(viewDirectionWS, -distortionLightDirectionWS));
+    real3 sss = (pow(back, GetSSSPower()) + GetSSSAmbient()) * GetSSSScale() * (waterDeep / (max(input.positionWS.y, 0) + GetMaxWaterDepth())) ;
     return sss;
 }
 
@@ -53,7 +54,8 @@ real4 FFTWaterFrag(Varyings input) : SV_TARGET
 
     real3 normalWS = GetNormalWS(input.uv);
     real3 viewWS = SafeNormalize(_WorldSpaceCameraPos - input.positionWS);
-    real nDotL = saturate(dot(normalWS, light.direction));
+    real rawNDotL = dot(normalWS, light.direction);
+    real nDotL = saturate(rawNDotL);
     real3 halfDirectionWS = SafeNormalize(viewWS + light.direction);
     real nDotH = saturate(dot(normalWS, halfDirectionWS));
 
@@ -65,13 +67,18 @@ real4 FFTWaterFrag(Varyings input) : SV_TARGET
     real3 bubbleColor = GetBubbleColor();
     real bubbleStrength = GetBubbleStrength(input.uv);
     real3 diffuse = lerp(waterColor, bubbleColor, bubbleStrength);
+    real3 specular = GetSpecular() * pow(nDotH, GetGlossy()) * fresnel;
+    real3 sss =  CaculateSSS(input, light.direction, viewWS, normalWS);
 
-    real3 specular = GetSpecular() * pow(nDotH, GetGlossy());
-    
-    color = lerp(light.color * nDotL * (specular + diffuse), gi, fresnel);
-    color += light.color * nDotL * CaculateSSS(input, light.direction, viewWS, normalWS);
-    // color = normalWS.xyz * 0.5 + 0.5;
-    color =  CaculateSSS(input, light.direction, viewWS, normalWS);
+    #if !defined(SSS_ON)
+        sss = 0;
+    #endif
+
+    color = (light.color * nDotL * light.distanceAttenuation * light.shadowAttenuation + gi) * (diffuse + specular);
+    color += (light.color * abs(nDotL) * light.distanceAttenuation * light.shadowAttenuation + gi) * (diffuse * sss);
+    // color = lerp(light.color * nDotL * specular, gi, fresnel);
+    // color += light.color * nDotL * CaculateSSS(input, light.direction, viewWS, normalWS);
+    // color = sss;
     return real4(color, 1);
 }
 

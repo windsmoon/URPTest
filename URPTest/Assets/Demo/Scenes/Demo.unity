@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: b6f304179ee1b114db59a40bfab9b168, type: 2}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.23320594, g: 0.21106261, b: 0.23090798, a: 1}
+  m_IndirectSpecularColor: {r: 0.18154742, g: 0.22719014, b: 0.30740744, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -66990,14 +66990,14 @@ MonoBehaviour:
   fftPower: 10
   meshVertexCount: 200
   meshSize: 512
-  phillipsParameter: 813.3
-  lambda: 13.24
-  heightScale: 4.4
+  phillipsParameter: 311
+  lambda: 15.5
+  heightScale: 9.5
   bubbleScale: 1
-  bubbleThreshold: 0.89
-  windsScale: 18.49
-  WindAndSeed: {x: -1.65, y: -17.63, z: 7.6688128, w: 4.9570932}
-  timeScale: 7.5
+  bubbleThreshold: 0.68
+  windsScale: 35
+  WindAndSeed: {x: -8.9, y: 9.28, z: 4.4811645, w: 4.246881}
+  timeScale: 6
   enableSizeScale: 1
   sizeScale: 1
   computeShader: {fileID: 7200000, guid: 451ad250dd93b6540a30060c2adc1409, type: 3}
