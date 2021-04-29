@@ -2,13 +2,16 @@
 {
     Properties
     {
-        _NormalMap("Normal Map", 2D) = "bump"{}
+        _WaterDeepMap("Water Deep Map", 2D) = "gary"{}
         _ShallowWaterColor ("Shallow Water Color", Color) = (1, 1, 1, 1)
         _DeepWaterColor ("Deep Water Color", Color) = (1, 1, 1, 1)
         _BubbleColor ("Bubble Color", Color) = (1, 1, 1, 1)
         _Specular ("Specular", Color) = (1, 1, 1, 1)
         _FresnelScale ("Fresnel Scale", Range(0, 1)) = 0.5 
         _Glossy ("Glossy", Float) = 128
+        _WaterDeepScale("Water Deep Scale", Float) = 10 
+        _SSSScale("SSS Scale", Float) = 1 
+        _SSSPower("SSS Power", Float) = 1 
         _Tilling ("Tilling", Vector) = (1, 1, 1, 1)
     }
     

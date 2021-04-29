@@ -18,7 +18,17 @@ struct Varyings
     DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 1); // todo
 };
 
+#include "../Common.hlsl"
 #include "WaterInput.hlsl"
+
+real3 CaculateSSS(Varyings input, float3 lightDirectionWS, float3 viewDirectionWS, float3 normalWS)
+{
+    real waterDeep = GetWaterDeep(input.uv);
+    real3 lightNormal = lightDirectionWS + normalWS * Random(input.uv * 100) * 10;
+    // real3 sss = pow(saturate(dot(viewDirectionWS, -lightNormal)), GetSSSPower()) * GetSSSScale() * waterDeep;
+    real3 sss = pow(saturate(dot(viewDirectionWS, lightDirectionWS) + dot(normalWS, -lightDirectionWS)), GetSSSPower()) * GetSSSScale() * waterDeep;
+    return sss;
+}
 
 Varyings FFTWaterVert(Attributes input)
 {
@@ -59,7 +69,9 @@ real4 FFTWaterFrag(Varyings input) : SV_TARGET
     real3 specular = GetSpecular() * pow(nDotH, GetGlossy());
     
     color = lerp(light.color * nDotL * (specular + diffuse), gi, fresnel);
+    color += light.color * nDotL * CaculateSSS(input, light.direction, viewWS, normalWS);
     // color = normalWS.xyz * 0.5 + 0.5;
+    color =  CaculateSSS(input, light.direction, viewWS, normalWS);
     return real4(color, 1);
 }
 

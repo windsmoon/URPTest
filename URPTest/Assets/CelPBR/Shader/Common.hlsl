@@ -14,4 +14,10 @@ real3x3 GetTBN(real3 normal, real3 tangent, real3 bitangent)
     return float3x3(tangentWS, bitangentWS, normalWS);
 }
 
+float Random(float2 seed)
+{
+    return frac(sin(dot(seed.xy, float2(12.9898, 78.233))) * 43758.5453123);
+}
+
+
 #endif
