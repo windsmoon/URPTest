@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18154742, g: 0.22719014, b: 0.30740744, a: 1}
+  m_IndirectSpecularColor: {r: 0.23320594, g: 0.21106261, b: 0.23090798, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -66987,17 +66987,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f83dfa9b60256c4ca59c48fbb4718a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fftPower: 11
+  fftPower: 10
   meshVertexCount: 200
   meshSize: 512
   phillipsParameter: 813.3
   lambda: 13.24
   heightScale: 4.4
-  bubbleScale: 6.8
+  bubbleScale: 1
   bubbleThreshold: 0.89
   windsScale: 18.49
   WindAndSeed: {x: -1.65, y: -17.63, z: 7.6688128, w: 4.9570932}
   timeScale: 7.5
+  enableSizeScale: 1
+  sizeScale: 1
   computeShader: {fileID: 7200000, guid: 451ad250dd93b6540a30060c2adc1409, type: 3}
   controlStage: 12
   isControlHorizontal: 1
