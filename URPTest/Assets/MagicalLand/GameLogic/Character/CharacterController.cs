@@ -32,11 +32,7 @@ namespace MagicalLand.Character
         {
             MoveSpeedConfigTemp moveSpeedConfigTemp = transform.GetComponent<MoveSpeedConfigTemp>();
             walkSpeed = moveSpeedConfigTemp.walkSpeed;
-            walkSpeed = moveSpeedConfigTemp.runSpeed;
-            Vector3 delta = new Vector3(direction.x, 0, direction.y);
-            delta = delta.normalized;
-            delta *= walkSpeed;
-            delta *= Time.deltaTime;
+            Vector3 delta = new Vector3(direction.x, 0, direction.y) * walkSpeed * Time.deltaTime;
             transform.Translate(delta, Space.World);
         }
         #endregion

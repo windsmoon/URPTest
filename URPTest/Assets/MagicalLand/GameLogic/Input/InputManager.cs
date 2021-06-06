@@ -8,18 +8,28 @@ namespace MagicalLand.GameLogic.Input
 {
     public class InputManager : MonoBehaviour
     {
-        #region fields
+        #region delegates
         public static Action<Vector2> OnMove;
         #endregion
-    
-        #region methods
-        public void Move(InputAction.CallbackContext context)
+
+        #region fields
+        private Vector2 moveDirection;
+        #endregion
+
+        #region unity methods
+        private void Update()
         {
             if (OnMove != null)
             {
-                Vector2 direction = context.ReadValue<Vector2>();
-                OnMove(direction);
-            }
+                OnMove(moveDirection);
+            }         
+        }
+        #endregion
+        
+        #region methods
+        public void Move(InputAction.CallbackContext context)
+        {
+            moveDirection = context.ReadValue<Vector2>();
         }
         #endregion
     }
