@@ -6,5 +6,6 @@ namespace MagicalLand.Character
     {
         public float walkSpeed = 10;
         public float runSpeed = 30;
+        public float rotateSpeed = 20;
     }
 }

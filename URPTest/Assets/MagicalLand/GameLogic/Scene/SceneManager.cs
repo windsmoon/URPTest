@@ -24,6 +24,11 @@ namespace MagicalLand.GameLogic.Scene
             UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
             sceneControllerDict[1] = new MainSceneController(1, scene); 
         }
+
+        public static SceneController GetActiveSceneController()
+        {
+            return sceneControllerDict[1];
+        }
         #endregion
     }
 }

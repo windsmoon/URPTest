@@ -44,5 +44,13 @@ namespace MagicalLand.GameLogic.Scene
             rootTransform = rootGameObject.transform;
         }
         #endregion
+
+        #region methods
+        // todo
+        public Camera GetMainCamera()
+        {
+            return Camera.main;
+        }
+        #endregion
     }
 }
