@@ -9,13 +9,14 @@ namespace MagicalLand.GameLogic.Input
     public class InputManager : MonoBehaviour
     {
         #region delegates
-        public static Action<Vector2> OnMove;
+        public static Action<Vector2, bool> OnMove;
         public static Action<Vector2> OnRotateView;
         #endregion
 
         #region fields
         private Vector2 moveDirection;
         private Vector2 rotateViewDelta;
+        private bool isRun;
         #endregion
 
         #region unity methods
@@ -23,7 +24,7 @@ namespace MagicalLand.GameLogic.Input
         {
             if (OnMove != null)
             {
-                OnMove(moveDirection);
+                OnMove(moveDirection, isRun);
             }
 
             if (OnRotateView != null)
@@ -39,6 +40,18 @@ namespace MagicalLand.GameLogic.Input
             moveDirection = context.ReadValue<Vector2>();
         }
 
+        public void HandleRun(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                isRun = true;
+            }
+
+            else if (context.canceled)
+            {
+                isRun = false;
+            }
+        }
         public void HandleRotateView(InputAction.CallbackContext context)
         {
             rotateViewDelta = context.ReadValue<Vector2>();

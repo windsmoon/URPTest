@@ -19,16 +19,17 @@ namespace MagicalLand.Character
         private float walkTimer = 0f;
         private float currentSpeed = 0f;
         private Transform transform;
-        private Transform thirdPersonFollowTarget;
+        private Animator animator;
         private Vector3 targetDirection;
         private Vector2 moveInput;
+        private bool isRun;
         #endregion
 
         #region constructors
         public CharacterController(Transform transform)
         {
             this.transform = transform;
-            this.thirdPersonFollowTarget = transform.Find("Points/ThirdPersonFollowTarget");
+            this.animator = transform.GetComponent<Animator>();
             InputManager.OnMove += OnMove;
             Game.OnLateUpdate += OnLateUpdate;
             // InputManager.OnRotateView += OnRotateView;
@@ -43,10 +44,10 @@ namespace MagicalLand.Character
             InputManager.OnMove -= OnMove;
         }
         
-        private void OnMove(Vector2 input)
+        private void OnMove(Vector2 input, bool isRun)
         {
-            Debug.Log(input);
             this.moveInput = input;
+            this.isRun = isRun;
             Camera camera = SceneManager.GetActiveSceneController().GetMainCamera();
             Vector3 forward = camera.transform.TransformDirection(Vector3.forward);
             forward.y = 0;
@@ -54,12 +55,12 @@ namespace MagicalLand.Character
             targetDirection = input.x * right + input.y * forward;
             // transform.Translate(delta, Space.World);
         }
-        
+
         private void OnLateUpdate()
         {
             if (moveInput != Vector2.zero)
             {
-                if(targetDirection.magnitude != 0.0f)
+                if (targetDirection.magnitude > 0.1f)
                 {
                     Vector3 lookDirection = targetDirection.normalized;
                     Quaternion targetRotation = Quaternion.LookRotation(lookDirection, transform.up);
@@ -70,9 +71,10 @@ namespace MagicalLand.Character
                     {
                         eulerY = targetRotation.eulerAngles.y;
                     }
-                
+
                     var euler = new Vector3(0, eulerY, 0);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(euler), turnSpeed * Time.deltaTime);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(euler),
+                        turnSpeed * Time.deltaTime);
                 }
 
                 walkTimer += Time.deltaTime;
@@ -92,15 +94,18 @@ namespace MagicalLand.Character
                     walkTimer = 0;
                 }
             }
-            
-            currentSpeed = Mathf.Lerp(0f, runSpeed, walkTimer / fullSpeedTime);
+
+            currentSpeed = Mathf.Lerp(0f, walkSpeed, walkTimer / fullSpeedTime);
 
             if (currentSpeed > 0f)
             {
                 transform.Translate(transform.forward * currentSpeed * Time.deltaTime, Space.World);
             }
+
+            animator.SetBool("IsRun", isRun);
+            animator.SetFloat("Speed", currentSpeed);
         }
-        
+
         // private void OnRotateView(Vector2 rotateDelta)
         // {
         //     if (rotateDelta.sqrMagnitude < 0.01f)
