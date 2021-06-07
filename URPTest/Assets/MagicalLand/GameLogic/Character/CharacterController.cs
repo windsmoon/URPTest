@@ -101,7 +101,14 @@ namespace MagicalLand.Character
             {
                 transform.Translate(transform.forward * currentSpeed * Time.deltaTime, Space.World);
             }
+            
+            Debug.Log(currentSpeed);
 
+            // if (isRun)
+            // {
+            //     currentSpeed = runSpeed;
+            // }
+            
             animator.SetBool("IsRun", isRun);
             animator.SetFloat("Speed", currentSpeed);
         }
