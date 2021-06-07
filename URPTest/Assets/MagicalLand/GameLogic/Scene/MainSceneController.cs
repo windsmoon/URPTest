@@ -14,7 +14,7 @@ namespace MagicalLand.GameLogic.Scene
         #region constructors
         public MainSceneController(int id, UnityEngine.SceneManagement.Scene scene) : base(id, scene)
         {
-            playerTransform = rootTransform.Find("ReisalinStout"); 
+            playerTransform = rootTransform.Find("Reisalin-unity"); 
             this.characterController = new CharacterController(playerTransform);
         }
         #endregion
