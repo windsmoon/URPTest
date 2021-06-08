@@ -13,11 +13,11 @@ namespace MagicalLand.Character
     {
         #region fields
         private float walkSpeed = 4;
-        private float runSpeed = 10;
+        private float runSpeed = 4;
         private float turnSpeed = 10;
         private float fullSpeedTime = 0.7f;
         private float walkTimer = 0f;
-        private float currentSpeed = 0f;
+        private Vector2 currentSpeed;
         private Transform transform;
         private Animator animator;
         private Vector3 targetDirection;
@@ -83,6 +83,9 @@ namespace MagicalLand.Character
                 {
                     walkTimer = fullSpeedTime;
                 }
+                
+                float speedRatio = walkTimer / fullSpeedTime;
+                this.currentSpeed = moveInput.normalized * speedRatio * runSpeed;
             }
 
             else
@@ -93,14 +96,18 @@ namespace MagicalLand.Character
                 {
                     walkTimer = 0;
                 }
+                
+                float speedRatio = walkTimer / fullSpeedTime;
+                this.currentSpeed = this.currentSpeed.normalized * speedRatio * runSpeed;
             }
 
-            currentSpeed = Mathf.Lerp(0f, walkSpeed, walkTimer / fullSpeedTime);
+            // float currentSpeed = Mathf.Lerp(0, runSpeed, walkTimer / fullSpeedTime);
+            // currentSpeed = Vector2.Lerp(Vector2.zero, Vector2.one, walkTimer / fullSpeedTime);
 
-            if (currentSpeed > 0f)
-            {
-                transform.Translate(transform.forward * currentSpeed * Time.deltaTime, Space.World);
-            }
+            // if (currentSpeed > 0f)
+            // {
+                // transform.Translate(transform.forward * currentSpeed * Time.deltaTime, Space.World);
+            // }
             
             Debug.Log(currentSpeed);
 
@@ -110,7 +117,9 @@ namespace MagicalLand.Character
             // }
             
             animator.SetBool("IsRun", isRun);
-            animator.SetFloat("Speed", currentSpeed);
+            // animator.SetFloat("Speed", currentSpeed);
+            animator.SetFloat("SpeedX", this.currentSpeed.x);
+            animator.SetFloat("SpeedY", this.currentSpeed.y);
         }
 
         // private void OnRotateView(Vector2 rotateDelta)
