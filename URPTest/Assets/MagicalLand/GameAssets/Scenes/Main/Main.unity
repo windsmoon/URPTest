@@ -997,6 +997,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -663596756936231247, guid: 4a806198d1b288f48b8fb363ba4bda8e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4a806198d1b288f48b8fb363ba4bda8e, type: 3}
       propertyPath: m_Name
       value: LysaTest
