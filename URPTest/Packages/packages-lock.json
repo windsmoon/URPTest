@@ -7,6 +7,15 @@
       "dependencies": {},
       "url": "https://registry.npmjs.org"
     },
+    "com.unity.burst": {
+      "version": "1.5.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.cinemachine": {
       "version": "2.7.3",
       "depth": 0,
@@ -20,6 +29,15 @@
       "source": "registry",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "2.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.collections": {
+      "version": "0.17.0-preview.18",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.burst": "1.5.3"
       },
       "url": "https://packages.unity.com"
     },
