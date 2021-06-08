@@ -12,11 +12,12 @@ namespace MagicalLand.Character
     public class CharacterController
     {
         #region fields
-        private float walkSpeed = 4;
         private float runSpeed = 4;
         private float turnSpeed = 10;
         private float fullSpeedTime = 0.7f;
         private float walkTimer = 0f;
+        private float accelerate;
+        
         private Vector2 currentSpeed;
         private Transform transform;
         private Animator animator;
@@ -28,6 +29,9 @@ namespace MagicalLand.Character
         #region constructors
         public CharacterController(Transform transform)
         {
+            // todo
+            this.accelerate = runSpeed / fullSpeedTime;
+
             this.transform = transform;
             this.animator = transform.GetComponent<Animator>();
             InputManager.OnMove += OnMove;
@@ -52,7 +56,8 @@ namespace MagicalLand.Character
             Vector3 forward = camera.transform.TransformDirection(Vector3.forward);
             forward.y = 0;
             Vector3 right = camera.transform.TransformDirection(Vector3.right);
-            targetDirection = input.x * right + input.y * forward;
+            // targetDirection = input.x * right + input.y * forward;
+            targetDirection = forward;
             // transform.Translate(delta, Space.World);
         }
 
@@ -77,28 +82,47 @@ namespace MagicalLand.Character
                         turnSpeed * Time.deltaTime);
                 }
 
-                walkTimer += Time.deltaTime;
+                // walkTimer += Time.deltaTime;
 
-                if (walkTimer > fullSpeedTime)
+                // if (walkTimer > fullSpeedTime)
+                // {
+                //     walkTimer = fullSpeedTime;
+                // }
+                currentSpeed += moveInput * Time.deltaTime * accelerate;
+
+                if (currentSpeed.magnitude > runSpeed)
                 {
-                    walkTimer = fullSpeedTime;
+                    currentSpeed = currentSpeed * runSpeed / currentSpeed.magnitude;
                 }
                 
-                float speedRatio = walkTimer / fullSpeedTime;
-                this.currentSpeed = moveInput.normalized * speedRatio * runSpeed;
+                // float speedRatio = walkTimer / fullSpeedTime;
+                // this.currentSpeed = moveInput.normalized * speedRatio * runSpeed;
             }
 
             else
             {
-                walkTimer -= Time.deltaTime;
+                // walkTimer -= Time.deltaTime;
+                //
+                // if (walkTimer < 0)
+                // {
+                //     walkTimer = 0;
+                // }
+                //
+                // float speedRatio = walkTimer / fullSpeedTime;
+                // this.currentSpeed = this.currentSpeed.normalized * speedRatio * runSpeed;
 
-                if (walkTimer < 0)
+                float diffSpeed = Time.deltaTime * accelerate;
+                float tempSpeed = currentSpeed.magnitude - diffSpeed;
+
+                if (tempSpeed < 0)
                 {
-                    walkTimer = 0;
+                    currentSpeed = Vector2.zero;
                 }
-                
-                float speedRatio = walkTimer / fullSpeedTime;
-                this.currentSpeed = this.currentSpeed.normalized * speedRatio * runSpeed;
+
+                else
+                {
+                    currentSpeed = currentSpeed * (tempSpeed / currentSpeed.magnitude);
+                }
             }
 
             // float currentSpeed = Mathf.Lerp(0, runSpeed, walkTimer / fullSpeedTime);
