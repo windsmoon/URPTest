@@ -16,7 +16,7 @@ namespace MagicalLand.GameLogic.Input
         #region fields
         private Vector2 moveDirection;
         private Vector2 rotateViewDelta;
-        private bool isRun;
+        private bool isSprint;
         #endregion
 
         #region unity methods
@@ -24,7 +24,7 @@ namespace MagicalLand.GameLogic.Input
         {
             if (OnMove != null)
             {
-                OnMove(moveDirection, isRun);
+                OnMove(moveDirection, isSprint);
             }
 
             if (OnRotateView != null)
@@ -40,17 +40,23 @@ namespace MagicalLand.GameLogic.Input
             moveDirection = context.ReadValue<Vector2>();
         }
 
-        public void HandleRun(InputAction.CallbackContext context)
+        public void HandleSprint(InputAction.CallbackContext context)
         {
             if (context.performed)
             {
-                isRun = true;
+                isSprint = true;
             }
 
             else if (context.canceled)
             {
-                isRun = false;
+                isSprint = false;
             }
+        }
+
+        public void HandleViewDistance(InputAction.CallbackContext context)
+        {
+            float input = context.ReadValue<float>();
+            Debug.Log(input);
         }
         public void HandleRotateView(InputAction.CallbackContext context)
         {

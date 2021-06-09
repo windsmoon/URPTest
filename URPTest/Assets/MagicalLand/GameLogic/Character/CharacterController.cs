@@ -23,7 +23,7 @@ namespace MagicalLand.Character
         private Animator animator;
         private Vector3 targetDirection;
         private Vector2 moveInput;
-        private bool isRun;
+        private bool isSprintInput;
         #endregion
 
         #region constructors
@@ -48,10 +48,10 @@ namespace MagicalLand.Character
             InputManager.OnMove -= OnMove;
         }
         
-        private void OnMove(Vector2 input, bool isRun)
+        private void OnMove(Vector2 input, bool isSprintInput)
         {
             this.moveInput = input;
-            this.isRun = isRun;
+            this.isSprintInput = isSprintInput;
             Camera camera = SceneManager.GetActiveSceneController().GetMainCamera();
             Vector3 forward = camera.transform.TransformDirection(Vector3.forward);
             forward.y = 0;
@@ -81,36 +81,29 @@ namespace MagicalLand.Character
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(euler),
                         turnSpeed * Time.deltaTime);
                 }
+                
+                Vector2 diffSpeed = moveInput * Time.deltaTime * accelerate;
 
-                // walkTimer += Time.deltaTime;
+                if (diffSpeed.x * currentSpeed.x < 0)
+                {
+                    diffSpeed.x *= 3;
+                }
 
-                // if (walkTimer > fullSpeedTime)
-                // {
-                //     walkTimer = fullSpeedTime;
-                // }
-                currentSpeed += moveInput * Time.deltaTime * accelerate;
+                if (diffSpeed.y * currentSpeed.y < 0)
+                {
+                    diffSpeed.y *= 3;
+                }
+
+                currentSpeed += diffSpeed;
 
                 if (currentSpeed.magnitude > runSpeed)
                 {
                     currentSpeed = currentSpeed * runSpeed / currentSpeed.magnitude;
                 }
-                
-                // float speedRatio = walkTimer / fullSpeedTime;
-                // this.currentSpeed = moveInput.normalized * speedRatio * runSpeed;
             }
 
             else
             {
-                // walkTimer -= Time.deltaTime;
-                //
-                // if (walkTimer < 0)
-                // {
-                //     walkTimer = 0;
-                // }
-                //
-                // float speedRatio = walkTimer / fullSpeedTime;
-                // this.currentSpeed = this.currentSpeed.normalized * speedRatio * runSpeed;
-
                 float diffSpeed = Time.deltaTime * accelerate;
                 float tempSpeed = currentSpeed.magnitude - diffSpeed;
 
@@ -125,87 +118,10 @@ namespace MagicalLand.Character
                 }
             }
 
-            // float currentSpeed = Mathf.Lerp(0, runSpeed, walkTimer / fullSpeedTime);
-            // currentSpeed = Vector2.Lerp(Vector2.zero, Vector2.one, walkTimer / fullSpeedTime);
-
-            // if (currentSpeed > 0f)
-            // {
-                // transform.Translate(transform.forward * currentSpeed * Time.deltaTime, Space.World);
-            // }
-            
-            Debug.Log(currentSpeed);
-
-            // if (isRun)
-            // {
-            //     currentSpeed = runSpeed;
-            // }
-            
-            animator.SetBool("IsRun", isRun);
-            // animator.SetFloat("Speed", currentSpeed);
+            animator.SetBool("IsSPrint", isSprintInput && moveInput.y > 0 && moveInput.x == 0);
             animator.SetFloat("SpeedX", this.currentSpeed.x);
             animator.SetFloat("SpeedY", this.currentSpeed.y);
         }
-
-        // private void OnRotateView(Vector2 rotateDelta)
-        // {
-        //     if (rotateDelta.sqrMagnitude < 0.01f)
-        //     {
-        //         return;
-        //     }
-        //     
-        //     MoveSpeedConfigTemp moveSpeedConfigTemp = transform.GetComponent<MoveSpeedConfigTemp>();
-        //     float rotateSpeed = moveSpeedConfigTemp.rotateSpeed;
-        //     float scaledRotateSpeed = rotateSpeed * Time.deltaTime;
-        //     rotateDelta = rotateDelta * scaledRotateSpeed;
-        //     Vector3 rotate;
-        //     rotate.y = rotateDelta.x;
-        //     rotate.x = rotateDelta.y;
-        //     rotate.z = 0;
-        //     // thirdPersonFollowTarget.Rotate(rotate, );
-        // }
-        
-        // void FixedUpdate ()
-        // {
-        //     input.x = Input.GetAxis("Horizontal");
-        //     input.y = Input.GetAxis("Vertical");
-        //
-        //     // set speed to both vertical and horizontal inputs
-        //     if (useCharacterForward)
-        //         speed = Mathf.Abs(input.x) + input.y;
-        //     else
-        //         speed = Mathf.Abs(input.x) + Mathf.Abs(input.y);
-        //
-        //     speed = Mathf.Clamp(speed, 0f, 1f);
-        //     speed = Mathf.SmoothDamp(anim.GetFloat("Speed"), speed, ref velocity, 0.1f);
-        //     anim.SetFloat("Speed", speed);
-        //
-        //     if (input.y < 0f && useCharacterForward)
-        //         direction = input.y;
-        //     else
-        //         direction = 0f;
-        //
-        //     anim.SetFloat("Direction", direction);
-        //
-        //     // set sprinting
-        //     isSprinting = ((Input.GetKey(sprintJoystick) || Input.GetKey(sprintKeyboard)) && input != Vector2.zero && direction >= 0f);
-        //     anim.SetBool("isSprinting", isSprinting);
-        //
-        //     // Update target direction relative to the camera view (or not if the Keep Direction option is checked)
-        //     UpdateTargetDirection();
-        //     if (input != Vector2.zero && targetDirection.magnitude > 0.1f)
-        //     {
-        //         Vector3 lookDirection = targetDirection.normalized;
-        //         freeRotation = Quaternion.LookRotation(lookDirection, transform.up);
-        //         var diferenceRotation = freeRotation.eulerAngles.y - transform.eulerAngles.y;
-        //         var eulerY = transform.eulerAngles.y;
-        //
-        //         if (diferenceRotation < 0 || diferenceRotation > 0) eulerY = freeRotation.eulerAngles.y;
-        //         var euler = new Vector3(0, eulerY, 0);
-        //
-        //         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(euler), turnSpeed * turnSpeedMultiplier * Time.deltaTime);
-        //     }
-        // }
-
         #endregion
     }
 }
