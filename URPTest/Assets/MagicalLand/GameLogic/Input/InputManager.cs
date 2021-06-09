@@ -10,6 +10,7 @@ namespace MagicalLand.GameLogic.Input
     {
         #region delegates
         public static Action<Vector2, bool> OnMove;
+        public static Action<bool> OnUseLeftMouse;
         public static Action<Vector2> OnRotateView;
         #endregion
 
@@ -58,6 +59,25 @@ namespace MagicalLand.GameLogic.Input
             float input = context.ReadValue<float>();
             Debug.Log(input);
         }
+
+        public void HandleUseLeftMouse(InputAction.CallbackContext context)
+        {
+            if (OnUseLeftMouse == null)
+            {
+                return;
+            }
+            
+            if (context.phase == InputActionPhase.Performed)
+            {
+                OnUseLeftMouse(true);
+            }
+
+            else if (context.phase == InputActionPhase.Canceled)
+            {
+                OnUseLeftMouse(false);
+            }
+        }
+        
         public void HandleRotateView(InputAction.CallbackContext context)
         {
             rotateViewDelta = context.ReadValue<Vector2>();

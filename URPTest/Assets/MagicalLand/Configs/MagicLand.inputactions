@@ -36,6 +36,14 @@
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "UseLeftMouse",
+                    "type": "Button",
+                    "id": "2396afb3-23f1-4223-a1ef-e619d7892318",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -148,6 +156,17 @@
                     "action": "ViewDistance",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "d44acf4f-bef8-4833-9b43-dc51eeda748d",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseLeftMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

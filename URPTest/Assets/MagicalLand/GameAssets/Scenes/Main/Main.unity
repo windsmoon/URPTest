@@ -800,6 +800,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6506038c-eb05-4427-95b1-e206dee3fea3
     m_ActionName: Battle/ViewDistance[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 826921117}
+        m_TargetAssemblyTypeName: MagicalLand.GameLogic.Input.InputManager, Assembly-CSharp
+        m_MethodName: HandleUseLeftMouse
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2396afb3-23f1-4223-a1ef-e619d7892318
+    m_ActionName: Battle/UseLeftMouse[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Battle

@@ -31,20 +31,20 @@ namespace MagicalLand.Character
         {
             // todo
             this.accelerate = runSpeed / fullSpeedTime;
-
             this.transform = transform;
             this.animator = transform.GetComponent<Animator>();
             InputManager.OnMove += OnMove;
+            InputManager.OnUseLeftMouse += OnUseLeftMouse;
             Game.OnLateUpdate += OnLateUpdate;
             // InputManager.OnRotateView += OnRotateView;
         }
-        
         #endregion
 
         #region methods
         public void Destroy()
         {
-            Game.OnUpdate -= OnLateUpdate;
+            Game.OnLateUpdate -= OnLateUpdate;
+            InputManager.OnUseLeftMouse -= OnUseLeftMouse;
             InputManager.OnMove -= OnMove;
         }
         
@@ -121,6 +121,14 @@ namespace MagicalLand.Character
             animator.SetBool("IsSPrint", isSprintInput && moveInput.y > 0 && moveInput.x == 0);
             animator.SetFloat("SpeedX", this.currentSpeed.x);
             animator.SetFloat("SpeedY", this.currentSpeed.y);
+        }
+        
+        private void OnUseLeftMouse(bool isUse)
+        {
+            if (isUse && isSprintInput == false)
+            {
+               animator.SetTrigger("Attack"); 
+            }
         }
         #endregion
     }
