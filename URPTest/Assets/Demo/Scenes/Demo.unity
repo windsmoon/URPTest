@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: b6f304179ee1b114db59a40bfab9b168, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18154742, g: 0.22719014, b: 0.30740744, a: 1}
+  m_IndirectSpecularColor: {r: 0.23320594, g: 0.21106261, b: 0.23090798, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -14292,13 +14292,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526894225}
-  m_LocalRotation: {x: 0.53530866, y: -0.13718702, z: -0.3585765, w: 0.7523612}
+  m_LocalRotation: {x: -0.08707822, y: -0.6816476, z: 0.5843486, w: -0.43163717}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 45, y: -56.6, z: -76.111}
+  m_LocalEulerAnglesHint: {x: 60.67, y: -276.511, z: -51.951}
 --- !u!1 &528317792 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3845414520630735529, guid: ce2ecbd04daed4e4b93dbf7811153167, type: 3}
@@ -40942,7 +40942,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216918875}
   m_LocalRotation: {x: 0.16334866, y: -0, z: -0, w: 0.98656845}
-  m_LocalPosition: {x: 0, y: 7.551, z: -7.021}
+  m_LocalPosition: {x: -0.6, y: 1.4, z: -1.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -50191,7 +50191,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ee1df7d45c67d8f479a1c6539ff5b4fb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 927989225488211950, guid: ee1df7d45c67d8f479a1c6539ff5b4fb, type: 3}
       propertyPath: m_Layer
@@ -66264,7 +66264,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1994939833
 Transform:
   m_ObjectHideFlags: 0
