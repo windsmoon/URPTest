@@ -1,6 +1,8 @@
 ﻿#ifndef CEL_PBR_ATOMSPHERE_SCATTERING_ATOMSPHERE_SCATTERING
 #define CEL_PBR_ATOMSPHERE_SCATTERING_ATOMSPHERE_SCATTERING
 
+#include "AtomsphereScatteringInput.hlsl"
+
 //-----------------------------------------------------------------------------------------
 // thought is come from https://github.com/PZZZB/Atmospheric-Scattering-URP
 // 
@@ -31,6 +33,66 @@ bool RaySphereIntersection(float3 rayOrigin, float3 rayDirection, float3 sphereC
         intersectionParameters = float2(-b - t, -b + t) / (2 * a);
         return true;
     }
+}
+
+float CaculateDensityRatio(float height)
+{
+    return exp(-height / GetScaleHeight());
+}
+
+float CaculateOpticalDepth(float3 startPoint, float3 rayDirection, float rayLength, float3 planentCenter)
+{
+    int sampleCount = GetAtomsphereScatteringSampleCount();
+    float stepLength = rayLength / sampleCount;
+    float3 stepVector = stepLength * rayDirection;
+    float3 currentPoint = startPoint + stepVector * 0.5;
+    float opticalDepth = 0;
+    
+    for (int i = 0; i < sampleCount; ++i)
+    {
+        float currentHeight = distance(planentCenter, currentPoint) - GetPlanetRadius();
+        opticalDepth += CaculateDensityRatio(currentHeight) * stepLength;    
+    }
+
+    return opticalDepth;
+}
+
+float3 CaculateSingleScattering(float3 viewRayOriginal, float3 viewRayDirection, float viewRayLength, float3 planetCenter)
+{
+    int sampleCount = GetAtomsphereScatteringSampleCount();
+    float stepLength = viewRayLength / sampleCount;
+    float3 stepVector = viewRayDirection * stepLength;
+    float3 currentPoint = viewRayOriginal + stepVector * 0.5;
+    float3 result = 0;
+    float3 lightDirection = GetMainLight().direction;
+    float opticalDepthViewPoint = 0; // to optimize the caculate times
+
+    for (int i = 0; i < sampleCount; ++i)
+    {
+        // first caculate the intersection of light ray and atomsphere
+        float2 intersectionParameters;
+        
+        if (RaySphereIntersection(currentPoint, lightDirection, planetCenter, GetPlanetRadius(), intersectionParameters))
+        {
+            // if the two intersections are all in the light direction
+            // then the light will be blocked by the planet
+            if (intersectionParameters.x >= 0 && intersectionParameters.y >= 0)
+            {
+                result += 0;
+                continue;;
+            }
+        }
+
+        // always should has intersections
+        RaySphereIntersection(currentPoint, lightDirection, planetCenter, GetPlanetRadius() + GetAtomsphereHeight(), intersectionParameters);
+        float opticalDepth = CaculateOpticalDepth(currentPoint, lightDirection, intersectionParameters.y, planetCenter);
+        opticalDepthViewPoint += CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
+        float totalOpticalDepth = opticalDepth + opticalDepthViewPoint;
+        result += exp(-GetScatteringCoefficientAtSealevel() * totalOpticalDepth) * CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
+    }
+
+    result = GetMainLight().color * GetScatteringCoefficientAtSealevel() * 3 / (16 * PI) * (1 + pow(dot(viewRayDirection, lightDirection), 2)) * result;
+    return result;
 }
 
 #endif

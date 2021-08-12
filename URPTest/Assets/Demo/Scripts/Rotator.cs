@@ -11,7 +11,7 @@ public class Rotator : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () { 
         this.transform.eulerAngles = this.transform.eulerAngles + new Vector3(Time.deltaTime * speed * direction.x, Time.deltaTime * speed * direction.y, Time.deltaTime * speed * direction.z);
 	}
 }
