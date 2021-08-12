@@ -1,11 +1,11 @@
-﻿Shader "AtmosphericScattering/Skybox
+﻿Shader "CelPBR/AtmosphericScattering/Skybox"
 {
     SubShader
     {
         Tags { "Queue" = "Background" "RenderType" = "Background" "RenderPipeline" = "UniversalPipeline" "PreviewType" = "Skybox" }
         ZWrite Off Cull Off
-        
-        Pass
+
+                Pass
         {
             HLSLPROGRAM
             

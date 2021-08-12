@@ -51,7 +51,8 @@ float CaculateOpticalDepth(float3 startPoint, float3 rayDirection, float rayLeng
     for (int i = 0; i < sampleCount; ++i)
     {
         float currentHeight = distance(planentCenter, currentPoint) - GetPlanetRadius();
-        opticalDepth += CaculateDensityRatio(currentHeight) * stepLength;    
+        opticalDepth += CaculateDensityRatio(currentHeight) * stepLength;
+        currentPoint += stepVector;
     }
 
     return opticalDepth;
@@ -86,9 +87,12 @@ float3 CaculateSingleScattering(float3 viewRayOriginal, float3 viewRayDirection,
         // always should has intersections
         RaySphereIntersection(currentPoint, lightDirection, planetCenter, GetPlanetRadius() + GetAtomsphereHeight(), intersectionParameters);
         float opticalDepth = CaculateOpticalDepth(currentPoint, lightDirection, intersectionParameters.y, planetCenter);
-        opticalDepthViewPoint += CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
+        // opticalDepthViewPoint += CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
+        opticalDepthViewPoint = CaculateOpticalDepth(viewRayOriginal, viewRayDirection, stepLength * (i + 1), planetCenter);
+
         float totalOpticalDepth = opticalDepth + opticalDepthViewPoint;
         result += exp(-GetScatteringCoefficientAtSealevel() * totalOpticalDepth) * CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
+        currentPoint += stepVector;
     }
 
     result = GetMainLight().color * GetScatteringCoefficientAtSealevel() * 3 / (16 * PI) * (1 + pow(dot(viewRayDirection, lightDirection), 2)) * result;

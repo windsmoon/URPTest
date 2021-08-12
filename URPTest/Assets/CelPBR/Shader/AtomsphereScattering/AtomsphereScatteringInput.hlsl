@@ -3,7 +3,7 @@
 
 float _PlanetRadius;
 float _AtomsphereHeight;
-float _ScatteringCoefficientAtSealevel;
+float3 _ScatteringCoefficientAtSealevel;
 float _ScaleHeight;
 float _SampleCount;
 
@@ -17,7 +17,7 @@ float GetAtomsphereHeight()
     return _AtomsphereHeight;
 }
 
-float GetScatteringCoefficientAtSealevel()
+float3 GetScatteringCoefficientAtSealevel()
 {
     return _ScatteringCoefficientAtSealevel;
 }
