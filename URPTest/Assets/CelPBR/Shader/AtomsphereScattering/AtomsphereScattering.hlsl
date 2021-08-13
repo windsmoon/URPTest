@@ -62,7 +62,7 @@ float3 CaculateSingleScattering(float3 viewRayOriginal, float3 viewRayDirection,
 {
     int sampleCount = GetAtomsphereScatteringSampleCount();
     float stepLength = viewRayLength / sampleCount;
-    float3 stepVector = viewRayDirection * stepLength;
+    float3 stepVector = -viewRayDirection * stepLength;
     float3 currentPoint = viewRayOriginal + stepVector * 0.5;
     float3 result = 0;
     float3 lightDirection = GetMainLight().direction;
@@ -80,21 +80,24 @@ float3 CaculateSingleScattering(float3 viewRayOriginal, float3 viewRayDirection,
             if (intersectionParameters.x >= 0 && intersectionParameters.y >= 0)
             {
                 result += 0;
+                opticalDepthViewPoint += CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
+                currentPoint += stepVector;
                 continue;;
             }
         }
 
+        opticalDepthViewPoint += CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
+        
         // always should has intersections
         RaySphereIntersection(currentPoint, lightDirection, planetCenter, GetPlanetRadius() + GetAtomsphereHeight(), intersectionParameters);
         float opticalDepth = CaculateOpticalDepth(currentPoint, lightDirection, intersectionParameters.y, planetCenter);
-        // opticalDepthViewPoint += CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
-        opticalDepthViewPoint = CaculateOpticalDepth(viewRayOriginal, viewRayDirection, stepLength * (i + 1), planetCenter);
 
         float totalOpticalDepth = opticalDepth + opticalDepthViewPoint;
         result += exp(-GetScatteringCoefficientAtSealevel() * totalOpticalDepth) * CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
         currentPoint += stepVector;
     }
 
+    // cos(a) = cos(180 -a)
     result = GetMainLight().color * GetScatteringCoefficientAtSealevel() * 3 / (16 * PI) * (1 + pow(dot(viewRayDirection, lightDirection), 2)) * result;
     return result;
 }

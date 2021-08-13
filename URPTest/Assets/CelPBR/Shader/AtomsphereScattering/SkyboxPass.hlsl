@@ -32,14 +32,27 @@ half4 frag(Varyings input): SV_Target
     // suppose the camera is near the planet and the ground's y is 0
     // the distance between camera and ground can be ignore relative to the atomshpere
     float3 viewRayOriginal = _WorldSpaceCameraPos.xyz;
-    float3 viewRayDirection = normalize(TransformObjectToWorld(input.positionOS)); // dont know wether unity skybox has rotation
+    float3 viewRayDirection = normalize(viewRayOriginal - TransformObjectToWorld(input.positionOS)); // dont know wether unity skybox has rotation
     float3 planetCenter = float3(0, - GetPlanetRadius(), 0);
-    float3 lightDir = GetMainLight().direction;
     float2 intersectionAtAtomsphere;
-    // always has intersection bewteen view ray and atomsphere
-    RaySphereIntersection(viewRayOriginal, viewRayDirection, planetCenter, GetPlanetRadius() + GetAtomsphereHeight(), intersectionAtAtomsphere); // intersection of ray and atomsphere
-    float rayLength = intersectionAtAtomsphere.y; // the camera is near the planet, it means the camera is in the atomsphere, so the t2 is the intersection toward the ray
 
+    // intersection of ray and atomsphere
+    if (RaySphereIntersection(viewRayOriginal, -viewRayDirection, planetCenter, GetPlanetRadius() + GetAtomsphereHeight(), intersectionAtAtomsphere) == false)
+    {
+        return 0;
+    }
+    
+    float rayLength = intersectionAtAtomsphere.y; // the camera is near the planet, it means the camera is in the atomsphere, so the t2 is the intersection toward the ray
+    float2 intersectionAtPlanet;
+    
+    if (RaySphereIntersection(viewRayOriginal, -viewRayDirection, planetCenter, GetPlanetRadius(), intersectionAtPlanet))
+    {
+        if (intersectionAtPlanet.x > 0)
+        {
+            rayLength = min(rayLength, intersectionAtPlanet.x);
+        }
+    }
+    
     float3 resultColor = CaculateSingleScattering(viewRayOriginal, viewRayDirection, rayLength, planetCenter);
     return float4(resultColor, 1);
 }

@@ -24,6 +24,7 @@ namespace CelPBR.Runtime.AtomsphereScattering
         [SerializeField]
         private float scaleHeight = 8500;
         [SerializeField]
+        [Range(1, 32)]
         private int sampleCount = 16;
 
         private int planetRadiusPropertyID = Shader.PropertyToID("_PlanetRadius");
@@ -41,7 +42,7 @@ namespace CelPBR.Runtime.AtomsphereScattering
             material = RenderSettings.skybox;
             material.SetFloat(planetRadiusPropertyID,planetRadius);
             material.SetFloat(atomsphereHeightPropertyID, atomsphereHeight);
-            material.SetVector(scatteringCoefficientAtSealevelPropertyID, new Vector4(0.00000519673f, 0.0000121427f, 0.0000296453f, 1));
+            material.SetVector(scatteringCoefficientAtSealevelPropertyID, new Vector4(0.0000058f, 0.0000135f, 0.0000331f, 0));
             material.SetFloat(scaleHeightPropertyID, scaleHeight);
             material.SetInt(sampleCountPropertyID, sampleCount);
         }

@@ -247,6 +247,7 @@ Shader "Alan Zucconi/Scattering/Atmospheric Scattering (Simple)"
 		// S: sun direction
 		// returns false if the point is inside the ground
 		bool lightSampling
+		
 		(	float3 P, float3 S,
 			out float opticalDepthRay, out float opticalDepthMie
 		)
