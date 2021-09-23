@@ -58,13 +58,29 @@ float CaculateOpticalDepth(float3 startPoint, float3 rayDirection, float rayLeng
     return opticalDepth;
 }
 
+float CaculatePhaseFunction_Ray(float cosTheta)
+{
+    return 3 / (16 * PI) * (1 + pow(cosTheta, 2));
+}
+
+float CaculatePhaseFunction_Mie(float cosTheta)
+{
+    float g = GetMieG();
+    float g2 = g * g;
+    float cosTheta2 = cosTheta * cosTheta;
+    float a = 3 * (1 - g2) * (1 + cosTheta2);
+    float norm = (8 * PI) * (2 + g2) * pow((1 + g2 - 2 * g * cosTheta), 1.5);
+    return a / norm;
+}
+
 float3 CaculateSingleScattering(float3 viewRayOriginal, float3 viewRayDirection, float viewRayLength, float3 planetCenter)
 {
     int sampleCount = GetAtomsphereScatteringSampleCount();
     float stepLength = viewRayLength / sampleCount;
     float3 stepVector = -viewRayDirection * stepLength;
     float3 currentPoint = viewRayOriginal + stepVector * 0.5;
-    float3 result = 0;
+    float3 result_Ray = 0;
+    float3 result_Mie = 0;
     float3 lightDirection = GetMainLight().direction;
     float opticalDepthViewPoint = 0; // to optimize the caculate times
 
@@ -79,7 +95,8 @@ float3 CaculateSingleScattering(float3 viewRayOriginal, float3 viewRayDirection,
             // then the light will be blocked by the planet
             if (intersectionParameters.x >= 0 && intersectionParameters.y >= 0)
             {
-                result += 0;
+                result_Ray += 0;
+                result_Mie += 0;
                 opticalDepthViewPoint += CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
                 currentPoint += stepVector;
                 continue;;
@@ -93,13 +110,20 @@ float3 CaculateSingleScattering(float3 viewRayOriginal, float3 viewRayDirection,
         float opticalDepth = CaculateOpticalDepth(currentPoint, lightDirection, intersectionParameters.y, planetCenter);
 
         float totalOpticalDepth = opticalDepth + opticalDepthViewPoint;
-        result += exp(-GetScatteringCoefficientAtSealevel() * totalOpticalDepth) * CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
+        result_Ray += exp(-GetScatteringCoefficientAtSealevel() * totalOpticalDepth) * CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
+        result_Mie += exp(-GetScatteringCoefficientAtSealevel_Mie() * totalOpticalDepth) * CaculateDensityRatio(distance(currentPoint, planetCenter) - GetPlanetRadius()) * stepLength;
         currentPoint += stepVector;
     }
 
     // cos(a) = cos(180 -a)
-    result = GetMainLight().color * GetScatteringCoefficientAtSealevel() * 3 / (16 * PI) * (1 + pow(dot(viewRayDirection, lightDirection), 2)) * result;
-    return result;
+    float cosTheta = dot(viewRayDirection, lightDirection);
+    float phaseFunction_Ray = CaculatePhaseFunction_Ray(cosTheta);
+    float phaseFunction_Mie = CaculatePhaseFunction_Mie(cosTheta);
+    // float3 result = GetMainLight().color * GetScatteringCoefficientAtSealevel() * phaseFunction_Ray * result_Ray;
+    float3 result = GetMainLight().color * (GetScatteringCoefficientAtSealevel() * phaseFunction_Ray * result_Ray + GetScatteringCoefficientAtSealevel_Mie() * phaseFunction_Mie * result_Mie);
+    // result = GetMainLight().color * GetScatteringCoefficientAtSealevel_Mie() * phaseFunction_Mie * result_Mie;
+    return float4(result, 1);
+   
 }
 
 #endif
