@@ -71,6 +71,10 @@ float CaculatePhaseFunction_Mie(float cosTheta)
     float a = 3 * (1 - g2) * (1 + cosTheta2);
     float norm = (8 * PI) * (2 + g2) * pow((1 + g2 - 2 * g * cosTheta), 1.5);
     return a / norm;
+
+    // float a = 1 - g2;
+    // float norm = 4 * PI * pow(1 + g2 - 2 * g * cosTheta, 1.5);
+    // return a / norm;
 }
 
 float3 CaculateSingleScattering(float3 viewRayOriginal, float3 viewRayDirection, float viewRayLength, float3 planetCenter)
@@ -115,8 +119,7 @@ float3 CaculateSingleScattering(float3 viewRayOriginal, float3 viewRayDirection,
         currentPoint += stepVector;
     }
 
-    // cos(a) = cos(180 -a)
-    float cosTheta = dot(viewRayDirection, lightDirection);
+    float cosTheta = dot(-viewRayDirection, lightDirection);
     float phaseFunction_Ray = CaculatePhaseFunction_Ray(cosTheta);
     float phaseFunction_Mie = CaculatePhaseFunction_Mie(cosTheta);
     // float3 result = GetMainLight().color * GetScatteringCoefficientAtSealevel() * phaseFunction_Ray * result_Ray;

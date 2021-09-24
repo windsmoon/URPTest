@@ -41,8 +41,27 @@ half4 frag(Varyings input): SV_Target
     {
         return 0;
     }
+
+    // intersection is out of the atomsphere and look outward the planet
+    if (intersectionAtAtomsphere.x < 0 && intersectionAtAtomsphere.y < 0)
+    {
+        return 0;
+    }
+
+    float rayLength;
+
+    // intersection is out of the atomsphere and look at the planet
+    if (intersectionAtAtomsphere.x > 0 && intersectionAtAtomsphere.y > 0)
+    {
+        rayLength = intersectionAtAtomsphere.y - intersectionAtAtomsphere.x;
+    }
+
+    else // the camera is in the atomsphere, so the t2 is the intersection toward the view ray
+    {
+        rayLength = intersectionAtAtomsphere.y;
+    }
     
-    float rayLength = intersectionAtAtomsphere.y; // the camera is near the planet, it means the camera is in the atomsphere, so the t2 is the intersection toward the ray
+    
     float2 intersectionAtPlanet;
     
     if (RaySphereIntersection(viewRayOriginal, -viewRayDirection, planetCenter, GetPlanetRadius(), intersectionAtPlanet))
