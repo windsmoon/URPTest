@@ -168,6 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 41582225}
   - component: {fileID: 41582224}
+  - component: {fileID: 41582226}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -186,8 +187,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Color: {r: 0.92156863, g: 0.9019608, b: 0.85882354, a: 1}
+  m_Intensity: 4
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -244,13 +245,32 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 41582223}
-  m_LocalRotation: {x: 0.41499367, y: -0.17137873, z: 0.07991521, w: 0.8899569}
+  m_LocalRotation: {x: 0.11116089, y: -0.18787996, z: 0.02140622, w: 0.97564656}
   m_LocalPosition: {x: 0, y: 2, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 30339116}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 50, y: -21.8, z: 0}
+  m_LocalEulerAnglesHint: {x: 13, y: -21.8, z: 0}
+--- !u!114 &41582226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41582223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 346105a9a70d4f27a90c113719c5197d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planetRadius: 6371000
+  atomsphereHeight: 100000
+  scatteringCoefficientAtSealevel_Ray: {x: 5.8, y: 13.5, z: 33.1}
+  scatteringCoefficientAtSealevel_Mie: 2
+  scaleHeight: {x: 8000, y: 1200}
+  mieG: 0.982
+  sampleCount: 32
 --- !u!1001 &144995118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -670,7 +690,6 @@ GameObject:
   - component: {fileID: 826921116}
   - component: {fileID: 826921118}
   - component: {fileID: 826921117}
-  - component: {fileID: 826921119}
   m_Layer: 0
   m_Name: Main
   m_TagString: MainCamera
@@ -686,7 +705,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826921114}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.7583602, y: 0.8650032, z: -9.952264}
+  m_LocalPosition: {x: -0.7583602, y: 3000, z: -9.952264}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -826,25 +845,6 @@ MonoBehaviour:
   m_DefaultActionMap: Battle
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &826921119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 826921114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 346105a9a70d4f27a90c113719c5197d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  planetRadius: 6371000
-  atomsphereHeight: 60000
-  scatteringCoefficientAtSealevel: {x: 0, y: 0, z: 0}
-  scatteringCoefficientAtSealevel_Mie: {x: 0, y: 0, z: 0}
-  scaleHeight: 8500
-  mieG: -0.758
-  sampleCount: 16
 --- !u!1 &871031048
 GameObject:
   m_ObjectHideFlags: 0
